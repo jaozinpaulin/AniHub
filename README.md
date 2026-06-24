@@ -1,18 +1,52 @@
-# React + Vite
+# 🎬 AniHub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AniHub é um projeto pessoal de front-end desenvolvido com React e Tailwind CSS, com foco em prática de componentização, criação de interfaces modernas e simulação de uma plataforma de streaming de animes.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Demonstração
 
-## React Compiler
+> Projeto em desenvolvimento contínuo (v0.1)
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+---
 
-Note: This will impact Vite dev & build performances.
+## 📸 Preview
 
-## Expanding the ESLint configuration
+![AniHub Hero](./public/hero.png)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+![AniHub Main](./public/main.png)
+
+---
+
+## 🧠 Sobre o projeto
+
+O AniHub simula uma plataforma de descoberta de animes, com trailers, listas e seções organizadas em um layout inspirado em serviços de streaming como Netflix e Crunchyroll.
+
+O objetivo principal é praticar:
+
+- Componentização no React
+- Organização de projeto front-end
+- Uso de Tailwind CSS
+- Estrutura de dados simulados (API fake)
+- Criação de UI moderna e responsiva
+
+---
+
+## ⚙️ Tecnologias utilizadas
+
+- React
+- JavaScript (ES6+)
+- Tailwind CSS
+- React Icons
+
+---
+
+## 📦 Funcionalidades
+
+- 🎬 Lista de trailers com embed do YouTube
+- 🧩 Componentes reutilizáveis
+- 🧭 Header com navegação
+- ❤️ Sistema visual de favoritos (UI)
+- 🔍 Barra de busca interativa
+- 📱 Layout responsivo
+- 🎨 Interface dark moderna
