@@ -1,17 +1,22 @@
 import { useRef } from "react";
-/* icons */
+import { Link } from "react-router-dom";
+
+
 import {
-    FaChevronLeft, FaChevronRight, FaFire, FaStar, FaPlay, FaTrophy, FaChartLine
+    FaChevronLeft, FaChevronRight, FaFire, FaStar,
+    FaPlay, FaTrophy, FaChartLine
 } from "react-icons/fa";
 
-import { api } from "../../../api";
-const animes = api.animes
-
+import dadosAnimes from '../../../api/detalhes_animes.json'
 import Trailers from "./trailers/trailers";
 
+
+const animes = dadosAnimes
+const animesFiltradoTop = dadosAnimes.filter(ani => ani.classificacao >= 7)
+    .sort((a, b) => b.classificacao - a.classificacao)
+
+
 export default function Trending() {
-
-
 
     const scrollAnimeRef = useRef(null)
 
@@ -30,85 +35,104 @@ export default function Trending() {
     }
 
     return (
-        <section className="w-full flex bg-zinc-900 px-6 py-3 text-white">
+        <section className="max-w-7xl mx-auto flex bg-zinc-900 px-6 py-3 text-white">
 
             <div className="w-3/4">
                 <div className="w-full">
 
-                    <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-2xl font-bold text-white flex items-center gap-2">
-                            <FaFire className="text-orange-500 text-3xl" /> Em Alta
+                    <div className="flex items-center justify-between mb-6 bg-zinc-800/70 rounded-l-lg border-r-2 border-orange-600/80">
+
+                        <h3 className="w-full text-2xl font-bold text-white py-6 px-2">
+                            Em Alta
                         </h3>
 
                         <div className="flex items-center px-8 gap-4">
-                            <button className="w-10 h-10 flex items-center justify-center rounded bg-zinc-800 hover:bg-zinc-700 transition cursor-pointer" onClick={scrollLeft}>
+                            <button className="w-10 h-10 flex items-center justify-center rounded bg-zinc-700 hover:bg-zinc-700/70 transition cursor-pointer" onClick={scrollLeft}>
                                 <FaChevronLeft />
                             </button>
 
-                            <button className="w-10 h-10 flex items-center justify-center rounded bg-zinc-800 hover:bg-zinc-700 transition cursor-pointer" onClick={scrollRight}>
+                            <button className="w-10 h-10 flex items-center justify-center rounded bg-zinc-700 hover:bg-zinc-700/70 transition cursor-pointer" onClick={scrollRight}>
                                 <FaChevronRight />
                             </button>
                         </div>
                     </div>
 
-                    <div ref={scrollAnimeRef} className="flex gap-3 overflow-x-auto scrollbar-none">
+                    <div
+                        ref={scrollAnimeRef}
+                        className="flex gap-4 overflow-x-auto scrollbar-none pb-1"
+                    >
+                        {animes.slice(0, 10).map((a) => {
+                            const idPlayer = a.id_video
 
-                        {animes.map(a => (
+                            return (
+                                <Link key={idPlayer} to={`/Anime/${idPlayer}`}>
+                                    < div className="group w-56 bg-zinc-800 rounded-xl overflow-hidden hover:bg-zinc-800/65 transition-colors duration-300" >
 
-                            <div className="group min-w-56 bg-zinc-800 rounded-xl overflow-hidden cursor-pointer hover:bg-zinc-800/65" key={a.id}>
-                                <div className="overflow-hidden">
-                                    <img src={a.imagem}
-                                        alt={'banner do ' + a.nome}
-                                        className="w-full h-72 object-cover transition-transform  group-hover:scale-110  duration-300" />
-                                </div>
-                                <div className="p-4">
-                                    <h4 className="font-bold text-lg">
-                                        {a.nome}
-                                    </h4>
+                                        < div className="aspect-[2/3] overflow-hidden bg-zinc-900 flex items-center justify-center" >
+                                            <img
+                                                src={a.capa}
+                                                alt={`Banner do ${a.nome}`}
+                                                loading="lazy"
+                                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                            />
+                                        </div>
 
-                                    <p className="text-zinc-400 text-sm mt-1">
-                                        {a.genero}
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
+                                        <div className="h-14 flex items-center px-3">
+                                            <h4 className="w-full font-bold line-clamp-2 group-hover:text-purple-400 transition-colors duration-300">
+                                                {a.nome}
+                                            </h4>
+                                        </div>
 
+                                        {/* <span className="text-yellow-500 text-sm font-semibold flex items-center gap-1">
+                                            <FaStar className="text-yellow-500" />{Number(a.classificacao).toFixed(1).replace(',', ',')}
+                                        </span> */}
 
+                                    </div>
+                                </Link>
+                            );
+                        })}
                     </div>
-                </div>
+                </div >
 
                 <section className="w-full mt-6">
 
-                    <h3 className="text-2xl font-bold text-white flex items-center gap-2 py-6">
-                        <FaStar className="text-yellow-500" /> Mais Bem Avaliados
+                    <h3 className="text-2xl font-bold text-white py-6 my-5 px-2 bg-zinc-800/70 rounded-l-lg border-r-2 border-blue-600/80">
+                        Mais Bem Avaliados
                     </h3>
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+                        {animesFiltradoTop.slice(0, 24).map((a) => (
+                            <Link key={a.id_video} to={`/anime/${a.id_video}`} className="group">
 
-                        {animes.slice(0, 10).map(a => (
-                            <div key={a.id} className="group cursor-pointer bg-zinc-800 rounded-xl transition-transform  hover:scale-105  duration-300">
+                                <div className="bg-zinc-800 rounded-xl overflow-hidden border border-zinc-700/50 hover:border-zinc-600 hover:bg-zinc-800/70 hover:-translate-y-1 transition-all duration-300">
 
-                                <div className="overflow-hidden rounded-lg">
-                                    <img
-                                        src={a.imagem}
-                                        alt={a.nome}
-                                        className=" w-full h-60 object-cover" />
+                                    <div className="relative aspect-[2/3] overflow-hidden bg-zinc-900">
+
+                                        <img
+                                            src={a.capa}
+                                            alt={a.nome}
+                                            className="w-full h-full object-cover"
+                                        />
+
+                                        <div className="absolute top-3 right-3 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1">
+                                            <FaStar className="text-yellow-400 text-xs" />
+                                            <span className="text-white text-xs font-semibold">
+                                                {Number(a.classificacao).toFixed(1)}
+                                            </span>
+                                        </div>
+
+                                    </div>
+
+                                    <div className="p-2">
+
+                                        <h3 className="text-white font-medium text-sm leading-5 h-10 line-clamp-2 group-hover:text-blue-400 transition-colors">
+                                            {a.nome}
+                                        </h3>
+
+                                    </div>
+
                                 </div>
-
-                                <div className="p-2.5">
-
-                                    <h3
-                                        className="text-white font-medium truncate group-hover:text-blue-400 transition-colors">
-                                        {a.nome}
-                                    </h3>
-
-                                    <span className="text-yellow-500 text-sm font-semibold flex items-center gap-1">
-                                        <FaStar className="text-yellow-500" />{a.nota}
-                                    </span>
-
-                                </div>
-
-                            </div>
+                            </Link>
                         ))}
                     </div>
 
@@ -119,7 +143,7 @@ export default function Trending() {
 
 
 
-            </div>
+            </div >
 
             <aside className="w-1/4 pl-6">
 

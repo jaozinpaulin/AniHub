@@ -16,12 +16,32 @@ export default function Header() {
                 </Link>
 
                 <nav>
-                    <ul className="flex gap-6 text-sm text-zinc-300">
-                        <li><Link to="/" className="hover:text-white transition">Home</Link></li>
-                        <li><Link to="/explore" className="hover:text-white transition">Explorar</Link></li>
-                        <li><Link to="/categories" className="hover:text-white transition">Categorias</Link></li>
-                        <li><Link to="/popular" className="hover:text-white transition">Populares</Link></li>
-                        <li><Link to="/favorites" className="hover:text-white transition">Favoritos</Link></li>
+                    <ul className="flex items-center gap-3 text-sm">
+
+                        <Link
+                            to="/"
+                            className="px-3 py-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all duration-300">
+                            <li>Home</li>
+                        </Link>
+
+                        <Link
+                            to="/explore"
+                            className="px-3 py-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all duration-300">
+                            <li>Explorar</li>
+                        </Link>
+
+                        <Link
+                            to="/categories"
+                            className="px-3 py-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all duration-300">
+                            <li>Categorias</li>
+                        </Link>
+
+                        <Link
+                            to="/favorites"
+                            className="px-3 py-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all duration-300">
+                            <li>Favoritos</li>
+                        </Link>
+
                     </ul>
                 </nav>
 

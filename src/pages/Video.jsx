@@ -1,0 +1,173 @@
+import { useParams, Link } from 'react-router-dom';
+import { useState } from 'react';
+
+import { IoPlaySharp } from "react-icons/io5";
+import { FaChevronLeft, FaStar } from "react-icons/fa";
+import { PiArrowsOutLineHorizontalBold } from "react-icons/pi";
+import { HiOutlineChevronLeft, HiOutlineChevronRight, HiOutlineSquares2X2, } from "react-icons/hi2";
+
+import dados from '../api/detalhes_animes.json'
+
+export default function Video() {
+
+    const { id, ep } = useParams()
+
+    const idAnime = Number(id);
+    const episodioAtual = Number(ep);
+
+    const anime = dados.filter(ani => ani.id_video === id);
+    const totalEp = anime[0].temporadas['Temporada 1'].episodios.length;
+
+
+    const [animeId, setAnimeId] = useState(idAnime);
+    const [episodio, setEpisodio] = useState(episodioAtual);
+    const [temporada, setTemporada] = useState(1);
+
+
+
+    const urlDoIframe = `https://serv01.meusdoramas.club/#/video/${animeId}/${temporada}/${episodio}/`;
+    console.log(anime)
+
+
+    return (
+        <section className="max-w-7xl mx-auto min-h-screen py-20 bg-zinc-950/90 mb-16 rounded-2xl flex justify-center">
+            <div className="w-full max-w-6xl mx-auto mt-14 space-y-6 border-2 rounded border-zinc-900  p-10">
+
+                <Link
+                    to={`/anime/${idAnime}`}
+                    className="inline-flex items-center gap-2 px-5 py-3 bg-zinc-800/70 border border-zinc-700 rounded-xl text-zinc-300 hover:text-white hover:bg-zinc-800/90 transition-all duration-300 group">
+
+                    <FaChevronLeft className="text-sm group-hover:-translate-x-1 group-hover:text-blue-500 transition-all duration-300" />
+
+                    <span className="font-medium">
+                        Voltar
+                    </span>
+                </Link>
+
+                <div className="relative aspect-video">
+
+                    <iframe src={urlDoIframe} className="w-full h-full border-0" title="teste" scrolling="no"
+                        allowFullScreen referrerPolicy="no-referrer"
+                    />
+
+                    {/* <div className="group absolute inset-50 bg-zinc-950 flex items-center justify-center cursor-pointer">
+                        <IoPlaySharp className="text-7xl text-zinc-300 group-hover:text-zinc-400 transition-colors duration-300" />
+                    </div> */}
+
+                    {/* <PiArrowsOutLineHorizontalBold className="absolute -right-14 bottom-2.5 bg-zinc-700 hover:bg-zinc-700/80 transition-colors duration-300 cursor-pointer size-10 p-1 rounded" /> */}
+
+                </div>
+
+
+                <div>
+                    <h1 className="text-3xl font-bold text-white">
+                        {anime[0].nome}
+                    </h1>
+
+                    <p className="text-zinc-400">
+                        {anime[0].generos.includes('Dublado') ? "Dublado" : "Legendado"} - episodio {episodio}
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3 text-white bg-zinc-950 p-5">
+
+                    <button
+                        onClick={() => setEpisodio(prev => Math.max(1, prev - 1))}
+                        className={`flex items-center justify-center gap-2 p-6 border rounded-l-lg transition-all duration-300 group ${episodio === 1
+                            ? "border-zinc-800 bg-zinc-900/40 text-zinc-500 cursor-not-allowed"
+                            : "border-zinc-800 bg-zinc-950/60 hover:border-zinc-600 hover:bg-zinc-900/65 cursor-pointer"
+                            }`}
+                        disabled={episodio === 1}>
+                        <HiOutlineChevronLeft
+                            className={`text-xl group-hover:text-purple-500 : transition-transform duration-300 ${episodio === 1 ? "" : "group-hover:-translate-x-1"}`} />
+
+                        <span>Anterior</span>
+                    </button>
+
+                    <Link to={`/anime/${idAnime}`}>
+                        <button className=" w-full flex items-center justify-center gap-2 p-6 border border-zinc-700 bg-zinc-950  hover:border-blue-600 hover:bg-zinc-950/70 transition-all duration-300 cursor-pointer group">
+
+                            <HiOutlineSquares2X2 className="text-xl group-hover:rotate-90 transition-transform duration-300" />
+                            <span>Todos os episódios</span>
+
+                        </button>
+                    </Link>
+                    <button
+                        onClick={() => setEpisodio(prev => Math.min(totalEp, prev + 1))}
+                        disabled={episodio === totalEp}
+                        className={`flex items-center justify-center gap-2 p-6 border rounded-r-lg transition-all duration-300 group ${episodio === totalEp
+                            ? "border-zinc-800 bg-zinc-900/40 text-zinc-500 cursor-not-allowed"
+                            : "border-zinc-800 bg-zinc-950/60 hover:border-zinc-600 hover:bg-zinc-900/65 cursor-pointer"
+                            }`}>
+
+                        <span>Próximo</span>
+
+                        <HiOutlineChevronRight
+                            className={`text-xl group-hover:text-blue-500 : transition-transform duration-300 ${episodio === totalEp ? "" : "group-hover:translate-x-1"}`} />
+
+                    </button>
+
+                </div>
+
+                <div className="mt-16 bg-zinc-950 border-r-2 border-orange-800/70 p-6 flex flex-col md:flex-row gap-6 items-center">
+
+                    <img src={anime[0].capa} alt={anime[0].nome} className="w-40 rounded-xl object-cover" />
+
+                    <div className="w-full text-white">
+
+                        <div className="flex flex-wrap gap-2 mb-5">
+
+                            <span className="px-3 py-1 rounded-full bg-zinc-800 flex items-center gap-1">
+                                <FaStar className="text-yellow-400" />
+                                {anime[0].classificacao}
+                            </span>
+
+                            <span className="px-3 py-1 rounded-full bg-zinc-800">
+                                📺 {anime[0].temporadas["Temporada 1"].total_episodios_temporada} Episódios
+                            </span>
+
+                            <span className="px-3 py-1 rounded-full bg-zinc-800">
+                                🎬 {anime[0].total_temporadas} Temporada
+                            </span>
+
+                            <span className="px-3 py-1 rounded-full bg-zinc-800">
+                                {anime[0].generos.includes("Dublado")
+                                    ? "Dublado"
+                                    : "Legendado"}
+                            </span>
+
+                            <span className="px-3 py-1 rounded-full bg-zinc-800">
+                                📅 {anime[0].data_lancamento}
+                            </span>
+
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 mb-6">
+
+                            {anime[0].generos
+                                .filter(g =>
+                                    g !== "Dublado" &&
+                                    g !== "Legendado" &&
+                                    !g.startsWith("Letra")
+                                )
+                                .map(genero => (
+                                    <span
+                                        key={genero}
+                                        className="px-3 py-1 border border-zinc-700 rounded-full text-zinc-300 text-sm">
+                                        {genero}
+                                    </span>
+                                ))}
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+    )
+}
+
+/* atualizar os useNavegate */

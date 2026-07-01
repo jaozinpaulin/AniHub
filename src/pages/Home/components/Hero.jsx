@@ -8,7 +8,7 @@ const anime = api.animes
 export default function Hero() {
     return (
 
-        <section className="relative h-[80vh] flex items-end px-6 pb-12 text-white">
+        <section className="max-w-7xl mx-auto relative h-[80vh] flex items-end px-6 pb-12 text-white">
 
             < img
                 src="https://images.unsplash.com/photo-1618336753974-aae8e04506aa"
@@ -56,7 +56,6 @@ export default function Hero() {
                     Quando a paz é quebrada, Eren Yeager decide lutar contra eles e descobrir a verdade por trás do mundo.
                 </p>
 
-                {/* Buttons */}
                 <div className="flex gap-4 pt-2">
 
                     <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-2xl font-semibold cursor-pointer">
