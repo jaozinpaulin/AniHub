@@ -12,11 +12,10 @@ AniHub é um projeto pessoal de front-end desenvolvido com React e Tailwind CSS,
 
 ## Preview
 
-![AniHub Hero](./public/hero.png)
-
-![AniHub Main](./public/main.png)
-
-![AniHub explore](public/explorar.png)
+|                                  |                                        |
+| -------------------------------- | -------------------------------------- |
+| ![Tela inicial - Hero](hero.png) | ![Seção explorar animes](explorar.png) |
+| ![Página de anime](anime.png)    | ![Player de vídeo](video.png)          |
 
 ---
 
