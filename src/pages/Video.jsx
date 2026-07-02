@@ -30,7 +30,7 @@ export default function Video() {
 
 
     return (
-        <section className="max-w-7xl mx-auto min-h-screen py-20 bg-zinc-950/90 mb-16 rounded-2xl flex justify-center">
+        <section className="w-full mx-auto min-h-screen py-20 bg-zinc-950/90 mb-16 rounded-2xl flex justify-center">
             <div className="w-full max-w-6xl mx-auto mt-14 space-y-6 border-2 rounded border-zinc-900  p-10">
 
                 <Link
@@ -44,7 +44,7 @@ export default function Video() {
                     </span>
                 </Link>
 
-                <div className="relative aspect-video">
+                <div className="relative aspect-video border border-zinc-700/70">
 
                     <iframe src={urlDoIframe} className="w-full h-full border-0" title="teste" scrolling="no"
                         allowFullScreen referrerPolicy="no-referrer"
@@ -109,7 +109,7 @@ export default function Video() {
 
                 </div>
 
-                <div className="mt-16 bg-zinc-950 border-r-2 border-orange-800/70 p-6 flex flex-col md:flex-row gap-6 items-center">
+                <div className="mt-16 bg-zinc-950 border-r-2 border border-zinc-700/40 rounded-b-2xl p-6 flex flex-col md:flex-row gap-6 items-center">
 
                     <img src={anime[0].capa} alt={anime[0].nome} className="w-40 rounded-xl object-cover" />
 
