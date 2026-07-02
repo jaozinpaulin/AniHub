@@ -16,18 +16,24 @@ export default function Anime() {
     })
 
 
-    console.log(animeShow.temporadas['Temporada 1'].episodios)
+    // console.log(animeShow.temporadas['Temporada 1'].episodios[0].capa_episodio)
+    // console.log(animeShow)
 
     return (
-        <section className="min-h-screen py-20 bg-zinc-950 text-white">
-            <div
-                className="h-[500px] bg-cover bg-center relative"
-                style={{
-                    backgroundImage:
-                        `url(${animeShow.capa})`
-                }}>
+        <section className="py-20 bg-zinc-950 text-white">
 
-                <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-zinc-950"></div>
+            <div className="relative w-full h-[500px] overflow-hidden">
+                {/* imagem */}
+                <div
+                    className="absolute w-full h-full bg-center bg-cover "
+                    style={{
+                        backgroundImage: `url(${animeShow?.temporadas?.["Temporada 1"]?.episodios?.[0]?.capa_episodio || ""
+                            })`
+                    }}
+                />
+
+                {/* overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-zinc-950" />
 
             </div>
 
