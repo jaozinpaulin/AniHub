@@ -23,13 +23,13 @@ AniHub é um projeto pessoal de front-end desenvolvido com React e Tailwind CSS,
 
 O AniHub simula uma plataforma de descoberta de animes, com trailers, listas e seções organizadas em um layout inspirado em serviços de streaming como Netflix e Crunchyroll.
 
-O objetivo principal é praticar:
+O objetivo principal é praticar conceitos essenciais de front-end moderno, como:
 
 - Componentização no React
 - Organização de projeto front-end
 - Uso de Tailwind CSS
-- Estrutura de dados simulados (API fake)
-- Criação de UI moderna e responsiva
+- Consumo de dados simulados (API fake)
+- Criação de interfaces modernas e responsivas
 
 ---
 
