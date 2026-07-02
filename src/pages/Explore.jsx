@@ -85,7 +85,7 @@ export default function Explore() {
     })
 
     return (
-        <section className="max-w-7xl mx-auto min-h-dvh pt-20 bg-zinc-950/90 px-10">
+        <section className="w-full min-h-dvh pt-20 bg-zinc-950/90 px-10">
 
             <div className="pt-10">
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
@@ -115,7 +115,7 @@ export default function Explore() {
             <div className="w-full flex flex-wrap gap-4 pt-6 pb-10">
                 {loading ? (
 
-                    Array.from({ length: 14 }).map((_, i) => (
+                    Array.from({ length: 16 }).map((_, i) => (
                         <div key={i} className="animate-pulse px-4 py-2 rounded-xl bg-zinc-800 border border-zinc-700 w-24 h-10" />))
                 ) :
                     (
@@ -134,37 +134,31 @@ export default function Explore() {
                     )}
             </div>
 
-            <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 pb-10">
-
+            <div className="w-full grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-4 pb-10">
                 {loading ? (
-
-                    Array.from({ length: 14 }).map((_, i) => (
+                    Array.from({ length: 16 }).map((_, i) => (
                         <div key={i} className="animate-pulse bg-zinc-800 h-72 rounded-xl" />
                     ))
-
                 )
                     :
                     animesFiltrado.sort((a, b) => b.classificacao - a.classificacao).map(a => (
                         <Link key={a.id_video} to={`/anime/${a.id_video}`}>
+                            <div className="bg-zinc-800 rounded-xl overflow-hidden cursor-pointer text-white transition-all duration-300 hover:-translate-y-2 hover:bg-zinc-800/60 hover:shadow-xl hover:shadow-black/40">
 
-                            <div className='group  bg-zinc-800 rounded-xl overflow-hidden cursor-pointer hover:bg-zinc-800/65 text-white'>
-                                <div className="overflow-hidden">
-                                    <img src={a.capa}
-                                        alt={'banner do ' + a.nome}
-                                        loading="lazy"
-                                        decoding="async"
-                                        className="w-full h-64 object-cover transition-transform  group-hover:scale-110  duration-300" />
+                                <div className="aspect-[2/3] overflow-hidden">
+                                    <img src={a.capa} alt={`banner do ${a.nome}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+
                                 </div>
+
                                 <div className="p-2">
-                                    <h4 className="font-bold text-lg truncate">
+                                    <h4 className="font-bold text-sm truncate">
                                         {a.nome}
                                     </h4>
-
                                 </div>
+
                             </div>
                         </Link>
                     ))}
-
 
             </div>
 

@@ -4,7 +4,7 @@ import Footer from "./components/Footer/Footer";
 
 export default function App() {
   return (
-    <main className="bg-zinc-800">
+    <main className="bg-zinc-950">
       <Header />
       <Router />
       <Footer />

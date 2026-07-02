@@ -1,62 +1,20 @@
 import { FaBorderAll } from "react-icons/fa";
 import { FaGrip } from "react-icons/fa6";
-import { animes } from "../../api/animes";
 
 import { Link } from "react-router-dom";
 
+import animes from "../../api/detalhes_animes.json";
+import corGenero from '../../api/generos.json'
 
-const generosUnicos = [...new Set(animes.map(g => g.genero))]
 
 
-/* temporario */
-const coresGenero = {
-    "Sobrenatural": {
-        bg: "bg-cyan-500/20",
-        border: "border-cyan-500/30",
-        hover: "hover:bg-cyan-500/30"
-    },
+const generosUnicos = [...new Set(animes.flatMap(ani => ani.generos).filter(a => !a.startsWith('Letra')))]
 
-    "Ação": {
-        bg: "bg-red-500/20",
-        border: "border-red-500/30",
-        hover: "hover:bg-red-500/30"
-    },
-
-    "Aventura": {
-        bg: "bg-green-500/20",
-        border: "border-green-500/30",
-        hover: "hover:bg-green-500/30"
-    },
-
-    "Shounen": {
-        bg: "bg-orange-500/20",
-        border: "border-orange-500/30",
-        hover: "hover:bg-orange-500/30"
-    },
-
-    "Drama": {
-        bg: "bg-yellow-500/20",
-        border: "border-yellow-500/30",
-        hover: "hover:bg-yellow-500/30"
-    },
-
-    "Fantasia": {
-        bg: "bg-purple-500/20",
-        border: "border-purple-500/30",
-        hover: "hover:bg-purple-500/30"
-    },
-
-    "Terror": {
-        bg: "bg-rose-600/20",
-        border: "border-rose-600/30",
-        hover: "hover:bg-rose-600/30"
-    }
-};
 
 export default function Categories() {
-    return (<section className="w-full min-h-dvh pt-20 bg-zinc-950">
+    return (<section className="w-full min-h-dvh pt-20 px-6 bg-zinc-950">
 
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="w-full px-6">
             <div className="pt-10">
 
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
@@ -69,37 +27,50 @@ export default function Categories() {
 
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 py-10">
-                {generosUnicos.map((gen, i) => {
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 py-10">
+                {generosUnicos.map(gen => {
 
-                    const animeLength = animes.filter(gene =>
-                        gene.genero.includes(gen)
-                    ).length;
+                    const animeLength = animes.filter(
+                        gene => gene.generos.includes(gen)).length;
+
+                    const generoAtual =
+                        corGenero.find(g => g.nome === gen) || {
+                            bg: "bg-zinc-900",
+                            border: "border-zinc-800",
+                            hover: "hover:border-zinc-700"
+                        };
 
                     return (
+                        <Link key={gen} to={`/categories/${gen}`} className="group">
 
-                        <Link key={i} to={`/categories/${gen}`}>
+                            <div className={`relative overflow-hidden h-full min-h-[150px] flex flex-col justify-between p-5 rounded-2xl border transition-all duration-300 ease-out cursor-pointer backdrop-blur-md bg-zinc-900/80 shadow-sm hover:-translate-y-2 hover:shadow-xl hover:shadow-black/40 ${generoAtual.bg} ${generoAtual.border} ${generoAtual.hover}`}>
 
-                            <div className={`border rounded-xl p-4 bg-zinc-900 hover:-translate-y-1 transition-all duration-300 cursor-pointer
-                                ${coresGenero[gen].bg}
-                                ${coresGenero[gen].hover}
-                                ${coresGenero[gen].border}`}>
+                                <div className="absolute inset-0 opacity-0 group-hover:opacity-15 transition-opacity duration-300 bg-gradient-to-br from-white to-transparent" />
 
-                                <FaGrip className="text-lg text-zinc-400 mb-2" />
+                                <div className="flex items-center justify-between z-10">
+                                    <div className="p-2 rounded-lg bg-white/5 group-hover:bg-white/10 transition-colors">
+                                        <FaGrip className="text-lg text-zinc-400 group-hover:text-white transition-colors" />
+                                    </div>
 
-                                <h3 className="text-lg font-semibold text-white mb-1">
-                                    {gen}
-                                </h3>
+                                    <span className="text-[11px] font-medium px-2.5 py-1 rounded-full bg-zinc-800/80 text-zinc-300 border border-zinc-700/40">
+                                        {animeLength}
+                                    </span>
+                                </div>
 
-                                <span className="text-sm text-zinc-400/90">
-                                    {animeLength} anime(s)
-                                </span>
+                                <div className="z-10 mt-4">
+                                    <h3 className="text-base sm:text-lg font-bold text-zinc-100 group-hover:text-white transition-colors">
+                                        {gen}
+                                    </h3>
+
+                                    <p className="text-xs text-zinc-400 mt-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                                        Explorar coleção
+                                    </p>
+                                </div>
 
                             </div>
 
                         </Link>
-
-                    )
+                    );
                 })}
 
             </div>

@@ -1,14 +1,12 @@
-import { api } from "../../../api"
 import { FaStar, FaHeart } from "react-icons/fa";
 
-const anime = api.animes
 
 /* por hora vou colocar o index da api anime fixo []*/
 
 export default function Hero() {
     return (
 
-        <section className="max-w-7xl mx-auto relative h-[80vh] flex items-end px-6 pb-12 text-white">
+        <section className="w-full relative h-[80vh] flex items-end px-6 pb-12 text-white">
 
             < img
                 src="https://images.unsplash.com/photo-1618336753974-aae8e04506aa"
@@ -21,7 +19,7 @@ export default function Hero() {
             <div className="relative z-10 max-w-3xl space-y-4">
 
                 <h1 className="text-5xl md:text-6xl font-bold">
-                    {anime[4].nome}
+                    Dandadan
                 </h1>
 
                 <p className="text-zinc-400 text-lg">
@@ -38,7 +36,7 @@ export default function Hero() {
                 <div className="flex flex-wrap items-center gap-6 text-sm text-zinc-300">
 
                     <div className="flex items-center gap-1">
-                        <FaStar className="text-yellow-500" />{anime[4].nota} / 10
+                        <FaStar className="text-yellow-500" />/ 10
                     </div>
 
                     <div>
