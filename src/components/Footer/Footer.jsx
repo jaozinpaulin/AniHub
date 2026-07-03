@@ -6,24 +6,21 @@ export default function Footer() {
 
             <div className="w-full flex items-center justify-center px-6 py-10">
 
-                <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-10 text-center md:text-left w-full max-w-5xl">
+                <div className="flex flex-col gap-2 text-center">
 
-                    {/* Disclaimer */}
-                    <div className="text-xs text-zinc-500 max-w-xl">
-                        Este site não hospeda nenhum vídeo em seu servidor. Todo conteúdo é provido de terceiros não afiliados.
-                    </div>
-
-                    {/* Sistema */}
-                    <div className="text-sm flex flex-col items-center md:items-end">
+                    <div className="text-sm flex items-center gap-2 flex-col">
                         <p className="text-white font-medium">Sistema</p>
 
-                        <p className="mt-2 text-zinc-400">AniHub v0.1</p>
+                        <p className="text-zinc-400">AniHub v0.5</p>
 
-                        <p className="text-zinc-500 text-xs mt-1">
+                        <p className="text-zinc-500 text-xs">
                             Status: Online
                         </p>
                     </div>
 
+                    <div className="text-xs text-zinc-500 max-w-xl">
+                        Este site não hospeda nenhum vídeo em seu servidor. Todo conteúdo é provido de terceiros não afiliados.
+                    </div>
                 </div>
 
             </div>

@@ -10,29 +10,33 @@ import dados from '../api/detalhes_animes.json'
 
 export default function Video() {
 
-    const { id, ep } = useParams()
+    const { id, tem, ep } = useParams()
 
     const idAnime = Number(id);
+    const temporadaAtual = Number(tem);
     const episodioAtual = Number(ep);
 
-    const anime = dados.filter(ani => ani.id_video === id);
-    const totalEp = anime[0].temporadas['Temporada 1'].episodios.length;
 
+    const anime = dados.filter(ani => ani.id_video === id);
+
+
+
+    const totalEp = anime[0].temporadas[0].episodios.length;
 
     const [animeId, setAnimeId] = useState(idAnime);
     const [episodio, setEpisodio] = useState(episodioAtual);
-    const [temporada, setTemporada] = useState(1);
-
-
+    const [temporada, setTemporada] = useState(temporadaAtual);
 
     const urlDoIframe = `https://serv01.meusdoramas.club/#/video/${animeId}/${temporada}/${episodio}/`;
-    console.log(anime)
 
 
     return (
-        <section className="w-full mx-auto min-h-screen py-20 bg-zinc-950/90 mb-16 rounded-2xl flex justify-center">
-            <div className="w-full max-w-6xl mx-auto mt-14 space-y-6 border-2 rounded border-zinc-900  p-10">
+        <section className="relative w-full mx-auto min-h-screen py-20 bg-zinc-950/90 mb-16 rounded-2xl flex justify-center">
 
+            <div className="absolute top-20 left-20 h-72 w-72 rounded-full bg-blue-600/20 blur-[120px]" />
+            <div className="absolute bottom-20 right-20 h-72 w-72 rounded-full bg-purple-600/20 blur-[120px]" />
+
+            <div className="w-full max-w-6xl mx-auto mt-14 space-y-6 border-2 rounded border-zinc-900  p-10">
                 <Link
                     to={`/anime/${idAnime}`}
                     className="inline-flex items-center gap-2 px-5 py-3 bg-zinc-800/70 border border-zinc-700 rounded-xl text-zinc-300 hover:text-white hover:bg-zinc-800/90 transition-all duration-300 group">
@@ -47,15 +51,7 @@ export default function Video() {
                 <div className="relative aspect-video border border-zinc-700/70">
 
                     <iframe src={urlDoIframe} className="w-full h-full border-0" title="teste" scrolling="no"
-                        allowFullScreen referrerPolicy="no-referrer"
-                    />
-
-                    {/* <div className="group absolute inset-50 bg-zinc-950 flex items-center justify-center cursor-pointer">
-                        <IoPlaySharp className="text-7xl text-zinc-300 group-hover:text-zinc-400 transition-colors duration-300" />
-                    </div> */}
-
-                    {/* <PiArrowsOutLineHorizontalBold className="absolute -right-14 bottom-2.5 bg-zinc-700 hover:bg-zinc-700/80 transition-colors duration-300 cursor-pointer size-10 p-1 rounded" /> */}
-
+                        allowFullScreen referrerPolicy="no-referrer" />
                 </div>
 
 
@@ -79,7 +75,7 @@ export default function Video() {
                             }`}
                         disabled={episodio === 1}>
                         <HiOutlineChevronLeft
-                            className={`text-xl group-hover:text-purple-500 : transition-transform duration-300 ${episodio === 1 ? "" : "group-hover:-translate-x-1"}`} />
+                            className={`text-xl transition-transform duration-300 ${episodio === 1 ? "" : "group-hover:-translate-x-1"}`} />
 
                         <span>Anterior</span>
                     </button>
@@ -103,7 +99,7 @@ export default function Video() {
                         <span>Próximo</span>
 
                         <HiOutlineChevronRight
-                            className={`text-xl group-hover:text-blue-500 : transition-transform duration-300 ${episodio === totalEp ? "" : "group-hover:translate-x-1"}`} />
+                            className={`text-xl : transition-transform duration-300 ${episodio === totalEp ? "" : "group-hover:translate-x-1"}`} />
 
                     </button>
 
@@ -112,22 +108,20 @@ export default function Video() {
                 <div className="mt-16 bg-zinc-950 border-r-2 border border-zinc-700/40 rounded-b-2xl p-6 flex flex-col md:flex-row gap-6 items-center">
 
                     <img src={anime[0].capa} alt={anime[0].nome} className="w-40 rounded-xl object-cover" />
-
                     <div className="w-full text-white">
 
                         <div className="flex flex-wrap gap-2 mb-5">
-
                             <span className="px-3 py-1 rounded-full bg-zinc-800 flex items-center gap-1">
                                 <FaStar className="text-yellow-400" />
                                 {anime[0].classificacao}
                             </span>
 
                             <span className="px-3 py-1 rounded-full bg-zinc-800">
-                                📺 {anime[0].temporadas["Temporada 1"].total_episodios_temporada} Episódios
+                                {anime[0].total_episodios_geral} Episódios
                             </span>
 
                             <span className="px-3 py-1 rounded-full bg-zinc-800">
-                                🎬 {anime[0].total_temporadas} Temporada
+                                {anime[0].total_temporadas} Temporada
                             </span>
 
                             <span className="px-3 py-1 rounded-full bg-zinc-800">
@@ -137,7 +131,7 @@ export default function Video() {
                             </span>
 
                             <span className="px-3 py-1 rounded-full bg-zinc-800">
-                                📅 {anime[0].data_lancamento}
+                                {anime[0].data_lancamento}
                             </span>
 
                         </div>
@@ -170,4 +164,8 @@ export default function Video() {
     )
 }
 
-/* atualizar os useNavegate */
+
+
+
+
+/* ajusta o video o tamnho pra fazer os limites dos botoes */

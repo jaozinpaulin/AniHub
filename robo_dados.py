@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import time
+import os
 
 URL_BASE = "https://meusanimes.blog"
 HEADERS = {
@@ -9,16 +10,12 @@ HEADERS = {
 }
 
 def extrair_id_video(url_episodio):
-    """
-    Entra na página de um único episódio para pegar o ID do vídeo.
-    """
     try:
         resposta = requests.get(url_episodio, headers=HEADERS, timeout=15)
         if resposta.status_code != 200:
             return ""
             
         soup = BeautifulSoup(resposta.text, 'html.parser')
-        
         div_play = soup.find('div', class_='play-box-iframe')
         iframe = div_play.find('iframe') if div_play else soup.find('iframe')
         
@@ -35,7 +32,7 @@ def extrair_id_video(url_episodio):
         return ""
 
 
-def extrair_detalhes_do_anime(url_anime):
+def extrair_detalhes_do_anime(url_anime, dados_existentes=None):
     try:
         resposta = requests.get(url_anime, headers=HEADERS, timeout=15)
         if resposta.status_code != 200:
@@ -71,15 +68,25 @@ def extrair_detalhes_do_anime(url_anime):
             lore = partes_lore[1].strip()
 
     temporadas = {}
-    id_unico_do_anime = "" # Variavel para guardar o ID que pegaremos apenas uma vez
-    ja_pegou_id = False # Marcador para saber se já achamos o ID
+    id_unico_do_anime = dados_existentes.get("id_video", "") if dados_existentes else ""
+    ja_pegou_id = True if id_unico_do_anime else False
+    
+    total_episodios_geral = 0
 
     div_seasons = soup.find('div', id='seasons')
     if div_seasons:
         blocos_temporada = div_seasons.find_all('div', class_='se-c')
+        
         for bloco in blocos_temporada:
-            tag_num_temporada = bloco.find('span', class_='se-o')
-            num_temporada = tag_num_temporada.text.strip() if tag_num_temporada else "1"
+            tag_num = bloco.find('span', class_=lambda x: x and 'se-t' in x)
+            num_temporada = tag_num.text.strip() if tag_num else None
+            
+            if not num_temporada:
+                tag_title = bloco.find('span', class_='title')
+                if tag_title and "Temporada" in tag_title.text:
+                    num_temporada = tag_title.text.replace("Temporada", "").strip().split()[0]
+                else:
+                    num_temporada = str(len(temporadas) + 1)
             
             chave_temporada = f"Temporada {num_temporada}"
             
@@ -88,44 +95,43 @@ def extrair_detalhes_do_anime(url_anime):
                 "episodios": []
             }
             
-            tag_ul_episodios = bloco.find('ul', class_='episodios')
-            if tag_ul_episodios:
-                itens_li = tag_ul_episodios.find_all('li')
+            tag_ul = bloco.find('ul', class_='episodios')
+            if tag_ul:
+                itens_li = tag_ul.find_all('li')
                 for li in itens_li:
-                    div_imagen = li.find('div', class_='imagen')
-                    img_ep_tag = div_imagen.find('img') if div_imagen else None
-                    capa_episodio = img_ep_tag['src'].strip() if img_ep_tag and img_ep_tag.has_attr('src') else ""
-
-                    div_numerando = li.find('div', class_='numerando')
-                    num_episodio = div_numerando.text.split('-')[-1].strip() if div_numerando else "0"
-                    
                     div_title = li.find('div', class_='episodiotitle')
-                    tag_a_ep = div_title.find('a', href=True) if div_title else None
+                    tag_a_ep = div_title.find('a', href=True) if div_title else li.find('a', href=True)
                     link_episodio = tag_a_ep['href'].strip() if tag_a_ep else ""
                     
                     if link_episodio:
-                        # 🚨 APENAS UMA VEZ POR ANIME: Entra no link se ainda não tiver o ID
+                        div_imagen = li.find('div', class_='imagen')
+                        img_ep = div_imagen.find('img') if div_imagen else li.find('img')
+                        capa_episodio = img_ep['src'].strip() if img_ep and img_ep.has_attr('src') else ""
+                        
+                        div_numerando = li.find('div', class_='numerando')
+                        num_episodio = div_numerando.text.split('-')[-1].strip() if div_numerando else "0"
+                        
                         if not ja_pegou_id:
-                            print(f"  🎬 Buscando ID de referência no Ep {num_episodio}...")
+                            print(f"  🎬 Buscando ID de referência no Ep {num_episodio} da {chave_temporada}...")
                             id_unico_do_anime = extrair_id_video(link_episodio)
                             if id_unico_do_anime:
-                                ja_pegou_id = True # Achou um ID válido? Ativa o marcador para ignorar as próximas páginas de ep
-
+                                ja_pegou_id = True
+                                
                         temporadas[chave_temporada]["episodios"].append({
                             "numero_episodio": num_episodio,
                             "capa_episodio": capa_episodio,
                             "link": link_episodio
                         })
-
-            total_convertido = len(temporadas[chave_temporada]["episodios"])
-            temporadas[chave_temporada]["total_episodios_temporada"] = total_convertido
+            
+            total_da_temporada = len(temporadas[chave_temporada]["episodios"])
+            temporadas[chave_temporada]["total_episodios_temporada"] = total_da_temporada
+            total_episodios_geral += total_da_temporada
 
     total_temporadas = len(temporadas)
 
-    # O "id_video" agora fica na raiz do objeto do anime
     anime_completo = {
         "nome": nome,
-        "id_video": id_unico_do_anime,  # 👈 ID salvo aqui na raiz do objeto!
+        "id_video": id_unico_do_anime,  
         "data_lancamento": data_lancamento,
         "capa": capa,
         "classificacao": classificacao,
@@ -133,6 +139,7 @@ def extrair_detalhes_do_anime(url_anime):
         "lore": lore,
         "link_anime": url_anime,
         "total_temporadas": total_temporadas,
+        "total_episodios_geral": total_episodios_geral,
         "temporadas": temporadas
     }
     
@@ -144,32 +151,73 @@ def executar_robo_completo():
         print("📂 Carregando links do arquivo 'lista_animes.json'...")
         with open('lista_animes.json', 'r', encoding='utf-8') as f:
             dados_animes = json.load(f)
-            
         links_totais = [item["link"] for item in dados_animes if "link" in item]
-        
     except FileNotFoundError:
         print("⚠️ Atenção: O arquivo 'lista_animes.json' não foi encontrado!")
         return
 
+    lista_original = []
+    if os.path.exists('detalhes_animes.json'):
+        try:
+            print("💾 Carregando base de dados 'detalhes_animes.json'...")
+            with open('detalhes_animes.json', 'r', encoding='utf-8') as f:
+                lista_original = json.load(f)
+                if not isinstance(lista_original, list):
+                    lista_original = []
+        except Exception as e:
+            print(f"⚠️ Erro ao ler base existente: {e}.")
+
     total_animes = len(links_totais)
-    print(f"\n🔗 Pronto! Encontrados {total_animes} links para processar.\n")
-    
-    dados_finais = []
+    print(f"\n🔗 Pronto! Analisando {total_animes} links.\n")
     
     for indice, link in enumerate(links_totais, start=1):
-        print(f"📦 [{indice}/{total_animes}] Extraindo: {link}")
+        posicao_do_anime = None
+        anime_antigo = None
         
-        resultado_anime = extrair_detalhes_do_anime(link)
+        for i, item in enumerate(lista_original):
+            if item.get("link_anime") == link:
+                posicao_do_anime = i
+                anime_antigo = item
+                break
+        
+        # 🚨 MODO TURBO ATIVADO AQUI:
+        # Se o anime já existe, tem ID de vídeo coletado e NÃO está marcado como "Em Lançamento", 
+        # significa que ele está concluído. Pulamos o acesso web para economizar tempo!
+        if anime_antigo and anime_antigo.get("id_video"):
+            generos_antigos = anime_antigo.get("generos", [])
+            
+            if "Em Lançamento" not in generos_antigos:
+                print(f"⚡ [PULO TURBO] [{indice}/{total_animes}] Mantendo antigo (Já finalizado): {link}")
+                
+                # Caso o arquivo antigo ainda não tenha o total geral calculado, injeta agora!
+                if "total_episodios_geral" not in anime_antigo:
+                    total_calculado = sum(t.get("total_episodios_temporada", 0) for t in anime_antigo.get("temporadas", {}).values())
+                    lista_original[posicao_do_anime]["total_episodios_geral"] = total_calculado
+                    
+                    with open('detalhes_animes.json', 'w', encoding='utf-8') as f:
+                        json.dump(lista_original, f, indent=4, ensure_ascii=False)
+                continue
+
+        # Executa a raspagem de internet normal se for Novo ou se estiver "Em Lançamento"
+        if anime_antigo:
+            print(f"🔄 [{indice}/{total_animes}] Atualizando link ativo (Em Lançamento): {link}")
+        else:
+            print(f"📦 [{indice}/{total_animes}] Inserindo novo anime no arquivo: {link}")
+        
+        resultado_anime = extrair_detalhes_do_anime(link, dados_existentes=anime_antigo)
         
         if resultado_anime:
-            dados_finais.append(resultado_anime)
+            if posicao_do_anime is not None:
+                lista_original[posicao_do_anime] = resultado_anime
+            else:
+                lista_original.append(resultado_anime)
             
             with open('detalhes_animes.json', 'w', encoding='utf-8') as f:
-                json.dump(dados_finais, f, indent=4, ensure_ascii=False)
+                json.dump(lista_original, f, indent=4, ensure_ascii=False)
         
         time.sleep(0.4)
 
-    print(f"\n💾 SUCESSO COMPLETO! O robô salvou tudo em 'detalhes_animes.json'!")
+    print(f"\n💾 SUCESSO COMPLETO! O arquivo 'detalhes_animes.json' foi atualizado no modo ultra rápido!")
 
 
 if __name__ == "__main__":

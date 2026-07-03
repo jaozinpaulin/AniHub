@@ -3,8 +3,6 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import animes from '../../api/detalhes_animes.json'
 import { FaChevronLeft, FaFilter } from "react-icons/fa";
 
-console.log(animes)
-
 export default function Genre() {
     const { genero } = useParams();
     const navigate = useNavigate();
@@ -17,10 +15,6 @@ export default function Genre() {
     const animesFiltrado = animes.filter(ani =>
         (ani.generos ?? []).some(g => removerAcentos(g).includes(removerAcentos(genero ?? ''))))
 
-
-
-
-    console.log(animesFiltrado)
     return (
         <section className="w-full min-h-screen bg-zinc-950 pt-20 px-10">
 

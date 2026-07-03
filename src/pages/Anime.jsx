@@ -4,6 +4,7 @@ import { FaStar, FaHeart, FaChevronDown, FaChevronLeft } from "react-icons/fa";
 import { LuCalendarDays } from "react-icons/lu";
 
 import dados from '../api/detalhes_animes.json'
+import { useState } from "react";
 
 
 export default function Anime() {
@@ -16,8 +17,14 @@ export default function Anime() {
     })
 
 
-    // console.log(animeShow.temporadas['Temporada 1'].episodios[0].capa_episodio)
-    // console.log(animeShow)
+    const [temporadaAtual, setTemporadaAtual] = useState(1)
+    const temporada = animeShow.temporadas.find((t) => t.id === temporadaAtual);
+
+
+    const [open, setOpen] = useState(false);
+
+    console.log(animeShow.temporadas)
+    console.log(animeShow)
 
     return (
         <section className="py-20 bg-zinc-950 text-white">
@@ -78,15 +85,6 @@ export default function Anime() {
 
                         <div className="flex flex-wrap items-center gap-4 mt-4">
 
-                            {/* <span className="px-4 py-3 bg-zinc-900/70 rounded-xl text-zinc-400 text-sm flex gap-2">
-                                <LuCalendarDays className="text-lg text-violet-500" />
-                                Sexta-feira
-                            </span>
-
-                            <button className="px-6 py-3 bg-zinc-900/70 hover:bg-zinc-800 rounded-xl font-medium transition-all duration-300 cursor-pointer">
-                                Assistir Trailer
-                            </button> */}
-
                             <button className="px-5 py-3 bg-zinc-900/70 hover:bg-zinc-800 rounded-xl flex items-center gap-2 transition-all duration-300 cursor-pointer">
                                 <FaHeart className="text-red-500" />
                                 <span>Favoritar</span>
@@ -99,10 +97,6 @@ export default function Anime() {
                     <h2 className="text-3xl font-bold">
                         {animeShow.nome}
                     </h2>
-                    {/* 
-                    <p className="text-zinc-400 italic">
-                        呪術廻戦 (Jujutsu Kaisen)
-                    </p> */}
 
                     <div className="flex items-center gap-3">
                         <span className="text-yellow-400">⭐</span>
@@ -113,23 +107,13 @@ export default function Anime() {
 
                         <div className="border border-zinc-800 p-3">
                             <p className="text-zinc-500 text-sm">Episódios</p>
-                            <p className="text-white">24</p>
+                            <p className="text-white">{animeShow.total_episodios_geral}</p>
                         </div>
-
-                        {/* <div className="border border-zinc-800  p-3">
-                            <p className="text-zinc-500 text-sm">Estúdio</p>
-                            <p className="text-white">MAPPA</p>
-                        </div> */}
 
                         <div className="border border-zinc-800 p-3">
                             <p className="text-zinc-500 text-sm">{animeShow.data_lancamento}</p>
                             <p className="text-white">{animeShow.data_lancamento.split(',')[1]}</p>
                         </div>
-                        {/* 
-                        <div className="border border-zinc-800 p-3">
-                            <p className="text-zinc-500 text-sm">Status</p>
-                            <p className="text-white">Em exibição</p>
-                        </div> */}
 
                     </div>
 
@@ -138,7 +122,6 @@ export default function Anime() {
             </div>
 
             <div className="w-7xl mx-auto border-r-2 border-y-2 border-zinc-800">
-
                 <div className="px-3 py-4 border-b-2 border-zinc-800">
 
                     <p className="text-zinc-400 leading-relaxed">
@@ -161,64 +144,88 @@ export default function Anime() {
                     </div>
 
                     <div className="py-3">
+                        <div className="w-full flex flex-col md:w-72 py-2 gap-2">
 
-                        <button className="w-full md:w-72 flex items-center justify-between bg-zinc-950/25 border border-zinc-800 rounded-xl p-3 cursor-pointer">
-                            <span className="text-lg font-semibold text-white">
-                                Temporada 1
-                            </span>
+                            {/* BOTÃO */}
+                            <button
+                                type="button"
+                                onClick={() => setOpen(!open)}
+                                className="w-full md:w-72 flex items-center justify-between bg-zinc-950/25 border border-zinc-800 rounded-xl px-4 py-3 cursor-pointer"
+                            >
+                                <span className="text-white font-semibold">
+                                    Temporada {temporadaAtual}
+                                </span>
 
-                            <FaChevronDown className="text-zinc-400 text-sm transition duration-300" />
+                                <FaChevronDown
+                                    className={`transition duration-300 ${open ? "rotate-180" : ""}`}
+                                />
+                            </button>
 
-                        </button>
+                            {/* LISTA */}
+                            {open && (
+                                <div className="mt-1 w-full md:w-72 bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden">
+
+                                    {animeShow.temporadas.map((tem) => (
+                                        <button key={tem.id} type="button"
+                                            onClick={() => {
+                                                setTemporadaAtual(tem.id);
+                                                setOpen(false);
+                                            }}
+                                            className={`w-full text-left px-4 py-3 transition duration-200 cursor-pointer${temporadaAtual === tem.id
+                                                ? "bg-blue-500/20 text-white"
+                                                : "text-zinc-300 hover:bg-zinc-900"}`}>
+                                            {tem.nome}
+                                        </button>
+                                    ))}
+
+                                </div>
+                            )}
+
+                        </div>
 
                     </div>
 
                     <div className="flex flex-col gap-5 mb-3">
 
-                        {animeShow.temporadas['Temporada 1'].episodios.map((ani, i) => (
+                        {temporada?.episodios?.map((ani) => (
+                            <div key={ani.numero_episodio} className="flex items-center gap-5 bg-zinc-950/25 border border-zinc-800 p-3">
 
-                            <div key={i} className="flex items-center gap-5 bg-zinc-950/25 border border-zinc-800  p-3 ">
-
-                                <img
-                                    src={ani.capa_episodio}
-                                    alt=""
-                                    className="w-44 h-24 rounded-lg object-cover" />
-
+                                <img src={ani.capa_episodio} alt={`Episódio ${ani.numero_episodio}`} className="w-44 h-24 rounded-lg object-cover" />
                                 <div className="w-full flex items-center justify-between">
-                                    <div >
-                                        {/*     console.log()
- */}
+                                    <div className="flex flex-col">
+
                                         <span className="text-blue-500 font-semibold text-sm">
                                             Episódio {ani.numero_episodio}
                                         </span>
 
-                                        {/* <h3 className="text-white text-xl font-bold mt-2">
-                                            A Jornada Começa
-                                        </h3> */}
+                                        <span className="font-semibold text-sm text-zinc-600">
+                                            Temporada {temporadaAtual}
+                                        </span>
 
                                         <p className="text-zinc-400 mt-3">
                                             {animeShow.data_lancamento}
                                         </p>
 
                                     </div>
-                                    <Link to={`/video/${animeShow.id_video}/${ani.numero_episodio}`}>
+
+                                    <Link to={`/video/${animeShow.id_video}/${temporadaAtual}/${ani.numero_episodio}`}>
                                         <button className="bg-blue-700 hover:bg-blue-800 px-6 py-3 rounded-lg font-semibold transition-colors duration-300 cursor-pointer">
                                             Assistir
                                         </button>
                                     </Link>
+
                                 </div>
 
                             </div>
                         ))}
 
-
                     </div>
+
                 </div>
             </div>
 
-        </section>
+        </section >
     );
 }
 
-
-/* arrumar o link pra ele nao manar caracteres estranhos */
+/* ajustart as temporadas efeitos */

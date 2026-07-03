@@ -12,7 +12,6 @@ import frases from '../../../api/frases.json'
 
 const animes = dadosAnimes;
 const trailersAnime = trailers;
-console.log(trailersAnime)
 
 const animesFiltradoTop = dadosAnimes.filter(ani => ani.classificacao >= 7)
     .sort((a, b) => b.classificacao - a.classificacao)
@@ -50,11 +49,7 @@ export default function Trending() {
     }, [animes])
 
 
-
-
-
     const [trailerAleatorio, setTrailerAleatorio] = useState()
-
     const sortearTrailerAleatorio = () => {
         if (trailers.length === 0) return
 
@@ -69,8 +64,7 @@ export default function Trending() {
     const totalEstrelas = animes.reduce((total, anime) => total + Number(anime.classificacao), 0)
     const mediaTotal = (totalEstrelas / animes.length).toFixed(1)
 
-
-
+    const totalEpisodios = animes.reduce((total, ep) => total + ep.total_episodios_geral, 0)
     const [fraseAleatoria, setFraseAleatoria] = useState();
 
     const sortearFraseAleatoria = () => {
@@ -86,7 +80,7 @@ export default function Trending() {
 
 
     return (
-        <section className="w-full flex bg-zinc-900 pb-10 px-6 py-3 text-white">
+        <section className="w-full  flex bg-zinc-900/70 pb-10 px-6 py-3 text-white">
 
             <div className="w-3/4">
                 <div className="w-full">
@@ -273,10 +267,13 @@ export default function Trending() {
                     </h3>
 
                     <ul className="flex flex-wrap items-centerm justify-center gap-2">
+
                         {generosUnicos.slice(0, 8).map(a => (
-                            <li key={a} className=" px-3 py-2 rounded-full  border border-zinc-700 text-sm font-medium text-zinc-300 hover:bg-zinc-700 transition-all duration-300 cursor-pointer">
-                                {a}
-                            </li>
+                            <Link key={a} to={`/categories/${a}`}>
+                                <li key={a} className=" px-3 py-2 rounded-full  border border-zinc-700 text-sm font-medium text-zinc-300 hover:bg-zinc-700 transition-all duration-300 cursor-pointer">
+                                    {a}
+                                </li>
+                            </Link>
                         ))}
 
                     </ul>
@@ -332,7 +329,7 @@ export default function Trending() {
                             <FaClapperboard className="mb-3 text-2xl text-green-400" />
 
                             <h4 className="text-2xl font-bold text-white">
-                                23,184
+                                {totalEpisodios.toLocaleString()}
                             </h4>
 
                             <span className="text-sm text-zinc-400">

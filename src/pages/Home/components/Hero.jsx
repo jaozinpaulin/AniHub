@@ -1,77 +1,55 @@
-import { FaStar, FaHeart } from "react-icons/fa";
+import { FaFire } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-
-/* por hora vou colocar o index da api anime fixo []*/
 
 export default function Hero() {
     return (
 
-        <section className="w-full relative h-[80vh] flex items-end px-6 pb-12 text-white">
+        <section className="relative flex items-center justify-center min-h-[75vh] overflow-hidden bg-zinc-950">
 
-            < img
-                src="https://images.unsplash.com/photo-1618336753974-aae8e04506aa"
-                alt="anime hero"
-                className="absolute inset-0 w-full h-full object-cover"
-            />
+            {/* Glows */}
+            <div className="absolute top-20 left-20 h-72 w-72 rounded-full bg-blue-600/20 blur-[120px]" />
+            <div className="absolute bottom-20 right-20 h-72 w-72 rounded-full bg-purple-600/20 blur-[120px]" />
 
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+            <div className="relative z-10 max-w-4xl text-center px-6">
 
-            <div className="relative z-10 max-w-3xl space-y-4">
+                <span className="inline-flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900/70 px-4 py-2 text-sm text-zinc-300">
+                    <FaFire className="text-orange-500" />
 
-                <h1 className="text-5xl md:text-6xl font-bold">
-                    Dandadan
+                    Plataforma em desenvolvimento
+                </span>
+
+                <h1 className="mt-8 text-5xl md:text-7xl font-black text-white/90 leading-tight">
+                    Descubra seu próximo
+
+                    <span className="block bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+                        anime favorito
+                    </span>
                 </h1>
 
-                <p className="text-zinc-400 text-lg">
-                    進撃の巨人 (Shingeki no Kyojin)
+                <p className="mt-6 text-lg text-zinc-400 max-w-2xl mx-auto">
+                    Explore temporadas, episódios, personagens e informações
+                    completas sobre centenas de animes em uma interface moderna,
+                    rápida e feita para fãs.
                 </p>
 
-                {/* Genres */}
-                <div className="flex gap-2 flex-wrap">
-                    <span className="px-3 py-1 text-sm bg-zinc-800 rounded-full">Action</span>
-                    <span className="px-3 py-1 text-sm bg-zinc-800 rounded-full">Drama</span>
-                    <span className="px-3 py-1 text-sm bg-zinc-800 rounded-full">Fantasy</span>
+                <div className="mt-10 flex flex-wrap justify-center gap-4">
+
+                    <Link to={'/explore'}>
+                        <button className="flex items-center gap-2 rounded-xl bg-blue-600 px-7 py-4 font-semibold hover:bg-blue-700 transition cursor-pointer">
+                            Explorar
+                        </button>
+                    </Link>
+
+                    <Link to={'/categories'}>
+                        <button className="rounded-xl border border-zinc-700 text-white px-7 py-4 hover:bg-zinc-900 transition cursor-pointer">
+                            Ver Categorias
+                        </button>
+                    </Link>
                 </div>
-
-                <div className="flex flex-wrap items-center gap-6 text-sm text-zinc-300">
-
-                    <div className="flex items-center gap-1">
-                        <FaStar className="text-yellow-500" />/ 10
-                    </div>
-
-                    <div>
-                        87 episódios
-                    </div>
-
-                    <div>
-                        MAPPA
-                    </div>
-
-                </div>
-
-                <p className="text-zinc-300 leading-relaxed max-w-2xl">
-                    A humanidade vive dentro de muralhas para se proteger de criaturas gigantes conhecidas como Titãs.
-                    Quando a paz é quebrada, Eren Yeager decide lutar contra eles e descobrir a verdade por trás do mundo.
-                </p>
-
-                <div className="flex gap-4 pt-2">
-
-                    <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-2xl font-semibold cursor-pointer">
-                        Assistir
-                    </button>
-
-                    <button className="px-6 py-3 border border-zinc-600 hover:bg-zinc-800/50 hover:border-red-500 rounded-2xl flex items-center gap-2 transition cursor-pointer">
-                        <FaHeart className="text-red-500" />
-                        Favoritar
-                    </button>
-
-                    <button className="px-6 py-3 border border-zinc-600 hover:bg-zinc-800/50 rounded-2xl cursor-pointer">
-                        Mais informações
-                    </button>
-
-                </div>
-
             </div>
-        </section >
+
+        </section>
+
     )
 }

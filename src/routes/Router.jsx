@@ -25,7 +25,7 @@ export default function Router() {
             <Route path="/favorites" element={<Favorites />} />
 
             <Route path="/anime/:id" element={<Anime />}></Route>
-            <Route path="/video/:id/:ep" element={<Video />} />
+            <Route path="/video/:id/:tem/:ep" element={<Video />} />
         </Routes>
 
     )
