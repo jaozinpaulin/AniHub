@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { animes } from "../api/animes";
 import { HiOutlineHeart } from "react-icons/hi2";
 
 import { useState } from 'react';
