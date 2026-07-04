@@ -1,11 +1,11 @@
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 
 import animes from '../../api/detalhes_animes.json'
 import { FaChevronLeft, FaFilter } from "react-icons/fa";
 
 export default function Genre() {
+    const location = useLocation();
     const { genero } = useParams();
-    const navigate = useNavigate();
 
 
     const removerAcentos = (texto) => {
@@ -16,15 +16,15 @@ export default function Genre() {
         (ani.generos ?? []).some(g => removerAcentos(g).includes(removerAcentos(genero ?? ''))))
 
     return (
-        <section className="w-full min-h-screen bg-zinc-950 pt-20 px-10">
+        <section className="w-full min-h-screen bg-zinc-950 pt-20 px-1 lg:px-6">
 
             <div className="py-10 ">
                 <div className="flex items-center justify-between mb-6">
 
-                    <button onClick={() => navigate(-1)} className="group flex items-center gap-2 text-zinc-400 hover:text-white transition-colors px-3 py-1 rounded-lg bg-zinc-800 cursor-pointer">
+                    <Link to={'/categories'} className="group flex items-center gap-2 text-zinc-400 hover:text-white transition-colors px-3 py-1 rounded-lg bg-zinc-800 cursor-pointer">
                         <FaChevronLeft className="group-hover:-translate-x-1 transforma duration-300" />
                         Voltar
-                    </button>
+                    </Link>
 
                     <div className="flex items-center gap-3">
                         <span className="px-3 py-1 rounded-lg bg-zinc-800 text-zinc-300 text-sm">
@@ -38,21 +38,22 @@ export default function Genre() {
                     </div>
                 </div>
 
-                <div className="mb-10 bg-zinc-900 rounded p-3">
+                <div className="mb-10 bg-zinc-900 rounded-xl border border-zinc-800 p-3 md:p-6">
 
-                    <h1 className="text-4xl font-bold text-white tracking-tight">
+                    <h1 className="text-2xl md:text-3xl xl:text-4xl font-bold text-white tracking-tight">
                         {genero}
                     </h1>
 
-                    <p className="text-zinc-400 mt-2 max-w-xl leading-relaxed">
-                        Explore todos os animes do gênero <span className="text-white font-medium">{genero}</span> e descubra novas histórias.
+                    <p className="text-zinc-400 mt-2 max-w-2xl text-sm md:text-base leading-relaxed">
+                        Explore todos os animes do gênero{" "}
+                        <span className="text-white font-medium">{genero}</span> e descubra novas histórias.
                     </p>
 
                 </div>
 
-                <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-5 px-6 pb-10">
+                <div className="w-full grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-5 px-2 lg:px-6 pb-10">
                     {animesFiltrado.map(a => (
-                        <Link to={`/anime/${a.id_video}`}>
+                        <Link to={`/anime/${a.id_video}`} state={{ from: location.pathname }} >
                             <div
                                 key={a.id}
                                 className=" relative overflow-hidden rounded-xl bg-zinc-800/80 backdrop-blur-sm cursor-pointer text-white transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-black/40 hover:bg-zinc-800/60">

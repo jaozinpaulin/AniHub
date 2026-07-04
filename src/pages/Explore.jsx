@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaSearch, FaTimes } from "react-icons/fa";
 
 /* api */
@@ -8,6 +8,8 @@ import animes from '../api/detalhes_animes.json'
 
 
 export default function Explore() {
+    const location = useLocation();
+
 
     const [loading, setLoading] = useState(true)
     const [carregados, setCarregados] = useState([])
@@ -21,51 +23,9 @@ export default function Explore() {
         }, 1000)
     }, [])
 
-
-
     const removerAcentos = (texto) => {
         return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
     }
-
-
-    // useEffect(() => {
-
-    //     setLoading(true);
-
-    //     setTimeout(() => {
-    //         setAnimes(dadosAnimes); // seu array já pronto
-    //         setLoading(false);
-    //     }, 1000);
-
-    // }, []);
-    // const [visible, setIsVisible] = useState(false);
-    // const ref = useRef(null);
-
-
-    // useEffect(() => {
-    //     const observer = new IntersectionObserver(
-    //         ([entry]) => {
-    //             if (entry.isIntersecting) {
-    //                 setIsVisible(true)
-    //                 observer.unobserve(entry.target)
-    //             }
-
-    //         },
-    //         {
-    //             threshold: 0.2
-    //         }
-    //     )
-    //     if (ref.current) {
-    //         observer.observe(ref.current)
-    //     }
-    //     return () => {
-    //         observer.disconnect();
-    //     }
-
-    // }, [])
-
-
-
 
     const [busca, buscaSet] = useState('')
     const [gene, geneSet] = useState('Todos')
@@ -85,7 +45,7 @@ export default function Explore() {
     })
 
     return (
-        <section className="w-full min-h-dvh pt-20 bg-zinc-950/90 px-10">
+        <section className="w-full min-h-dvh pt-20 bg-zinc-950/90 px-5 xl:px-10">
 
             <div className="pt-10">
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
@@ -107,12 +67,10 @@ export default function Explore() {
 
                     placeholder="Buscar animes, personagens ou gêneros..."
                     className="w-full h-14 bg-zinc-900 border border-zinc-800 rounded-xl pl-12 pr-4 text-white placeholder:text-zinc-500 outline-none
-                    focus:border-blue-500 transition"
-
-                />
+                    focus:border-blue-500 transition"/>
             </div>
 
-            <div className="w-full flex flex-wrap gap-4 pt-6 pb-10">
+            <div className="w-full flex flex-wrap gap-4 p-6  pb-10">
                 {loading ? (
 
                     Array.from({ length: 16 }).map((_, i) => (
@@ -134,7 +92,7 @@ export default function Explore() {
                     )}
             </div>
 
-            <div className="w-full grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-4 pb-10">
+            <div className="w-full grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-8 gap-4 pb-10 px-2 xl:px-6">
                 {loading ? (
                     Array.from({ length: 16 }).map((_, i) => (
                         <div key={i} className="animate-pulse bg-zinc-800 h-72 rounded-xl" />
@@ -142,7 +100,7 @@ export default function Explore() {
                 )
                     :
                     animesFiltrado.sort((a, b) => b.classificacao - a.classificacao).map(a => (
-                        <Link key={a.id_video} to={`/anime/${a.id_video}`}>
+                        <Link key={a.id_video} state={{ from: location.pathname }} to={`/anime/${a.id_video}`}>
                             <div className="bg-zinc-800 rounded-xl overflow-hidden cursor-pointer text-white transition-all duration-300 hover:-translate-y-2 hover:bg-zinc-800/60 hover:shadow-xl hover:shadow-black/40">
 
                                 <div className="aspect-[2/3] overflow-hidden">
@@ -181,3 +139,7 @@ export default function Explore() {
         </section >
     )
 }
+
+
+
+/* ajustar os generos para telas menores */

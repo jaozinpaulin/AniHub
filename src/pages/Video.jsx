@@ -11,17 +11,11 @@ import dados from '../api/detalhes_animes.json'
 export default function Video() {
 
     const { id, tem, ep } = useParams()
+    const anime = dados.filter(ani => ani.id_video === id);
 
     const idAnime = Number(id);
     const temporadaAtual = Number(tem);
     const episodioAtual = Number(ep);
-
-
-    const anime = dados.filter(ani => ani.id_video === id);
-
-
-
-    const totalEp = anime[0].temporadas[0].episodios.length;
 
     const [animeId, setAnimeId] = useState(idAnime);
     const [episodio, setEpisodio] = useState(episodioAtual);
@@ -29,12 +23,15 @@ export default function Video() {
 
     const urlDoIframe = `https://serv01.meusdoramas.club/#/video/${animeId}/${temporada}/${episodio}/`;
 
+    const totalEp = anime[0].temporadas.find(tem => tem.id === temporada).total_episodios_temporada
+
+
 
     return (
         <section className="relative w-full mx-auto min-h-screen py-20 bg-zinc-950/90 mb-16 rounded-2xl flex justify-center">
 
-            <div className="absolute top-20 left-20 h-72 w-72 rounded-full bg-blue-600/20 blur-[120px]" />
-            <div className="absolute bottom-20 right-20 h-72 w-72 rounded-full bg-purple-600/20 blur-[120px]" />
+            <div className="absolute top-20 left-20 h-72 w-72 rounded-full bg-blue-600/30 blur-[120px]" />
+            <div className="absolute bottom-20 right-20 h-72 w-72 rounded-full bg-purple-600/30 blur-[120px]" />
 
             <div className="w-full max-w-6xl mx-auto mt-14 space-y-6 border-2 rounded border-zinc-900  p-10">
                 <Link
@@ -54,15 +51,24 @@ export default function Video() {
                         allowFullScreen referrerPolicy="no-referrer" />
                 </div>
 
-
                 <div>
                     <h1 className="text-3xl font-bold text-white">
                         {anime[0].nome}
                     </h1>
 
-                    <p className="text-zinc-400">
-                        {anime[0].generos.includes('Dublado') ? "Dublado" : "Legendado"} - episodio {episodio}
-                    </p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                        <span className="rounded-lg bg-zinc-800 px-3 py-1 text-sm text-zinc-300">
+                            {anime[0].generos.includes("Dublado") ? "Dublado" : "Legendado"}
+                        </span>
+
+                        <span className="rounded-lg bg-zinc-800 px-3 py-1 text-sm text-zinc-300">
+                            Temporada {temporada}
+                        </span>
+
+                        <span className="rounded-lg bg-blue-500/15 px-3 py-1 text-sm text-blue-400">
+                            Episódio {episodio}
+                        </span>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 text-white bg-zinc-950 p-5">
@@ -121,7 +127,7 @@ export default function Video() {
                             </span>
 
                             <span className="px-3 py-1 rounded-full bg-zinc-800">
-                                {anime[0].total_temporadas} Temporada
+                                {anime[0].total_temporadas} Temporada(s)
                             </span>
 
                             <span className="px-3 py-1 rounded-full bg-zinc-800">

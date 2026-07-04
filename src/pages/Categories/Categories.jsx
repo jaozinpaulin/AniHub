@@ -12,7 +12,7 @@ const generosUnicos = [...new Set(animes.flatMap(ani => ani.generos).filter(a =>
 
 
 export default function Categories() {
-    return (<section className="w-full min-h-dvh pt-20 px-6 bg-zinc-950">
+    return (<section className="w-full min-h-dvh pt-20 px-1 lg:px-6 bg-zinc-950">
 
         <div className="w-full px-6">
             <div className="pt-10">
@@ -27,7 +27,7 @@ export default function Categories() {
 
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 py-10">
+            <div className="grid grid-cols-2  md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 py-10">
                 {generosUnicos.map(gen => {
 
                     const animeLength = animes.filter(

@@ -40,6 +40,8 @@ export default function Favorites() {
     ];
     return (
         <section className="w-full min-h-screen bg-zinc-950 pt-20 px-10">
+
+            <h1 className="text-red-500  text-6xl text-center">Pagina sendo ajustada</h1>
             <div className="py-10">
 
                 <div className="flex items-center justify-between mb-6">
