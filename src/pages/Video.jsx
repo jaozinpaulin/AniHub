@@ -29,15 +29,13 @@ export default function Video() {
 
     return (
 
-        <section className="relative w-full mx-auto min-h-screen pt-20 sm:py-20 bg-zinc-950/90 mb-16 rounded-2xl flex justify-center px-3 sm:px-0">
+        <section className="relative w-full mx-auto min-h-dvh  pt-20 sm:py-20 bg-zinc-950/90 mb-16 rounded-2xl flex justify-center px-3 sm:px-0">
 
-            {/* Efeitos de Glow - Ocultos no mobile para evitar quebra de layout e melhorar performance */}
             <div className="hidden sm:block absolute top-20 left-20 h-72 w-72 rounded-full bg-blue-600/30 blur-[120px]" />
             <div className="hidden sm:block absolute bottom-20 right-20 h-72 w-72 rounded-full bg-purple-600/30 blur-[120px]" />
 
-            <div className="w-full max-w-6xl mx-auto mt-4 sm:mt-14 space-y-4 sm:space-y-6 border-2 rounded border-zinc-900 p-3 sm:p-10">
+            <div className="w-full max-w-6xl mx-auto mt-4 sm:mt-14 space-y-4 sm:space-y-6 lg:border-2 lg:rounded lg:border-zinc-900 sm:p-10">
 
-                {/* Botão Voltar */}
                 <div className="flex justify-start">
                     <Link
                         to={`/anime/${idAnime}`}
@@ -48,8 +46,7 @@ export default function Video() {
                     </Link>
                 </div>
 
-                {/* Player de Vídeo */}
-                <div className="relative aspect-video border border-zinc-700/70 w-full rounded-lg overflow-hidden">
+                <div className="relative aspect-video border border-zinc-700/70 w-full ">
                     <iframe
                         src={urlDoIframe}
                         className="w-full h-full border-0"
@@ -60,7 +57,6 @@ export default function Video() {
                     />
                 </div>
 
-                {/* Título e Badges */}
                 <div className="space-y-2 sm:space-y-3">
                     <h1 className="text-lg sm:text-3xl font-bold text-white leading-tight">
                         {anime[0].nome}
@@ -81,11 +77,9 @@ export default function Video() {
                     </div>
                 </div>
 
-                {/* Controles de Navegação - Perfeitos no Mobile e Controlados em Telas Grandes */}
                 <div className="w-full bg-zinc-950 p-2 sm:p-4 rounded-xl">
                     <div className="flex flex-row sm:grid sm:grid-cols-3 gap-1.5 sm:gap-4 max-w-3xl mx-auto w-full text-white justify-between">
 
-                        {/* Botão Anterior */}
                         <button
                             onClick={() => setEpisodio(prev => Math.max(1, prev - 1))}
                             className={`flex-1 sm:flex-initial flex items-center justify-center gap-1 sm:gap-2 p-2.5 sm:p-4 border rounded-lg transition-all duration-300 group ${episodio === 1
@@ -98,7 +92,6 @@ export default function Video() {
                             <span className="text-xs sm:text-base truncate">Anterior</span>
                         </button>
 
-                        {/* Botão Todos os Episódios */}
                         <Link to={`/anime/${idAnime}`} className="flex-1 sm:flex-initial flex">
                             <button className="w-full flex items-center justify-center gap-1 sm:gap-2 p-2.5 sm:p-4 border border-zinc-700 bg-zinc-950 rounded-lg hover:border-blue-600 hover:bg-zinc-950/70 transition-all duration-300 cursor-pointer group">
                                 <HiOutlineSquares2X2 className="text-base sm:text-xl group-hover:rotate-90 transition-transform duration-300 shrink-0" />
@@ -106,7 +99,6 @@ export default function Video() {
                             </button>
                         </Link>
 
-                        {/* Botão Próximo */}
                         <button
                             onClick={() => setEpisodio(prev => Math.min(totalEp, prev + 1))}
                             disabled={episodio === totalEp}
@@ -122,10 +114,8 @@ export default function Video() {
                     </div>
                 </div>
 
-                {/* Detalhes do Anime (Rodapé Ajustado para uma leitura fluida) */}
-                <div className="mt-6 sm:mt-12 bg-zinc-950 border border-zinc-700/40 rounded-2xl p-4 sm:p-6 flex flex-col md:flex-row gap-5 md:gap-8 items-center md:items-start text-white">
+                <div className="mt-6 sm:mt-12 bg-zinc-950 border border-zinc-700/40 rounded p-4 sm:p-6 flex flex-col md:flex-row gap-5 md:gap-8 items-center md:items-start text-white">
 
-                    {/* Imagem de Capa com Proporções Firas */}
                     <div className="shrink-0">
                         <img
                             src={anime[0].capa}
@@ -134,7 +124,6 @@ export default function Video() {
                         />
                     </div>
 
-                    {/* Grid de Informações Organizadas */}
                     <div className="w-full flex flex-col items-center md:items-start gap-4">
 
                         <div className="text-center md:text-left">
@@ -142,7 +131,6 @@ export default function Video() {
                             <h2 className="text-lg sm:text-2xl font-bold text-zinc-100 line-clamp-1">{anime[0].nome}</h2>
                         </div>
 
-                        {/* Badges de Informações Gerais */}
                         <div className="flex flex-wrap justify-center md:justify-start gap-1.5 sm:gap-2 text-[11px] sm:text-sm w-full">
                             <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center gap-1">
                                 <FaStar className="text-yellow-400 text-[10px] sm:text-xs" />
@@ -166,10 +154,8 @@ export default function Video() {
                             </span>
                         </div>
 
-                        {/* Divisor simples invisível no mobile */}
                         <div className="hidden md:block w-full h-[1px] bg-zinc-800/60 my-1" />
 
-                        {/* Lista de Gêneros Filtrados */}
                         <div className="flex flex-wrap justify-center md:justify-start gap-1.5 sm:gap-2 w-full">
                             {anime[0].generos
                                 .filter(g =>

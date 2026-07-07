@@ -94,7 +94,7 @@ export default function Trending() {
                             Novos
                         </h3>
 
-                        <div className="flex items-center gap-2 px-3 md:gap-4 md:px-8">
+                        <div className="hidden md:flex items-center gap-2 px-3 md:gap-4 md:px-8">
 
                             <button
                                 onClick={scrollLeft}

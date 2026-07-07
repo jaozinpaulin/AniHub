@@ -5,36 +5,31 @@ import { Link } from "react-router-dom";
 export default function Hero() {
     return (
 
-        <section className="relative flex items-center justify-center min-h-[75vh] overflow-hidden bg-zinc-950">
+        <section className="relative flex items-center justify-center min-h-[50dvh] md:min-h-[75dvh] pt-24 pb-5 md:pt-10 overflow-hidden bg-zinc-950">
 
-            {/* Glows */}
             <div className="absolute top-20 left-20 h-72 w-72 rounded-full bg-blue-600/20 blur-[120px]" />
             <div className="absolute bottom-20 right-20 h-72 w-72 rounded-full bg-purple-600/20 blur-[120px]" />
 
             <div className="relative z-10 max-w-4xl text-center px-4 sm:px-6 w-full">
 
-                {/* Badge Superior - Levemente maior e bem protegida contra quebras */}
                 <span className="inline-flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900/70 px-4 py-2 text-xs sm:text-sm font-medium text-zinc-300 whitespace-nowrap mb-2">
                     <FaFire className="text-orange-500 text-sm shrink-0" />
                     Plataforma em desenvolvimento
                 </span>
 
-                {/* Título Principal - Ajustado para text-4xl no mobile (mais imponente, sem quebrar) */}
-                <h1 className="mt-4 sm:mt-8 text-4xl sm:text-6xl md:text-7xl font-black text-white/90 leading-tight tracking-tight break-words">
+                <h1 className="mt-4 sm:mt-8 text-4xl sm:text-6xl md:text-7xl font-black text-white/90 leading-tight tracking-tight">
                     Descubra seu próximo
                     <span className="block sm:inline md:block bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
                         {" "}anime favorito
                     </span>
                 </h1>
 
-                {/* Descrição - Agora com text-base no mobile para melhor leitura */}
                 <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed px-1 sm:px-0">
                     Explore temporadas, episódios, personagens e informações
                     completas sobre centenas de animes em uma interface moderna,
                     rápida e feita para fãs.
                 </p>
 
-                {/* Botões - Maiores, com mais padding e texto destacado no mobile */}
                 <div className="mt-8 sm:mt-12 flex flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-md mx-auto">
 
                     <Link to={'/explore'} className="flex-1">

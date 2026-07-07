@@ -46,19 +46,19 @@ export default function Explore() {
     })
 
     return (
-        <section className="w-full min-h-dvh pt-20 bg-zinc-950/90  xl:px-10">
+        <section className="w-full min-h-dvh pt-16 sm:pt-20 bg-zinc-950/90  xl:px-5">
 
-            <div className="pt-10 px-3">
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+            <div className="sm:pt-10 sm:mx-3">
+                <h2 className="hidden sm:block text-3xl md:text-4xl font-bold text-white mb-3">
                     Explorar
                 </h2>
 
-                <p className="text-zinc-400 text-lg max-w-2xl">
+                <p className="bg-blue-900/50 p-2 text-center sm:text-left sm:bg-transparent sm:p-0  text-white sm:text-zinc-400  sm:text-lg max-w-2xl">
                     Descubra novos animes para assistir
                 </p>
             </div>
 
-            <div className="relative mx-3 mt-8">
+            <div className="relative mx-3 mt-3 sm:my-8">
                 <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
 
                 <input
@@ -67,11 +67,13 @@ export default function Explore() {
                     onChange={(e) => buscaSet(e.target.value)}
 
                     placeholder="Busque por animes"
-                    className="w-full h-14 bg-zinc-900 border border-zinc-800 rounded-xl pl-12 pr-4 text-white placeholder:text-zinc-500 outline-none
+                    className="w-full h-10 sm:h-14 bg-zinc-900 border border-zinc-800 rounded-xl pl-12 pr-4 text-white placeholder:text-zinc-500 outline-none
                     focus:border-blue-500 transition"/>
             </div>
 
-            <div className="w-full flex flex-wrap gap-4 p-6  pb-10">
+            <p className="block sm:hidden text-white p-3 font-bold">Explore</p>
+
+            <div className="w-full  flex-wrap gap-4 hidden 2xl:flex  mx-3 pb-10">
                 {loading ? (
 
                     Array.from({ length: 16 }).map((_, i) => (
@@ -79,7 +81,7 @@ export default function Explore() {
                 ) :
                     (
 
-                        generosUnicos.slice(0, 8).map((g) => (
+                        generosUnicos.map((g) => (
                             <button
                                 key={g}
                                 type="button"

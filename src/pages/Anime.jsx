@@ -58,10 +58,8 @@ export default function Anime() {
 
                 <div className="flex-1 flex flex-col gap-4 min-w-0 text-center md:text-left">
 
-                    {/* Alterado para flex-col por padrão (mobile) e sm:flex-row (telas maiores) */}
                     <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
 
-                        {/* Alinhamento dos gêneros centralizado no celular e à esquerda a partir de MD */}
                         <div className="flex flex-wrap gap-1.5 justify-center md:justify-start">
                             {animeShow.generos.filter(g =>
                                 g !== 'Dublado' &&
@@ -77,7 +75,6 @@ export default function Anime() {
                             ))}
                         </div>
 
-                        {/* Container do botão ajustado para w-full no celular e sm:w-auto */}
                         <div className="w-full sm:w-auto flex justify-center sm:justify-end">
                             <button className="w-full sm:w-auto px-4 py-2 sm:py-2.5 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 rounded-lg sm:rounded-xl flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer text-xs md:text-sm font-semibold active:scale-[0.98]">
                                 <FaHeart className="text-red-500 text-xs md:text-sm" />
