@@ -1,5 +1,6 @@
 import { NavLink, Link } from "react-router-dom";
 import { FiSearch, FiMenu } from "react-icons/fi";
+import { IoIosClose } from "react-icons/io";
 
 import animes from '../../api/detalhes_animes.json'
 import { useState } from "react";
@@ -7,6 +8,9 @@ import { useState } from "react";
 export default function Header() {
     const [pesquisa, setPesquisa] = useState('')
     const [mostrarResultado, setMostrarResultado] = useState(false);
+
+    const [isOpen, setIsOpen] = useState(false);
+
 
     const selecionarAnime = (anime) => {
         setPesquisa('');
@@ -18,17 +22,28 @@ export default function Header() {
             .toLocaleLowerCase()
             .includes(pesquisa.toLocaleLowerCase()))
 
+    /* mobile */
+    const navLinkMobile = ({ isActive }) =>
+        `block px-5 py-3 transition-all duration-300 ${isActive
+            ? "bg-blue-500/20 text-blue-400"
+            : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
+        }`;
 
+
+    /* desktop */
     const navLinkStyle = ({ isActive }) =>
         `px-4 py-2 rounded-lg text-sm font-medium transition-all border border-transparent duration-300 ${isActive
             ? "bg-blue-700/60 text-white border border-blue-700"
             : "text-zinc-400 hover:text-white hover:bg-zinc-900 hover:border-zinc-700 "
         }`;
 
+
+
+
     return (
         <header className="fixed top-0 left-0 w-full z-50 border-b border-zinc-900 bg-zinc-950/70 backdrop-blur-md">
 
-            <div className=":w-full lgmax-w-7xl lg:mx-auto h-20 flex items-center justify-around  px-6">
+            <div className=":w-full lg:max-w-7xl lg:mx-auto h-16 sm:h-20 flex items-center justify-between  px-12">
 
                 <NavLink to="/" className="flex items-center hover:opacity-90 transition">
                     <img src="/logoAH.png" alt="AniHub" className="w-10 h-8 sm:w-14 sm:h-10" />
@@ -41,9 +56,48 @@ export default function Header() {
                     </h1>
                 </NavLink>
 
-                <FiMenu className="text-2xl text-white md:hidden block " />
 
-                <nav className="hidden md:block">
+                <div className="relative sm:hidden">
+
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-zinc-800 transition">
+                        {isOpen ? (
+                            <IoIosClose className="text-3xl text-white" />
+                        ) : (
+                            <FiMenu className="text-2xl text-white" />
+                        )}
+                    </button>
+
+                    <ul
+                        className={`absolute top-14 right-0 w-52 rounded-xl border border-zinc-800 bg-zinc-900/95 backdrop-blur-md shadow-2xl overflow-hidden transition-all duration-300 origin-top-right ${isOpen
+                            ? "opacity-100 scale-100 visible"
+                            : "opacity-0 scale-95 invisible"
+                            }`}>
+
+                        <li>
+                            <NavLink to="/" onClick={() => setIsOpen(false)} className={navLinkMobile}>Home</NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to="/explore" onClick={() => setIsOpen(false)} className={navLinkMobile}>Explorar</NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to="/categories" onClick={() => setIsOpen(false)} className={navLinkMobile}>Categorias</NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to="/favorites" onClick={() => setIsOpen(false)} className={navLinkMobile}>Favoritos</NavLink>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+
+                <nav className="hidden sm:block">
                     <ul className="flex items-center gap-2 text-sm">
 
                         <li>

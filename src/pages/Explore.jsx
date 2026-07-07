@@ -9,6 +9,7 @@ import animes from '../api/detalhes_animes.json'
 
 export default function Explore() {
     const location = useLocation();
+    const [isExpanded, setIsExpanded] = useState(false);
 
 
     const [loading, setLoading] = useState(true)
@@ -45,9 +46,9 @@ export default function Explore() {
     })
 
     return (
-        <section className="w-full min-h-dvh pt-20 bg-zinc-950/90 px-5 xl:px-10">
+        <section className="w-full min-h-dvh pt-20 bg-zinc-950/90  xl:px-10">
 
-            <div className="pt-10">
+            <div className="pt-10 px-3">
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
                     Explorar
                 </h2>
@@ -57,7 +58,7 @@ export default function Explore() {
                 </p>
             </div>
 
-            <div className="relative mt-8">
+            <div className="relative mx-3 mt-8">
                 <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
 
                 <input
@@ -65,7 +66,7 @@ export default function Explore() {
                     value={busca}
                     onChange={(e) => buscaSet(e.target.value)}
 
-                    placeholder="Buscar animes, personagens ou gêneros..."
+                    placeholder="Busque por animes"
                     className="w-full h-14 bg-zinc-900 border border-zinc-800 rounded-xl pl-12 pr-4 text-white placeholder:text-zinc-500 outline-none
                     focus:border-blue-500 transition"/>
             </div>
@@ -78,7 +79,7 @@ export default function Explore() {
                 ) :
                     (
 
-                        generosUnicos.map((g) => (
+                        generosUnicos.slice(0, 8).map((g) => (
                             <button
                                 key={g}
                                 type="button"
@@ -99,7 +100,7 @@ export default function Explore() {
                     ))
                 )
                     :
-                    animesFiltrado.sort((a, b) => b.classificacao - a.classificacao).map(a => (
+                    [...animesFiltrado].toReversed().map(a => (
                         <Link key={a.id_video} state={{ from: location.pathname }} to={`/anime/${a.id_video}`}>
                             <div className="bg-zinc-800 rounded-xl overflow-hidden cursor-pointer text-white transition-all duration-300 hover:-translate-y-2 hover:bg-zinc-800/60 hover:shadow-xl hover:shadow-black/40">
 

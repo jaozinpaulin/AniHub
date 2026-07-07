@@ -26,7 +26,7 @@ AniHub é um projeto de front-end desenvolvido com **React** e **Tailwind CSS**,
 
 - Página dedicada para assistir animes principalmente antigos.
 - Sistema de busca de animes.
-- Sistema visual de favoritos.
+- Sistema visual de favoritos.q
 - Catálogo organizado por gêneros.
 - Página individual para cada anime.
 - Informações de temporadas e episódios.

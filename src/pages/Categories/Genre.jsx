@@ -38,7 +38,7 @@ export default function Genre() {
                     </div>
                 </div>
 
-                <div className="mb-10 bg-zinc-900 rounded-xl border border-zinc-800 p-3 md:p-6">
+                <div className="mb-10 bg-zinc-900 rounded-xl border border-zinc-800 p-2 mx-2 md:p-6">
 
                     <h1 className="text-2xl md:text-3xl xl:text-4xl font-bold text-white tracking-tight">
                         {genero}

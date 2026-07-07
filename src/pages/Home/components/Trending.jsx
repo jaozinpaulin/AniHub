@@ -91,7 +91,7 @@ export default function Trending() {
                     <div className="mb-6 flex items-center justify-between rounded-l-lg border-r-2 border-orange-600/80 bg-zinc-800/70">
 
                         <h3 className="w-full px-2 py-4 text-xl font-bold text-white md:py-6 md:text-2xl">
-                            Em Alta
+                            Novos
                         </h3>
 
                         <div className="flex items-center gap-2 px-3 md:gap-4 md:px-8">
@@ -126,7 +126,7 @@ export default function Trending() {
                             ref={scrollAnimeRef}
                             className="flex gap-3 overflow-x-auto scroll-smooth scrollbar-none md:gap-4">
 
-                            {animes.slice(0, 30).map((a) => {
+                            {[...animes].toReversed().slice(0, 30).map((a) => {
 
                                 const idPlayer = a.id_video;
 
