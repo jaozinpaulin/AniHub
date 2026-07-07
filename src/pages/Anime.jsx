@@ -32,21 +32,33 @@ export default function Anime() {
         <section className="py-10 md:py-20 bg-zinc-950 text-white">
 
             <div className="hidden md:block relative w-full md:h-[400px] lg:h-[500px] overflow-hidden bg-zinc-900">
+
                 <div className="absolute md:top-20 md:left-20 h-72 w-72 rounded-full bg-blue-600/40 blur-[120px]" />
                 <div className="absolute md:bottom-20 md:right-20 h-72 w-72 rounded-full bg-purple-600/40 blur-[120px]" />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-zinc-950" />
+
             </div>
 
 
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 md:gap-8 relative mt-20 sm:mt-24 md:-mt-44 lg:-mt-56 z-10 border-b-2 border-zinc-800 p-4 md:p-3 px-4 sm:px-6 md:px-10 xl:px-6 bg-zinc-950/80 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none rounded-xl md:rounded-none mx-4 sm:mx-6 md:mx-auto">
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 md:gap-8 relative mt-12 max-[480px]:mt-8 sm:mt-24 md:-mt-44 lg:-mt-56 z-10 border-b-2 border-zinc-800 p-4 md:p-3 px-4 sm:px-6 md:px-10 xl:px-6 bg-zinc-950/80 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none rounded-xl md:rounded-none mx-4 sm:mx-6 md:mx-auto">
 
-                <button
-                    onClick={() => navigate(location.state?.from || '/')}
-                    className="w-min flex items-center gap-2 px-3.5 py-2 md:px-5 md:py-3 bg-zinc-900 border border-zinc-800 rounded-xl text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all duration-300 cursor-pointer group text-xs md:text-base md:absolute md:-top-20 ">
+                <div className="w-full flex flex-row items-center justify-between gap-2 relative md:absolute md:-top-20 md:left-0 md:w-full z-20 pb-4 md:pb-0 sm:px-5">
 
-                    <FaChevronLeft className="text-[10px] md:text-sm group-hover:-translate-x-1 group-hover:text-blue-500 transition-all duration-300" />
-                    <span className="font-medium">Voltar</span>
-                </button>
+                    <button
+                        onClick={() => navigate(location.state?.from || '/')}
+                        className="flex items-center justify-center gap-1.5 px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all duration-300 cursor-pointer group text-[11px] sm:text-xs md:text-base shrink-0 shadow-md">
+
+                        <FaChevronLeft className="text-[10px] md:text-sm group-hover:-translate-x-1 group-hover:text-blue-500 transition-all duration-300" />
+                        <span className="font-medium">Voltar</span>
+                    </button>
+
+                    <button
+                        className="flex items-center justify-center gap-1.5 px-3 py-2 md:px-5 md:py-3 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 rounded-xl text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all duration-300 cursor-pointer group text-[11px] sm:text-xs md:text-sm font-semibold active:scale-[0.98] whitespace-nowrap shrink-0 shadow-md">
+
+                        <FaHeart className="text-red-500 text-[10px] md:text-sm" />
+                        <span className="font-medium">Favoritar</span>
+                    </button>
+                </div>
 
                 <div className="w-40 sm:w-48 md:w-60 mx-auto md:mx-0 flex-shrink-0 mt-4 md:mt-0">
                     <img
@@ -58,29 +70,19 @@ export default function Anime() {
 
                 <div className="flex-1 flex flex-col gap-4 min-w-0 text-center md:text-left">
 
-                    <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-
-                        <div className="flex flex-wrap gap-1.5 justify-center md:justify-start">
-                            {animeShow.generos.filter(g =>
-                                g !== 'Dublado' &&
-                                g !== 'Legendado' &&
-                                !g.startsWith('Letra')
-                            ).map((gen, i) => (
-                                <span
-                                    key={i}
-                                    className="bg-zinc-900 border border-zinc-800/60 text-zinc-300 px-2.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs md:text-sm font-medium whitespace-nowrap shadow-sm"
-                                >
-                                    {gen}
-                                </span>
-                            ))}
-                        </div>
-
-                        <div className="w-full sm:w-auto flex justify-center sm:justify-end">
-                            <button className="w-full sm:w-auto px-4 py-2 sm:py-2.5 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 rounded-lg sm:rounded-xl flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer text-xs md:text-sm font-semibold active:scale-[0.98]">
-                                <FaHeart className="text-red-500 text-xs md:text-sm" />
-                                <span>Favoritar</span>
-                            </button>
-                        </div>
+                    <div className="w-full flex flex-row flex-wrap items-center gap-1.5 max-[480px]:gap-1 justify-center md:justify-start border-t border-b border-zinc-900/60 md:border-none py-2.5 md:py-0 text-left">
+                        {animeShow.generos.filter(g =>
+                            g !== 'Dublado' &&
+                            g !== 'Legendado' &&
+                            !g.startsWith('Letra')
+                        ).map((gen, i) => (
+                            <span
+                                key={i}
+                                className="bg-zinc-900 border border-zinc-800/60 text-zinc-300 px-2 py-0.5 max-[480px]:px-1.5 max-[480px]:text-[10px] rounded-md text-[11px] sm:text-xs md:text-sm font-medium whitespace-nowrap shadow-sm"
+                            >
+                                {gen}
+                            </span>
+                        ))}
                     </div>
 
                     <h1 className="text-xl sm:text-2xl md:text-4xl font-extrabold tracking-tight break-words text-zinc-100">
@@ -92,7 +94,7 @@ export default function Anime() {
                         <span className="text-zinc-300 font-semibold">{animeShow.classificacao} / 10</span>
                     </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-2 text-left">
+                    <div className="grid grid-cols-2  gap-2.5 mt-2 text-left">
                         <div className="bg-zinc-900/40 border border-zinc-800/40 p-2.5 rounded-xl">
                             <p className="text-zinc-500 text-[10px] md:text-xs font-medium uppercase tracking-wider">Episódios</p>
                             <p className="text-white font-semibold text-xs sm:text-base mt-0.5">{animeShow.total_episodios_geral}</p>
@@ -110,7 +112,7 @@ export default function Anime() {
 
                         <div className="bg-zinc-900/40 border border-zinc-800/40 p-2.5 rounded-xl">
                             <p className="text-zinc-500 text-[10px] md:text-xs font-medium uppercase tracking-wider">Áudio</p>
-                            <p className="text-white font-semibold text-xs sm:text-base mt-0.5">
+                            <p className="text-white font-semibold text-xs sm:text-base mt-0.5 truncate">
                                 {animeShow.generos.includes("Dublado") ? "Dublado" : "Legendado"}
                             </p>
                         </div>
@@ -118,7 +120,6 @@ export default function Anime() {
 
                 </div>
             </div>
-
             <div className="max-w-7xl mx-auto border-r-0 md:border-r-2 border-y-2 border-zinc-800 px-4 sm:px-6 md:px-10 xl:px-6 mt-6">
 
                 <div className="py-4 border-b-2 border-zinc-800 flex flex-col md:flex-row items-start gap-4 justify-between">

@@ -157,6 +157,14 @@ export default function Trending() {
 
                                                 </div>
 
+                                                <span
+                                                    className={`absolute top-2 left-2 px-2 py-1 rounded-md text-[10px] sm:text-xs font-medium text-white ${a.generos.includes("Dublado")
+                                                        ? "bg-blue-800"
+                                                        : "bg-purple-800"
+                                                        }`}
+                                                >
+                                                    {a.generos.includes("Dublado") ? "Dublado" : "Legendado"}
+                                                </span>
                                             </div>
 
                                             <div className="flex h-12 items-center px-3 md:h-14">
@@ -194,8 +202,7 @@ export default function Trending() {
                                 key={a.id_video}
                                 to={`/anime/${a.id_video}`}
                                 state={{ from: location.pathname }}
-                                className="group"
-                            >
+                                className="group">
 
                                 <div className="overflow-hidden rounded-xl border border-zinc-700/50 bg-zinc-800 transition-all duration-300 hover:-translate-y-1 hover:border-zinc-600 hover:bg-zinc-800/70">
 
@@ -204,8 +211,7 @@ export default function Trending() {
                                         <img
                                             src={a.capa}
                                             alt={a.nome}
-                                            className="h-full w-full object-cover"
-                                        />
+                                            className="h-full w-full object-cover" />
 
                                         <div className="absolute top-2 right-2 flex items-center gap-1 rounded-lg bg-black/70 px-2 py-1 backdrop-blur-sm md:top-3 md:right-3">
 
@@ -216,6 +222,14 @@ export default function Trending() {
                                             </span>
 
                                         </div>
+
+                                        <span
+                                            className={`absolute top-2 left-2 px-2 py-1 rounded-md text-[10px] sm:text-xs font-medium text-white ${a.generos.includes("Dublado")
+                                                ? "bg-blue-800"
+                                                : "bg-purple-800"
+                                                }`}>
+                                            {a.generos.includes("Dublado") ? "Dublado" : "Legendado"}
+                                        </span>
 
                                     </div>
 

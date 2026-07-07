@@ -104,11 +104,19 @@ export default function Explore() {
                     :
                     [...animesFiltrado].toReversed().map(a => (
                         <Link key={a.id_video} state={{ from: location.pathname }} to={`/anime/${a.id_video}`}>
-                            <div className="bg-zinc-800 rounded-xl overflow-hidden cursor-pointer text-white transition-all duration-300 hover:-translate-y-2 hover:bg-zinc-800/60 hover:shadow-xl hover:shadow-black/40">
+                            <div className=" bg-zinc-800 rounded-xl overflow-hidden cursor-pointer text-white transition-all duration-300 hover:-translate-y-2 hover:bg-zinc-800/60 hover:shadow-xl hover:shadow-black/40">
 
-                                <div className="aspect-[2/3] overflow-hidden">
+                                <div className="relative aspect-[2/3] overflow-hidden">
                                     <img src={a.capa} alt={`banner do ${a.nome}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
 
+                                    <span
+                                        className={`absolute top-2 left-2 px-2 py-1 rounded-md text-[10px] sm:text-xs font-medium text-white ${a.generos.includes("Dublado")
+                                            ? "bg-blue-800"
+                                            : "bg-purple-800"
+                                            }`}
+                                    >
+                                        {a.generos.includes("Dublado") ? "Dublado" : "Legendado"}
+                                    </span>
                                 </div>
 
                                 <div className="p-2">
@@ -116,7 +124,6 @@ export default function Explore() {
                                         {a.nome}
                                     </h4>
                                 </div>
-
                             </div>
                         </Link>
                     ))}
