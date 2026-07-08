@@ -71,10 +71,10 @@ export default function Favorites() {
                     {favoritos.map(anime => (
                         // <Link key={anime.id} to={`/anime/${anime.id_video}`}>
 
-                        <div className="relative rounded-xl bg-zinc-800/80 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 sm:hover:-translate-y-2 hover:bg-zinc-900 hover:shadow-xl hover:shadow-black/40 group h-full flex flex-col justify-between">
+                        <div className="relative rounded-xl bg-zinc-800/80 overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:bg-zinc-900 group">
 
-                            <div className="absolute top-1.5 left-1.5 z-10 w-6 h-6 sm:w-10 sm:h-10 rounded-full bg-black/50 flex items-center justify-center backdrop-blur-sm">
-                                <HiOutlineHeart className="text-red-500 w-3.5 h-3.5 sm:w-6 sm:h-6" />
+                            <div className="absolute top-2 left-2 z-10 w-10 h-10 rounded-full bg-black/50 flex items-center justify-center backdrop-blur-sm">
+                                <HiOutlineHeart className="text-red-500 size-6" />
                             </div>
 
                             <div className="aspect-[2/3] overflow-hidden">
@@ -85,8 +85,8 @@ export default function Favorites() {
                                 />
                             </div>
 
-                            <div className="p-2 sm:p-4">
-                                <h3 className="text-white font-bold text-[11px] sm:text-base truncate transition-colors duration-300 group-hover:text-purple-300">
+                            <div className="p-3">
+                                <h3 className="text-white font-bold truncate transition-colors duration-300 group-hover:text-purple-300">
                                     {anime.nome}
                                 </h3>
                             </div>
