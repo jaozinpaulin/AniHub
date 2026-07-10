@@ -57,21 +57,40 @@ export default function Favorites() {
                                 key={anime.id}
                                 to={`/anime/${anime.id_video}`}
                                 state={{ from: location.pathname }}
-                                className="group relative flex flex-col bg-zinc-900 border border-zinc-800/60 rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-red-500/40 hover:shadow-lg hover:shadow-red-950/10">
 
+                                className="group relative flex flex-col bg-zinc-900 border border-zinc-800/60 rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-red-500/40 hover:shadow-lg hover:shadow-red-950/10">
                                 <div className="relative aspect-[2/3] w-full overflow-hidden bg-zinc-950">
-                                    <div className="absolute top-1.5 right-1.5 z-10 w-7 h-7 rounded-full bg-zinc-950/70 border border-zinc-800 flex items-center justify-center backdrop-blur-md opacity-90 group-hover:opacity-100 transition-opacity">
-                                        <HiHeart className="text-red-500 size-4.5" />
+
+                                    <div className="absolute top-1 right-1 sm:top-1.5 sm:right-1.5 z-20 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-zinc-950/70 border border-zinc-800 flex items-center justify-center backdrop-blur-md opacity-90 group-hover:opacity-100 transition-opacity">
+                                        <HiHeart className="text-red-500 size-3.5 sm:size-4.5" />
                                     </div>
 
                                     <img
                                         src={anime.capa}
                                         alt={anime.nome}
                                         loading="lazy"
-                                        className="w-full h-full object-cover transition-all duration-500 ease-out group-hover:scale-102 group-hover:brightness-[0.4] group-hover:blur-[1px]"
+                                        className="w-full h-full object-cover brightness-100 blur-0 scale-100 transition-all duration-500 ease-out group-hover:scale-102 group-hover:brightness-[0.4] group-hover:blur-[1px]"
                                     />
-                                </div>
 
+                                    <span
+                                        className={`absolute top-1 left-1 sm:top-2 sm:left-2 z-20 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md text-[9px] sm:text-xs font-medium text-white tracking-wide shadow-md backdrop-blur-sm whitespace-nowrap ${anime.generos.includes("Dublado")
+                                            ? "bg-blue-600/90 border border-blue-500/20"
+                                            : "bg-purple-600/90 border border-purple-500/20"
+                                            }`}>
+                                        {anime.generos.includes("Dublado") ? (
+                                            <>
+                                                <span className="max-[360px]:hidden">Dublado</span>
+                                                <span className="hidden max-[360px]:block">DUB</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span className="max-[360px]:hidden">Legendado</span>
+                                                <span className="hidden max-[360px]:block">LEG</span>
+                                            </>
+                                        )}
+                                    </span>
+
+                                </div>
                                 <div className="p-2 sm:p-3 flex-1 flex flex-col justify-center">
                                     <h3 className="text-zinc-200 text-[11px] sm:text-xs font-medium line-clamp-2 leading-snug transition-colors duration-300 group-hover:text-red-400">
                                         {anime.nome}
