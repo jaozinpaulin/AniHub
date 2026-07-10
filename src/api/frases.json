@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "anime": "Frieren",
+        "frase": "A jornada é mais importante do que o destino.",
+        "autor": "Frieren"
+    },
+    {
+        "id": 2,
+        "anime": "Naruto",
+        "frase": "Nunca volte atrás na sua palavra.",
+        "autor": "Naruto Uzumaki"
+    },
+    {
+        "id": 3,
+        "anime": "Attack on Titan",
+        "frase": "Se você vencer, vive. Se perder, morre.",
+        "autor": "Eren Yeager"
+    },
+    {
+        "id": 4,
+        "anime": "One Piece",
+        "frase": "O sonho de um homem nunca morre!",
+        "autor": "Marshall D. Teach"
+    },
+    {
+        "id": 5,
+        "anime": "Bleach",
+        "frase": "A verdadeira força vem de proteger alguém.",
+        "autor": "Ichigo Kurosaki"
+    },
+    {
+        "id": 6,
+        "anime": "Demon Slayer",
+        "frase": "A dor é o que nos torna mais fortes.",
+        "autor": "Tanjiro Kamado"
+    }
+]
