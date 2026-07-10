@@ -1,104 +1,88 @@
 import { Link, useNavigate } from "react-router-dom";
-import { HiOutlineHeart } from "react-icons/hi2";
+import { HiOutlineHeart, HiHeart } from "react-icons/hi2";
 import { FaChevronLeft } from "react-icons/fa";
 
+import { useContext } from "react";
+import { FavoritesContext } from "../context/FavoritesProvider";
+
 export default function Favorites() {
+    const { favoritos } = useContext(FavoritesContext);
     const navigate = useNavigate();
 
-    const favoritos = [
-        {
-            id: 1,
-            id_video: "naruto-1",
-            nome: "Naruto Shippuden",
-            capa: "https://cdn.myanimelist.net/images/anime/5/17407.jpg"
-        },
-        {
-            id: 2,
-            id_video: "one-piece-1",
-            nome: "One Piece",
-            capa: "https://cdn.myanimelist.net/images/anime/6/73245.jpg"
-        },
-        {
-            id: 3,
-            id_video: "attack-on-titan",
-            nome: "Attack on Titan",
-            capa: "https://cdn.myanimelist.net/images/anime/10/47347.jpg"
-        },
-        {
-            id: 4,
-            id_video: "demon-slayer",
-            nome: "Demon Slayer",
-            capa: "https://cdn.myanimelist.net/images/anime/1286/99889.jpg"
-        },
-        {
-            id: 5,
-            id_video: "jujutsu-kaisen",
-            nome: "Jujutsu Kaisen",
-            capa: "https://cdn.myanimelist.net/images/anime/1171/109222.jpg"
-        }
-    ];
+
+    const hasFavorites = favoritos && favoritos.length > 0;
 
     return (
-        <section className="w-full min-h-dvh bg-zinc-950 pt-16 sm:pt-20 px-1 lg:px-6">
-
+        <section className="w-full min-h-dvh bg-zinc-950 pt-16 sm:pt-20 px-4 lg:px-8 text-zinc-100 selection:bg-purple-500/30">
             <div className="py-4 sm:py-10">
 
-                <div className="flex items-center justify-between gap-2 mb-4 sm:mb-6 px-2">
-                    <button
-                        onClick={() => navigate(-1)}
-                        className="group flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white transition text-xs sm:text-sm cursor-pointer"
-                    >
-                        <FaChevronLeft className="text-[10px] sm:text-xs group-hover:-translate-x-0.5 transition-transform" />
-                        Voltar
-                    </button>
+                <div className="flex items-end gap-2 mb-4 sm:mb-6">
 
-                    <span className="px-2.5 py-1 rounded-lg bg-zinc-800 text-zinc-300 text-xs sm:text-sm shrink-0">
-                        {favoritos.length} favorito(s)
+
+                    <span className="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 text-xs sm:text-sm font-medium">
+                        {favoritos.length} {favoritos.length === 1 ? "favorito" : "favoritos"}
                     </span>
                 </div>
 
-                <div className="mb-6 sm:mb-10 bg-zinc-900 rounded-xl p-4 md:p-6 border border-zinc-800 mx-2">
-                    <h1 className="flex items-center gap-2 sm:gap-3 text-xl sm:text-2xl md:text-3xl xl:text-4xl font-bold text-white tracking-tight">
+                <div className="mb-6 sm:mb-10 bg-zinc-900/50 rounded-xl p-5 md:p-6 border  border-zinc-900 backdrop-blur-sm">
+                    <h1 className="flex items-center gap-2 sm:gap-3 text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight">
                         Meus Favoritos
-                        <HiOutlineHeart className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-red-500 shrink-0" />
+                        <HiHeart className="w-6 h-6 sm:w-8 sm:h-8 text-red-500 animate-pulse shrink-0" />
                     </h1>
-                    <p className="text-zinc-400 mt-1 sm:mt-2 text-xs sm:text-sm md:text-base leading-relaxed">
+                    <p className="text-zinc-400 mt-1 text-xs sm:text-sm md:text-base leading-relaxed">
                         Aqui estão os animes que você salvou para assistir depois.
                     </p>
                 </div>
 
-                <div className="w-full grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-2.5 sm:gap-5 px-1 sm:px-2 lg:px-6 pb-10">
-                    {favoritos.map(anime => (
-                        // <Link key={anime.id} to={`/anime/${anime.id_video}`}>
-
-                        <div className="relative rounded-xl bg-zinc-800/80 overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:bg-zinc-900 group">
-
-                            <div className="absolute top-2 left-2 z-10 w-10 h-10 rounded-full bg-black/50 flex items-center justify-center backdrop-blur-sm">
-                                <HiOutlineHeart className="text-red-500 size-6" />
-                            </div>
-
-                            <div className="aspect-[2/3] overflow-hidden">
-                                <img
-                                    src={anime.capa}
-                                    alt={anime.nome}
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                />
-                            </div>
-
-                            <div className="p-3">
-                                <h3 className="text-white font-bold truncate transition-colors duration-300 group-hover:text-purple-300">
-                                    {anime.nome}
-                                </h3>
-                            </div>
-
+                {!hasFavorites ? (
+                    <div className="flex flex-col items-center justify-center text-center py-16 px-4 bg-zinc-900/20 border border-dashed border-zinc-800 rounded-2xl">
+                        <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center border border-zinc-800 mb-4">
+                            <HiOutlineHeart className="text-zinc-500 size-8" />
                         </div>
+                        <h2 className="text-white font-medium text-base sm:text-lg mb-1">Nenhum anime por aqui</h2>
+                        <p className="text-zinc-500 text-xs sm:text-sm max-w-xs mb-6">
+                            Sua lista está vazia. Explore o catálogo e adicione seus animes preferidos aqui!
+                        </p>
+                        <Link
+                            to="/explore"
+                            className="px-4 py-2 bg-red-600 hover:bg-red-600/80 text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-purple-600/10"
+                        >
+                            Explorar Catálogo
+                        </Link>
+                    </div>
+                ) : (
+                    <div className="w-full grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-9 gap-2.5 sm:gap-4 pb-10">
+                        {favoritos.map((anime) => (
+                            <Link
+                                key={anime.id}
+                                to={`/anime/${anime.id_video}`}
+                                state={{ from: location.pathname }}
+                                className="group relative flex flex-col bg-zinc-900 border border-zinc-800/60 rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-red-500/40 hover:shadow-lg hover:shadow-red-950/10">
 
-                        // </Link>
-                    ))}
-                </div>
+                                <div className="relative aspect-[2/3] w-full overflow-hidden bg-zinc-950">
+                                    <div className="absolute top-1.5 right-1.5 z-10 w-7 h-7 rounded-full bg-zinc-950/70 border border-zinc-800 flex items-center justify-center backdrop-blur-md opacity-90 group-hover:opacity-100 transition-opacity">
+                                        <HiHeart className="text-red-500 size-4.5" />
+                                    </div>
+
+                                    <img
+                                        src={anime.capa}
+                                        alt={anime.nome}
+                                        loading="lazy"
+                                        className="w-full h-full object-cover transition-all duration-500 ease-out group-hover:scale-102 group-hover:brightness-[0.4] group-hover:blur-[1px]"
+                                    />
+                                </div>
+
+                                <div className="p-2 sm:p-3 flex-1 flex flex-col justify-center">
+                                    <h3 className="text-zinc-200 text-[11px] sm:text-xs font-medium line-clamp-2 leading-snug transition-colors duration-300 group-hover:text-red-400">
+                                        {anime.nome}
+                                    </h3>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                )}
 
             </div>
-
         </section>
     );
 }
