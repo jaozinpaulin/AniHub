@@ -71,7 +71,10 @@ export default function Explore() {
                     focus:border-blue-500 transition"/>
             </div>
 
-            <p className="block sm:hidden text-white p-3 font-bold">Explore</p>
+            <p
+                className={`sm:hidden p-3 font-bold text-white ${animesFiltrado.length > 0 ? "block" : "hidden"}`}>
+                Explore
+            </p>
 
             <div className="w-full  flex-wrap gap-4 hidden 2xl:flex  mx-3 pb-10">
                 {loading ? (
@@ -131,18 +134,18 @@ export default function Explore() {
             </div>
 
 
-            <div className={`w-full mx-auto ${animesFiltrado.length === 0 ? 'flex' : 'hidden'} flex-col items-center justify-center text-center`}>
+            <div className={`w-full mx-auto px-3 ${animesFiltrado.length === 0 ? 'flex' : 'hidden'} flex-col items-center justify-center text-center`}>
 
-                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center mb-6 shadow-lg">
-                    <FaSearch className="text-xl text-white" />
+                <div className="w-12 h-12  sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center mb-6 shadow-lg">
+                    <FaSearch className="text-lg sm:text-xl text-white" />
                 </div>
-                <h2 className="text-3xl font-bold text-white mb-2">
+                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
                     Nenhum anime encontrado
                 </h2>
 
-                <p className="text-zinc-400 max-w-md">
+                <p className="text-zinc-400/70 text-sm sm:text-lg max-w-md">
                     Não encontramos animes com os filtros selecionados.
-                    Tente alterar sua pesquisa ou escolher outro gênero.
+                    Tente alterar sua pesquisa.
                 </p>
             </div>
 
