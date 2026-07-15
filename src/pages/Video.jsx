@@ -29,16 +29,15 @@ export default function Video() {
 
     return (
 
-        <section className="relative w-full mx-auto min-h-dvh  pt-20 sm:py-20 bg-zinc-950/90 mb-16 rounded-2xl flex justify-center px-3 sm:px-0">
+        <section className="relative w-full mx-auto min-h-dvh  pt-20 sm:py-5 bg-zinc-950/90 mb-16 rounded-2xl flex justify-center px-3 sm:px-0">
 
             <div className="hidden sm:block absolute top-20 left-20 h-72 w-72 rounded-full bg-blue-600/30 blur-[120px]" />
             <div className="hidden sm:block absolute bottom-20 right-20 h-72 w-72 rounded-full bg-purple-600/30 blur-[120px]" />
 
-            <div className="w-full max-w-6xl mx-auto mt-4 sm:mt-14 space-y-4 sm:space-y-6 lg:border-2 lg:rounded lg:border-zinc-900 sm:p-10">
+            <div className="w-full max-w-6xl mx-auto mt-4 sm:mt-10 space-y-4 sm:space-y-6 lg:border-2 lg:rounded lg:border-zinc-900 sm:p-10">
 
                 <div className="flex justify-start">
-                    <Link
-                        to={`/anime/${idAnime}`}
+                    <Link to={`/anime/${idAnime}`}
                         className="inline-flex items-center gap-2 px-3 py-2 sm:px-5 sm:py-3 bg-zinc-800/70 border border-zinc-700 rounded-xl text-zinc-300 hover:text-white hover:bg-zinc-800/90 transition-all duration-300 group text-xs sm:text-base">
 
                         <FaChevronLeft className="text-[10px] sm:text-sm group-hover:-translate-x-1 group-hover:text-blue-500 transition-all duration-300" />
@@ -53,12 +52,11 @@ export default function Video() {
                         title="teste"
                         scrolling="no"
                         allowFullScreen
-                        referrerPolicy="no-referrer"
-                    />
+                        referrerPolicy="no-referrer" />
                 </div>
 
-                <div className="space-y-2 sm:space-y-3">
-                    <h1 className="text-lg sm:text-3xl font-bold text-white leading-tight">
+                <div className="space-y-1 sm:space-y-2">
+                    <h1 className="text-lg sm:text-2xl font-bold text-white leading-tight">
                         {anime[0].nome}
                     </h1>
 
@@ -77,7 +75,7 @@ export default function Video() {
                     </div>
                 </div>
 
-                <div className="w-full bg-zinc-950 p-2 sm:p-4 rounded-xl">
+                <div className="w-full bg-zinc-950 rounded-xl">
                     <div className="flex flex-row sm:grid sm:grid-cols-3 gap-1.5 sm:gap-4 max-w-3xl mx-auto w-full text-white justify-between">
 
                         <button
@@ -114,7 +112,7 @@ export default function Video() {
                     </div>
                 </div>
 
-                <div className="mt-6 sm:mt-12 bg-zinc-950 border border-zinc-700/40 rounded p-4 sm:p-6 flex flex-col md:flex-row gap-5 md:gap-8 items-center md:items-start text-white">
+                <div className="mt-6 sm:mt-12 bg-zinc-950 border border-zinc-700/40 rounded p-4 flex flex-col md:flex-row gap-5 md:gap-8 items-center md:items-start text-white">
 
                     <div className="shrink-0">
                         <img
