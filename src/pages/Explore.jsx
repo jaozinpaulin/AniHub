@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { FaSearch, FaTimes } from "react-icons/fa";
 
 /* api */
-import animes from '../api/detalhes_animes.json'
+import animes from '../services/detalhes_animes.json'
 
 
 export default function Explore() {

@@ -2,7 +2,7 @@ import { useRef, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { FaStar, FaFire } from "react-icons/fa";
-import dadosAnimes from '../../../api/detalhes_animes.json';
+import dadosAnimes from '../../../services/detalhes_animes.json';
 
 import ButtonsArrow from "../components/ButtonsArrow";
 

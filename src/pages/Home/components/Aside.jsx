@@ -4,9 +4,9 @@ import { Link, useLocation } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight, FaStar, FaPlay, FaChartLine, FaDiceFour } from "react-icons/fa";
 import { FaShuffle, FaFilm, FaMasksTheater, FaClapperboard } from "react-icons/fa6";
 
-import dadosAnimes from '../../../api/detalhes_animes.json'
-import trailers from '../../../api/trailers.json'
-import frases from '../../../api/frases.json'
+import dadosAnimes from '../../../services/detalhes_animes.json'
+import trailers from '../../../services/trailers.json'
+import frases from '../../../services/frases.json'
 
 
 const animes = dadosAnimes;

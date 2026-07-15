@@ -2,7 +2,7 @@ import { NavLink, Link } from "react-router-dom";
 import { FiSearch, FiMenu } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
 
-import animes from '../../api/detalhes_animes.json'
+import animes from '../../services/detalhes_animes.json'
 import { useState } from "react";
 
 export default function Header() {

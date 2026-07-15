@@ -6,7 +6,7 @@ import { FaChevronLeft, FaStar } from "react-icons/fa";
 import { PiArrowsOutLineHorizontalBold } from "react-icons/pi";
 import { HiOutlineChevronLeft, HiOutlineChevronRight, HiOutlineSquares2X2, } from "react-icons/hi2";
 
-import dados from '../api/detalhes_animes.json'
+import dados from '../services/detalhes_animes.json'
 
 export default function Video() {
 

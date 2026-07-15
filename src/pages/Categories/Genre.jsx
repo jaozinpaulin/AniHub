@@ -1,6 +1,6 @@
 import { Link, useParams, useLocation } from "react-router-dom";
 
-import animes from '../../api/detalhes_animes.json'
+import animes from '../../services/detalhes_animes.json'
 import { FaChevronLeft, FaFilter } from "react-icons/fa";
 
 export default function Genre() {

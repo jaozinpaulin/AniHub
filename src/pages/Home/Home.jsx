@@ -13,7 +13,7 @@ export default function Home() {
                 <div className="w-full xl:w-3/4 flex flex-col gap-4">
                     <Hero />
                     <Trending />
-                    <WatchingAgain />
+                    {/* <WatchingAgain /> */}
                 </div>
 
                 <aside className="w-1/4 lg:pl-6 p-4 hidden xl:block">

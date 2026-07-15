@@ -3,8 +3,8 @@ import { FaGrip } from "react-icons/fa6";
 
 import { Link } from "react-router-dom";
 
-import animes from "../../api/detalhes_animes.json";
-import corGenero from '../../api/generos.json'
+import animes from "../../services/detalhes_animes.json";
+import corGenero from '../../services/generos.json'
 
 
 

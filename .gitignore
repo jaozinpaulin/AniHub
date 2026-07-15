@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Python virtual environments (scraping tool)
+.venv/
+venv/
+ENV/

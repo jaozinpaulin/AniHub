@@ -2,7 +2,7 @@ import { useNavigate, Link, useParams, useLocation } from "react-router-dom";
 import { FaStar, FaHeart, FaChevronDown, FaChevronLeft, FaRegHeart } from "react-icons/fa";
 import { LuCalendarDays } from "react-icons/lu";
 
-import dados from '../api/detalhes_animes.json'
+import dados from '../services/detalhes_animes.json'
 import { useState, useContext } from "react";
 import { FavoritesContext } from "../context/FavoritesProvider";
 
