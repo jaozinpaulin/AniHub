@@ -1,17 +1,26 @@
 import { useParams, Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 
 import { IoPlaySharp } from "react-icons/io5";
 import { FaChevronLeft, FaStar } from "react-icons/fa";
 import { PiArrowsOutLineHorizontalBold } from "react-icons/pi";
 import { HiOutlineChevronLeft, HiOutlineChevronRight, HiOutlineSquares2X2, } from "react-icons/hi2";
 
+import { timerContext } from '../context/TimerProvider'
+
 import dados from '../services/detalhes_animes.json'
 
 export default function Video() {
+    const { progressVideo, atualizarProgresso } = useContext(timerContext)
+    const [tempo, setTempo] = useState(0)
+    const [isPlaying, setIsplaying] = useState(false)
+
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [showMask, setShowMask] = useState(true);
 
     const { id, tem, ep } = useParams()
-    const anime = dados.filter(ani => ani.id_video === id);
+
+    const anime = dados.find(ani => ani.id_video === id);
 
     const idAnime = Number(id);
     const temporadaAtual = Number(tem);
@@ -23,9 +32,40 @@ export default function Video() {
 
     const urlDoIframe = `https://serv01.meusdoramas.club/#/video/${animeId}/${temporada}/${episodio}/`;
 
-    const totalEp = anime[0].temporadas.find(tem => tem.id === temporada).total_episodios_temporada
+    const totalEp = anime.temporadas.find(tem => tem.id === temporada).total_episodios_temporada || 0;
+
+    useEffect(() => {
+        if (!isPlaying) return;
+
+        const time = setInterval(() => {
+            setTempo(prev => {
+                const novoTempo = prev + 1;
+
+                if (novoTempo % 5 === 0) {
+                    atualizarProgresso({
+                        animeId,
+                        temporada,
+                        episodio,
+                        tempo: novoTempo
+                    });
+                }
+
+                return novoTempo;
+            });
+        }, 1000);
+
+        return () => clearInterval(time);
+    }, [isPlaying]);
 
 
+    //fallback
+    if (!anime) {
+        return (
+            <div className="min-h-dvh flex items-center justify-center text-white bg-zinc-950">
+                <p>Anime não encontrado.</p>
+            </div>
+        );
+    }
 
     return (
 
@@ -45,24 +85,37 @@ export default function Video() {
                     </Link>
                 </div>
 
-                <div className="relative aspect-video border border-zinc-700/70 w-full ">
+                <div className="relative aspect-video border border-zinc-800 bg-zinc-950 w-full rounded-xl overflow-hidden shadow-2xl">
                     <iframe
                         src={urlDoIframe}
                         className="w-full h-full border-0"
-                        title="teste"
+                        title="Player de Video"
                         scrolling="no"
                         allowFullScreen
-                        referrerPolicy="no-referrer" />
+                        referrerPolicy="no-referrer"
+                        onLoad={() => {
+                            setIsLoaded(true);
+                            setIsplaying(true);
+                        }}
+                    />
+
+                    {!isLoaded && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950 gap-3">
+                            <div className="w-10 h-10 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
+                            <span className="text-zinc-400 text-sm font-medium">Carregando player...</span>
+                        </div>
+                    )}
+
                 </div>
 
                 <div className="space-y-1 sm:space-y-2">
                     <h1 className="text-lg sm:text-2xl font-bold text-white leading-tight">
-                        {anime[0].nome}
+                        {anime.nome}
                     </h1>
 
                     <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         <span className="rounded-lg bg-zinc-800 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[11px] sm:text-sm text-zinc-300">
-                            {anime[0].generos.includes("Dublado") ? "Dublado" : "Legendado"}
+                            {anime.generos.includes("Dublado") ? "Dublado" : "Legendado"}
                         </span>
 
                         <span className="rounded-lg bg-zinc-800 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[11px] sm:text-sm text-zinc-300">
@@ -116,8 +169,8 @@ export default function Video() {
 
                     <div className="shrink-0">
                         <img
-                            src={anime[0].capa}
-                            alt={anime[0].nome}
+                            src={anime.capa}
+                            alt={anime.nome}
                             className="w-28 sm:w-36 md:w-40 rounded-xl object-cover shadow-2xl border border-zinc-800"
                         />
                     </div>
@@ -126,36 +179,36 @@ export default function Video() {
 
                         <div className="text-center md:text-left">
                             <span className="text-zinc-500 text-xs uppercase tracking-wider font-semibold block mb-1">Você está assistindo</span>
-                            <h2 className="text-lg sm:text-2xl font-bold text-zinc-100 line-clamp-1">{anime[0].nome}</h2>
+                            <h2 className="text-lg sm:text-2xl font-bold text-zinc-100 line-clamp-1">{anime.nome}</h2>
                         </div>
 
                         <div className="flex flex-wrap justify-center md:justify-start gap-1.5 sm:gap-2 text-[11px] sm:text-sm w-full">
                             <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center gap-1">
                                 <FaStar className="text-yellow-400 text-[10px] sm:text-xs" />
-                                <span className="font-medium">{anime[0].classificacao}</span>
+                                <span className="font-medium">{anime.classificacao}</span>
                             </span>
 
                             <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300">
-                                {anime[0].total_episodios_geral} Eps
+                                {anime.total_episodios_geral} Eps
                             </span>
 
                             <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300">
-                                {anime[0].total_temporadas} Temp.
+                                {anime.total_temporadas} Temp.
                             </span>
 
                             <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300">
-                                {anime[0].generos.includes("Dublado") ? "Dublado" : "Legendado"}
+                                {anime.generos.includes("Dublado") ? "Dublado" : "Legendado"}
                             </span>
 
                             <span className="px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400">
-                                {anime[0].data_lancamento}
+                                {anime.data_lancamento}
                             </span>
                         </div>
 
                         <div className="hidden md:block w-full h-[1px] bg-zinc-800/60 my-1" />
 
                         <div className="flex flex-wrap justify-center md:justify-start gap-1.5 sm:gap-2 w-full">
-                            {anime[0].generos
+                            {anime.generos
                                 .filter(g =>
                                     g !== "Dublado" &&
                                     g !== "Legendado" &&
@@ -178,9 +231,3 @@ export default function Video() {
         </section>
     )
 }
-
-
-
-
-
-/* ajusta o video o tamnho pra fazer os limites dos botoes */

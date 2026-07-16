@@ -188,3 +188,7 @@ export default function Header() {
         </header >
     );
 }
+
+
+
+/* arruamr o card que nao fecha no click fora, tem que usar useRef */
