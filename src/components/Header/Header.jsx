@@ -3,16 +3,33 @@ import { FiSearch, FiMenu } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
 
 import animes from '../../services/detalhes_animes.json'
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 export default function Header() {
     const [pesquisa, setPesquisa] = useState('')
     const [mostrarResultado, setMostrarResultado] = useState(false);
 
     const [isOpen, setIsOpen] = useState(false);
+    const cardAnime = useRef(null);
+
+    useEffect(() => {
+        function handleClick(evt) {
+            if (!cardAnime.current) return;
+
+            if (cardAnime.current && !cardAnime.current.contains(evt.target)) {
+                selecionarAnime()
+            }
+        }
+
+        document.addEventListener("mousedown", handleClick);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClick);
+        };
+    }, []);
 
 
-    const selecionarAnime = (anime) => {
+    const selecionarAnime = () => {
         setPesquisa('');
         setMostrarResultado(false)
     }
@@ -122,11 +139,12 @@ export default function Header() {
 
                 {/* input pesquisa */}
 
-                <div className="relative hidden lg:block w-72">
+                <div ref={cardAnime}
+                    className="relative hidden lg:block w-72">
 
                     <input
                         type="text"
-                        placeholder="Buscar animes..."
+                        placeholder="Busque por animes..."
                         value={pesquisa}
                         onChange={(evt) => {
                             setPesquisa(evt.target.value)
@@ -140,8 +158,7 @@ export default function Header() {
                     </button>
 
                     {mostrarResultado && animesFiltrado.length > 0 && (
-                        <div className="absolute top-full left-0 mt-2 w-full rounded-xl border border-zinc-800 bg-zinc-900 shadow-2xl overflow-hidden z-50">
-
+                        < div className="absolute top-full left-0 mt-2 w-full rounded-xl border border-zinc-800 bg-zinc-900 shadow-2xl overflow-hidden z-50">
                             {mostrarResultado &&
 
                                 animesFiltrado.slice(0, 3).map(ani => (
@@ -154,16 +171,20 @@ export default function Header() {
                                         <img
                                             src={ani.capa}
                                             alt=""
-                                            className="w-12 h-16 rounded-md object-cover" />
+                                            className="w-12 h-16 rounded-md object-cover shrink-0" />
 
                                         <div className="flex flex-col text-left overflow-hidden">
 
-                                            <span className="w-full truncate text-sm font-medium text-white">
+                                            <span className="w-full px-0.5 truncate text-sm font-medium shrink-0 text-white">
                                                 {ani.nome}
                                             </span>
 
-                                            <div className="flex items-center gap-2 text-xs text-zinc-400">
-                                                <span>
+                                            <div className="flex items-center gap-2 text-xs text-zinc-400 shrink-0">
+                                                <span className={`px-1 py-0.5 rounded text-zinc-300 "
+                                                        ${ani.generos.includes("Dublado")
+                                                        ? "bg-blue-600/80 group-hover:bg-blue-600"
+                                                        : "bg-purple-600/80 group-hover:bg-purple-600"
+                                                    }`}>
                                                     {ani.generos.includes("Dublado") ? "Dublado" : "Legendado"}
                                                 </span>
 
@@ -179,6 +200,10 @@ export default function Header() {
                                 ))}
 
                         </div>
+                    )}
+                    {animesFiltrado == 0 && (
+                        <div className="bg-red-500 ">oi</div>
+
                     )}
 
 

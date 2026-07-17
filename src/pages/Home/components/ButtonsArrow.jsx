@@ -4,14 +4,14 @@ export default function ButtonsArrow({ scrollRef }) {
 
     const scrollLeft = () => {
         scrollRef.current?.scrollBy({
-            left: -300,
+            left: -330,
             behavior: "smooth",
         });
     };
 
     const scrollRight = () => {
         scrollRef.current?.scrollBy({
-            left: 300,
+            left: 330,
             behavior: "smooth",
         });
     };

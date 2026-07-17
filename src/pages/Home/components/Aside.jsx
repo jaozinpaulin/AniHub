@@ -236,7 +236,7 @@ export default function Aside() {
                 )}
             </div>
 
-            {fraseAleatoria && (
+            {/* {fraseAleatoria && (
                 <div className="mt-3 w-full bg-zinc-900 rounded-xl border border-zinc-800 p-3 text-white">
                     <h3 className="w-full bg-zinc-800/40 border-l-2 border-orange-500/50 p-2.5 flex items-center gap-2 text-sm font-bold text-white mb-4">
                         <span className="text-orange-500 text-xs">💬</span>
@@ -259,7 +259,7 @@ export default function Aside() {
                         </button>
                     </div>
                 </div>
-            )}
+            )} */}
 
         </aside>
     )

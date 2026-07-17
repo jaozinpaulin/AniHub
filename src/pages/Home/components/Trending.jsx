@@ -55,8 +55,8 @@ export default function Trending() {
                 </div>
 
                 <div className="relative">
-                    {/* <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-8 bg-gradient-to-r from-zinc-900 to-transparent md:w-12" />
-                    <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-8 bg-gradient-to-l from-zinc-900 to-transparent md:w-12" /> */}
+                    <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-8 bg-gradient-to-r from-zinc-950 to-transparent md:w-12" />
+                    <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-8 bg-gradient-to-l from-zinc-950 to-transparent md:w-12" />
 
                     <div
                         ref={scrollAnimeRef}
@@ -131,8 +131,9 @@ export default function Trending() {
                 </div>
 
                 <div className="relative">
-                    {/* <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-8 bg-gradient-to-r from-zinc-900 to-transparent md:w-12" />
-                    <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-8 bg-gradient-to-l from-zinc-900 to-transparent md:w-12" /> */}
+                    <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-8 bg-gradient-to-r from-zinc-950 to-transparent md:w-12" />
+                    <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-8 bg-gradient-to-l from-zinc-950 to-transparent md:w-12" />
+
 
                     <div
                         ref={scrollTopRef}
