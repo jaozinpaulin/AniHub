@@ -139,74 +139,73 @@ export default function Header() {
 
                 {/* input pesquisa */}
 
-                <div ref={cardAnime}
-                    className="relative hidden lg:block w-72">
-
+                <div ref={cardAnime} className="relative hidden lg:block w-72">
                     <input
                         type="text"
                         placeholder="Busque por animes..."
                         value={pesquisa}
                         onChange={(evt) => {
-                            setPesquisa(evt.target.value)
-                            setMostrarResultado(evt.target.value.trim() !== '')
+                            const valor = evt.target.value;
+                            setPesquisa(valor);
+                            setMostrarResultado(valor.trim() !== '');
                         }}
-                        className="w-full h-10 rounded-xl border border-zinc-700 bg-zinc-900 pl-4 pr-11 text-sm text-white outline-none transition-all duration-200 placeholder:text-zinc-500 focus:border-blue-500/70" />
+                        className="w-full h-10 rounded-xl border border-zinc-700 bg-zinc-900 pl-4 pr-11 text-sm text-white outline-none transition-all duration-200 placeholder:text-zinc-500 focus:border-blue-500/70"
+                    />
 
-                    <button
-                        className="absolute right-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center text-zinc-400">
+                    <button className="absolute right-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center text-zinc-400">
                         <FiSearch className="text-lg" />
                     </button>
 
-                    {mostrarResultado && animesFiltrado.length > 0 && (
-                        < div className="absolute top-full left-0 mt-2 w-full rounded-xl border border-zinc-800 bg-zinc-900 shadow-2xl overflow-hidden z-50">
-                            {mostrarResultado &&
+                    {/* dropdown de resultados */}
+                    {mostrarResultado && (
+                        <div className="absolute top-full left-0 mt-2 w-full rounded-xl border border-zinc-800 bg-zinc-900 shadow-2xl overflow-hidden z-50">
+                            {animesFiltrado.length > 0 ? (
+                                animesFiltrado.slice(0, 3).map((ani) => {
+                                    const isDublado = ani.generos.includes("Dublado");
+                                    return (
+                                        <Link
+                                            key={ani.id_video}
+                                            to={`/anime/${ani.id_video}`}
+                                            onClick={selecionarAnime}
+                                            className="flex w-full items-center gap-3 px-3 py-3 hover:bg-zinc-800 transition-colors group"
+                                        >
+                                            <img
+                                                src={ani.capa}
+                                                alt={ani.nome}
+                                                className="w-12 h-16 rounded-md object-cover shrink-0"
+                                            />
 
-                                animesFiltrado.slice(0, 3).map(ani => (
-                                    <Link
-                                        key={ani.id_video}
-                                        to={`/anime/${ani.id_video}`}
-                                        onClick={selecionarAnime}
-                                        className="flex w-full items-center gap-3 px-3 py-3 hover:bg-zinc-800 transition-colors">
+                                            <div className="flex flex-col text-left overflow-hidden">
+                                                <span className="w-full px-0.5 truncate text-sm font-medium shrink-0 text-white group-hover:text-blue-400 transition-colors">
+                                                    {ani.nome}
+                                                </span>
 
-                                        <img
-                                            src={ani.capa}
-                                            alt=""
-                                            className="w-12 h-16 rounded-md object-cover shrink-0" />
-
-                                        <div className="flex flex-col text-left overflow-hidden">
-
-                                            <span className="w-full px-0.5 truncate text-sm font-medium shrink-0 text-white">
-                                                {ani.nome}
-                                            </span>
-
-                                            <div className="flex items-center gap-2 text-xs text-zinc-400 shrink-0">
-                                                <span className={`px-1 py-0.5 rounded text-zinc-300 "
-                                                        ${ani.generos.includes("Dublado")
+                                                <div className="flex items-center gap-2 text-xs text-zinc-400 shrink-0 mt-1">
+                                                    <span className={`px-1 py-0.5 rounded text-[10px] font-bold text-zinc-100 ${isDublado
                                                         ? "bg-blue-600/80 group-hover:bg-blue-600"
                                                         : "bg-purple-600/80 group-hover:bg-purple-600"
-                                                    }`}>
-                                                    {ani.generos.includes("Dublado") ? "Dublado" : "Legendado"}
-                                                </span>
+                                                        }`}>
+                                                        {isDublado ? "DUBLADO" : "LEGENDADO"}
+                                                    </span>
 
-                                                <span>•</span>
+                                                    <span>•</span>
 
-                                                <span>
-                                                    {ani.total_episodios_geral} episódios
-                                                </span>
+                                                    <span>
+                                                        {ani.total_episodios_geral} episódios
+                                                    </span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </Link>
-
-                                ))}
-
+                                        </Link>
+                                    );
+                                })
+                            ) : (
+                                /* Estado de nao encontrado*/
+                                <div className="p-4 text-center text-sm text-zinc-400">
+                                    Nenhum anime encontrado
+                                </div>
+                            )}
                         </div>
                     )}
-                    {animesFiltrado == 0 && (
-                        <div className="bg-red-500 ">oi</div>
-
-                    )}
-
-
                 </div>
 
             </div>
