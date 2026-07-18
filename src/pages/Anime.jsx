@@ -123,10 +123,11 @@ export default function Anime() {
                             <p className="text-white font-semibold text-xs sm:text-base mt-0.5">{animeShow.total_temporadas}</p>
                         </div>
 
-                        <div className="bg-zinc-900/40 border border-zinc-800/40 p-2.5 rounded-xl">
+                        <div className={`bg-zinc-900/40 border  p-2.5 rounded-xl ${animeShow.generos.includes("Dublado") ? "border-blue-800/60" : "border-purple-800/60"}`}>
                             <p className="text-zinc-500 text-[10px] md:text-xs font-medium uppercase tracking-wider">Áudio</p>
                             <p className="text-white font-semibold text-xs sm:text-base mt-0.5 truncate">
                                 {animeShow.generos.includes("Dublado") ? "Dublado" : "Legendado"}
+
                             </p>
                         </div>
                     </div>

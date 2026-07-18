@@ -1,4 +1,4 @@
-import { FaGithub } from "react-icons/fa"
+// import { FaGithub } from "react-icons/fa"
 
 export default function Footer() {
     return (
@@ -17,16 +17,21 @@ export default function Footer() {
                             Versão <span className="text-blue-400">v0.7</span>
                         </p>
 
-                        <p className="text-xs text-emerald-400">
+                        <p className="text-xs text-zinc-400">
                             ● Sistema Online
                         </p>
                     </div>
 
-                    <div className="max-w-2xl text-xs leading-6 text-zinc-500">
-                        Este site não hospeda nenhum vídeo em seus servidores. Todo o conteúdo é fornecido por serviços de terceiros não afiliados. O AniHub atua apenas como um catálogo e interface de navegação.
+                    <div className="max-w-2xl text-xs leading-6 text-zinc-500 space-y-2">
+                        <p>
+                            Este é um projeto estritamente <strong>sem fins lucrativos</strong>, desenvolvido exclusivamente com o propósito de <strong>estudo, aprendizado e ganho de experiência</strong> prática em programação. Nenhum tipo de monetização é aplicado aqui.
+                        </p>
+                        <p>
+                            O AniHub <strong>não hospeda nenhum tipo de vídeo</strong> em seus servidores. Todo o conteúdo exibido é fornecido por serviços de terceiros, totalmente não afiliados. O site atua apenas como um catálogo e interface de navegação.
+                        </p>
                     </div>
 
-                    <div className="flex flex-col items-center gap-1 text-sm">
+                    <div className="flex flex-col  items-center gap-1  text-sm">
                         <span className="text-zinc-500">
                             Desenvolvido por
                         </span>
@@ -39,8 +44,7 @@ export default function Footer() {
                             href="https://github.com/jaozinpaulin"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-400 hover:text-blue-300 transition-colors"
-                        >
+                            className="flex items-center gap-2 text-white-500 hover:text-zinc-300 transition-colors ">
                             github.com/jaozinpaulin
                         </a>
                     </div>
