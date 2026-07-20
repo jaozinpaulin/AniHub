@@ -52,10 +52,10 @@ export default function Explore() {
                 <h2 className="hidden sm:block text-3xl md:text-4xl font-bold text-white mb-3">
                     Explorar
                 </h2>
-
+                {/* 
                 <p className="bg-blue-900/50 p-2 text-center sm:text-left sm:bg-transparent sm:p-0  text-white sm:text-zinc-400  sm:text-lg max-w-2xl">
                     Descubra novos animes para assistir
-                </p>
+                </p> */}
             </div>
 
             <div className="relative mx-3 mt-3 sm:my-8">

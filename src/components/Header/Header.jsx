@@ -1,6 +1,8 @@
 import { NavLink, Link } from "react-router-dom";
 import { FiSearch, FiMenu } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
+import User from "./User";
+import MobileMenu from "./MobileMenu";
 
 import animes from '../../services/detalhes_animes.json'
 import { useRef, useState, useEffect } from "react";
@@ -58,7 +60,7 @@ export default function Header() {
     return (
         <header className="fixed top-0 left-0 w-full z-50 border-b border-zinc-900 bg-zinc-950/70 backdrop-blur-md">
 
-            <div className="w-full lg:max-w-7xl lg:mx-auto h-16 sm:h-20 flex items-center justify-between  px-12">
+            <div className="w-full lg:max-w-7xl lg:mx-auto h-16 sm:h-20 flex items-center sm:justify-around justify-between  px-12">
 
                 <NavLink to="/" className="flex items-center hover:opacity-90 transition">
                     <img src="/logoAH.png" alt="AniHub" className="w-10 h-8 sm:w-14 sm:h-10" />
@@ -72,42 +74,9 @@ export default function Header() {
                 </NavLink>
 
 
-                <div className="relative sm:hidden">
+                <MobileMenu />
 
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        className="flex items-center justify-center w-12 h-12 rounded-xl bg-zinc-900/80 border border-zinc-800 hover:bg-zinc-800 active:scale-95 text-white shadow-lg transition-all duration-200"
-                        aria-label="Menu">
-                        {isOpen ? (
-                            <IoIosClose className="text-4xl" />
-                        ) : (
-                            <FiMenu className="text-3xl" />
-                        )}
-                    </button>
-
-                    <ul
-                        className={`absolute top-[70px] space-y-2 right-0 w-64 p-2 rounded-2xl border border-zinc-800 bg-zinc-950/95 backdrop-blur-md shadow-2xl overflow-hidden transition-all duration-300 origin-top-right ${isOpen
-                            ? "opacity-100 scale-100 visible"
-                            : "opacity-0 scale-95 invisible"
-                            }`}>
-                        <li>
-                            <NavLink to="/" onClick={() => setIsOpen(false)} className={navLinkMobile}>Home</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/explore" onClick={() => setIsOpen(false)} className={navLinkMobile}>Explorar</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/categories" onClick={() => setIsOpen(false)} className={navLinkMobile}>Categorias</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/favorites" onClick={() => setIsOpen(false)} className={navLinkMobile}>Favoritos</NavLink>
-                        </li>
-                    </ul>
-
-                </div>
-
-
-                <nav className="hidden sm:block">
+                <nav className="hidden md:block">
                     <ul className="flex items-center gap-2 text-sm">
 
                         <li>
@@ -208,6 +177,9 @@ export default function Header() {
                     )}
                 </div>
 
+                <div className="hidden md:flex">
+                    <User />
+                </div>
             </div>
         </header >
     );

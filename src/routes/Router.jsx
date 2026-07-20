@@ -21,11 +21,11 @@ export default function Router() {
             <Route path="/categories" element={<Categories />} />
             <Route path="/categories/:genero" element={<Genre />} />
 
-
             <Route path="/favorites" element={<Favorites />} />
 
-            <Route path="/anime/:id" element={<Anime />}></Route>
+            <Route path="/anime/:id" element={<Anime />} />
             <Route path="/video/:id/:tem/:ep" element={<Video />} />
+
         </Routes>
 
     )

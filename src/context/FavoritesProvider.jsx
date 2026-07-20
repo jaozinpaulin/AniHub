@@ -10,12 +10,6 @@ export default function FavoritesProvider({ children }) {
         return favo ? JSON.parse(favo) : [];
     })
 
-    // useEffect(() => {
-    //     const favo = localStorage.getItem('favoritos') || '[]'
-    //     setFavoritos(JSON.parse(favo))
-
-    // }, [])
-
     useEffect(() => {
         localStorage.setItem('favoritos', JSON.stringify(favoritos))
     }, [favoritos])
@@ -44,10 +38,6 @@ export default function FavoritesProvider({ children }) {
     const isFavorite = (id) => {
         return favoritos.some(ani => ani.id_video === id)
     }
-
-
-    /* [...prev, favoritos.some(a => a.id_video === anime.id_video) ? '' : anime] */
-
 
     return (
         <FavoritesContext.Provider value={{ favoritos, addFavorite, isFavorite, toggleFavorite }}>
