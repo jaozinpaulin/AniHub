@@ -12,7 +12,7 @@ export default function MobileMenu() {
 
     const navLinkMobile = ({ isActive }) =>
         `flex rounded-xl px-4 py-3 text-sm font-medium transition ${isActive
-            ? "bg-purple-600 text-white"
+            ? "bg-zinc-600 text-white"
             : "text-zinc-300 hover:bg-zinc-900"
         }`;
 
