@@ -52,7 +52,7 @@ export default function Header() {
     return (
         <header className="fixed top-0 left-0 w-full z-50 border-b border-zinc-900 bg-zinc-950/70 backdrop-blur-md">
 
-            <div className="w-full lg:max-w-7xl lg:mx-auto h-16 sm:h-20 flex items-center sm:justify-around justify-between  px-12">
+            <div className="w-full lg:max-w-7xl lg:mx-auto h-16 sm:h-20 flex items-center  justify-between px-4  lg:px-8">
 
                 <NavLink to="/" className="flex items-center hover:opacity-90 transition">
                     <img src="/logoAH.png" alt="AniHub" className="w-10 h-8 sm:w-14 sm:h-10" />
@@ -82,7 +82,7 @@ export default function Header() {
 
                 {/* input pesquisa */}
 
-                <div ref={cardAnime} className="relative hidden lg:block w-72">
+                <div ref={cardAnime} className="relative hidden xl:block w-72">
                     <input type="text" placeholder="Busque por animes..." value={pesquisa}
                         onChange={(evt) => {
                             const valor = evt.target.value;
