@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 
 import ProfileModal from "../ProfileModal/ProfileModal";
-import Auth from "../../pages/Auth";
+import Auth from "../../pages/Auth/index.jsx";
 
 export default function MobileAccount() {
 

@@ -5,7 +5,7 @@ import { FiChevronDown } from "react-icons/fi";
 import { useAuth } from "../../hooks/useAuth";
 
 import ProfileModal from "../ProfileModal/ProfileModal";
-import Auth from "../../pages/Auth";
+import Auth from "../../pages/Auth/index.jsx";
 
 export default function User() {
 
