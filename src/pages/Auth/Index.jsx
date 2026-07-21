@@ -14,7 +14,6 @@ export default function Auth({ open, setOpen, isLogin, setIsLogin }) {
         };
     }, [open]);
 
-
     if (!open) return null;
 
     return createPortal(
