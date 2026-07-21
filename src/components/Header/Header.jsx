@@ -22,7 +22,6 @@ export default function Header() {
                 selecionarAnime()
             }
         }
-
         document.addEventListener("mousedown", handleClick);
 
         return () => {

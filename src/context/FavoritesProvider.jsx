@@ -4,7 +4,6 @@ export const FavoritesContext = createContext();
 
 export default function FavoritesProvider({ children }) {
 
-
     const [favoritos, setFavoritos] = useState(() => {
         const favo = localStorage.getItem('favoritos')
         return favo ? JSON.parse(favo) : [];
@@ -13,8 +12,6 @@ export default function FavoritesProvider({ children }) {
     useEffect(() => {
         localStorage.setItem('favoritos', JSON.stringify(favoritos))
     }, [favoritos])
-
-
 
     const addFavorite = (anime) => {
         setFavoritos(prev => {

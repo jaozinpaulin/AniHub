@@ -8,10 +8,7 @@ import { useEffect } from "react";
 export default function Auth({ open, setOpen, isLogin, setIsLogin }) {
 
     useEffect(() => {
-        console.log(open);
-
         document.body.style.overflow = open ? "hidden" : "auto";
-
         return () => {
             document.body.style.overflow = "auto";
         };

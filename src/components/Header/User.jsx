@@ -35,13 +35,9 @@ export default function User() {
 
     return (
         <>
-
             {user ? (
-
-                <div
-                    ref={cardOpen}
+                <div ref={cardOpen}
                     className="relative">
-
                     <button
                         onClick={() => setOpenUser(prev => !prev)}
                         className="flex items-center gap-2 rounded-xl p-1 transition hover:bg-zinc-800 cursor-pointer">
@@ -56,7 +52,6 @@ export default function User() {
 
                         <FiChevronDown
                             className={`hidden text-zinc-400 transition xl:block ${openUser ? "rotate-180" : ""}`} />
-
                     </button>
 
                     {openUser && (

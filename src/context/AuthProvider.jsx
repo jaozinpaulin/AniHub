@@ -12,18 +12,11 @@ export default function AuthProvider({ children }) {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-            console.log("Mudança de autenticação:", user);
-
             setUser(user);
             setLoading(false);
         });
-
-        console.log("Listener criado");
-
         return () => unsubscribe();
     }, []);
-
-
 
     const handleLogin = async (email, password) => {
         return await login(email, password)
