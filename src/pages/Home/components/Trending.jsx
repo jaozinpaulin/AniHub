@@ -28,8 +28,7 @@ export default function Trending() {
     }, [animes]);
 
     return (
-        /* AJUSTADO: Mudança de space-y-10 para space-y-4 md:space-y-6 para unificar os blocos sem criar vazios exagerados */
-        <section className="w-full text-white space-y-4 md:space-y-6">
+        <section className="w-full text-white space-y-4 md:space-y-6 pb-20">
 
             <div className="w-full">
 
