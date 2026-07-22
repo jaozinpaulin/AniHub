@@ -19,10 +19,10 @@ export default function Auth({ open, setOpen, isLogin, setIsLogin }) {
     return createPortal(
         <div
             onClick={() => setOpen(false)}
-            className="fixed inset-0 z-[9999] grid place-items-center bg-black/60 backdrop-blur-xs">
-            <div
-                onClick={(e) => e.stopPropagation()}
-                className="w-full max-w-md px-4">
+            className=" fixed inset-0 z-[9999] flex justify-center items-start overflow-y-auto bg-black/60 px-4 
+            pt-10 backdrop-blur-xs sm:pt-16 md:items-center md:pt-0">
+
+            <div onClick={(e) => e.stopPropagation()} className=" w-full max-w-md py-6">
                 {isLogin ? (
                     <LoginForm
                         setOpen={setOpen}

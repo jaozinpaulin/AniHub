@@ -21,7 +21,7 @@ export default function MobileMenu() {
 
             <button
                 onClick={() => setIsOpen(prev => !prev)}
-                className={`flex h-12 w-12 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/80 text-white shadow-lg transition-all duration-200 hover:bg-zinc-800 active:scale-95 ${!isOpen ? 'block' : 'opacity-0 pointer-events-none '}`}>
+                className={`flex h-12 w-12 items-center justify-center rounded-xl cursor-pointer text-white shadow-lg transition-all duration-200 hover:bg-zinc-800 active:scale-95 ${!isOpen ? 'block' : 'opacity-0 pointer-events-none '}`}>
                 <FiMenu className="text-3xl" />
             </button>
 
@@ -39,8 +39,8 @@ export default function MobileMenu() {
                         Navegue pelo AniHub.
                     </p>
 
-                    <button onClick={() => setIsOpen(prev => !prev)}>
-                        <IoIosClose className="absolute top-3 right-3 size-10 text-white  active:scale-85" />
+                    <button onClick={() => setIsOpen(prev => !prev)} className="absolute top-3 right-3 hover:bg-zinc-800 rounded-2xl cursor-pointer">
+                        <IoIosClose className="text-white size-10  active:scale-90 " />
                     </button>
                 </div>
 

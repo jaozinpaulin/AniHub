@@ -62,7 +62,7 @@ export default function LoginForm({ setIsLogin, setOpen }) {
     };
 
     return (
-        <div className="relative mx-auto w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900/80 p-8 backdrop-blur-sm">
+        <div className="relative mx-auto w-full max-w-md  rounded-2xl border border-zinc-800 bg-zinc-900/80 p-8 backdrop-blur-sm">
 
 
             <button onClick={() => setOpen(false)}
