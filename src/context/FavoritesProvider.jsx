@@ -41,7 +41,7 @@ export default function FavoritesProvider({ children }) {
             return;
         }
         if (isFavorite(anime.id_video)) {
-            await removeFavorite(user.uid, anime);
+            await removeFavorite(user.uid, anime.id_video);
             showToast(
                 "Favorito removido!",
                 "info"

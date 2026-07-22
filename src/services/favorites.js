@@ -3,7 +3,7 @@ import { collection, doc, setDoc, getDocs, deleteDoc } from "firebase/firestore"
 import { db } from "../firebase/config";
 
 export async function addFavorite(uid, anime) {
-    const favoriteDocRef = doc(db, "users", uid, "favorites", anime.toString());
+    const favoriteDocRef = doc(db, "users", uid, "favorites", anime.id_video.toString());
     await setDoc(favoriteDocRef, anime);
 }
 
