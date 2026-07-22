@@ -106,7 +106,7 @@ export default function Header() {
                                             <img src={ani.capa} alt={ani.nome} className="w-12 h-16 rounded-md object-cover shrink-0" />
 
                                             <div className="flex flex-col text-left overflow-hidden">
-                                                <span className="w-full px-0.5 truncate text-sm font-medium shrink-0 text-white group-hover:text-blue-400 transition-colors">
+                                                <span className="w-full px-0.5 truncate text-sm font-medium shrink-0 text-white  transition-colors">
                                                     {ani.nome}
                                                 </span>
 
@@ -115,7 +115,7 @@ export default function Header() {
                                                         ? "bg-blue-600/80 group-hover:bg-blue-600"
                                                         : "bg-purple-600/80 group-hover:bg-purple-600"
                                                         }`}>
-                                                        {isDublado ? "DUBLADO" : "LEGENDADO"}
+                                                        {isDublado ? "Dublado" : "Legendado"}
                                                     </span>
                                                     <span>•</span>
                                                     <span>
