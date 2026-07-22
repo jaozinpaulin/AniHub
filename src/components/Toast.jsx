@@ -20,13 +20,14 @@ function ToastIcon({ type }) {
 }
 
 function getToastStyle(type) {
-
     const styles = {
-        success: "bg-green-600",
-        warning: "bg-yellow-600",
-        error: "bg-red-600",
-        info: "bg-blue-600"
+        success: "bg-emerald-600",
+        warning: "bg-amber-500",
+        error: "bg-rose-600",
+        info: "bg-sky-600"
     };
+
+
 
     return styles[type] || styles.info;
 }
@@ -43,7 +44,6 @@ export default function Toast() {
             <p className="font-medium">
                 {toast.message}
             </p>
-
 
             <button onClick={hideToast} className="transition cursor-pointer hover:scale-110">
                 <IoClose size={20} />

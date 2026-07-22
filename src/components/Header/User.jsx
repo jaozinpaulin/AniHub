@@ -6,8 +6,10 @@ import { useAuth } from "../../hooks/useAuth";
 
 import ProfileModal from "../ProfileModal/ProfileModal";
 import Auth from "../../pages/Auth/Auth.jsx";
+import { useToast } from "../../hooks/useToast.js";
 
 export default function User() {
+    const { showToast } = useToast();
 
     const { user, handleLogout } = useAuth();
     const [openUser, setOpenUser] = useState(false);
@@ -32,6 +34,25 @@ export default function User() {
         };
 
     }, []);
+
+
+    async function handleLogoutClick() {
+        try {
+            await handleLogout();
+            showToast(
+                "Você saiu da conta.",
+                "info"
+            );
+
+        } catch (error) {
+
+            showToast(
+                "Erro ao sair da conta.",
+                "error"
+            );
+        }
+    }
+
 
     return (
         <>
@@ -68,7 +89,7 @@ export default function User() {
                                 Configurações (em breve)
                             </button>
 
-                            <button onClick={handleLogout}
+                            <button onClick={handleLogoutClick}
                                 className="mt-2 w-full rounded-xl px-3 py-2 text-left text-sm text-red-400 transition hover:bg-zinc-800 cursor-pointer">
                                 Sair
                             </button>
@@ -81,13 +102,13 @@ export default function User() {
 
                 <div className="flex items-center gap-2">
                     <button
-                        onClick={() => { setIsLogin(true); setOpenAuth(true); }}
+                        onClick={() => { setIsLogin(true); setOpenAuth(true); setOpenUser(false) }}
                         className="rounded-xl border border-transparent px-3 py-2 text-white transition hover:border-zinc-700 hover:bg-zinc-900 cursor-pointer">
                         Entrar
                     </button>
 
                     <button
-                        onClick={() => { setIsLogin(false); setOpenAuth(true); }}
+                        onClick={() => { setIsLogin(false); setOpenAuth(true); setOpenUser(false) }}
                         className="rounded-xl bg-gradient-to-r from-purple-600 to-blue-500 px-4 py-2 text-white transition hover:opacity-90 cursor-pointer">
                         Criar conta
                     </button>

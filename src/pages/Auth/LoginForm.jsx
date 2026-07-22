@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { FaXmark } from "react-icons/fa6";
+import { useToast } from "../../hooks/useToast";
 
 export default function LoginForm({ setIsLogin, setOpen }) {
     const { handleLogin } = useAuth();
+    const { showToast } = useToast()
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -32,6 +34,10 @@ export default function LoginForm({ setIsLogin, setOpen }) {
         try {
             const result = await handleLogin(email, password);
             setOpen(false);
+            showToast(
+                "Login realizado com sucesso!",
+                "success"
+            )
 
         } catch (error) {
 

@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { FaXmark } from "react-icons/fa6";
+import { useToast } from "../../hooks/useToast";
 
 
 export default function RegisterForm({ setIsLogin, setOpen }) {
     const { handleRegister } = useAuth();
+    const { showToast } = useToast();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -32,6 +34,10 @@ export default function RegisterForm({ setIsLogin, setOpen }) {
         try {
             await handleRegister(email, password);
             setOpen(false);
+            showToast(
+                "Conta criada com sucesso!",
+                "success"
+            );
         } catch (error) {
 
             switch (error.code) {

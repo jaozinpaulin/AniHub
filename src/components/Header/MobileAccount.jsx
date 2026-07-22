@@ -4,14 +4,36 @@ import { useAuth } from "../../hooks/useAuth";
 
 import ProfileModal from "../ProfileModal/ProfileModal";
 import Auth from "../../pages/Auth/Auth.jsx";
+import { useToast } from "../../hooks/useToast.js";
 
-export default function MobileAccount() {
+export default function MobileAccount({ setIsOpen }) {
+    const { showToast } = useToast();
 
     const { user, handleLogout } = useAuth();
     const [openProfile, setOpenProfile] = useState(false);
 
     const [openAuth, setOpenAuth] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
+
+
+    async function handleLogoutClick() {
+        try {
+            await handleLogout();
+            showToast(
+                "Você saiu da conta.",
+                "info"
+            );
+            setIsOpen(false);
+
+        } catch (error) {
+
+            showToast(
+                "Erro ao sair da conta.",
+                "error"
+            );
+        }
+    }
+
 
     return (
         <>
@@ -49,7 +71,7 @@ export default function MobileAccount() {
                         </button>
 
                         <button
-                            onClick={handleLogout}
+                            onClick={handleLogoutClick}
                             className="w-full rounded-xl px-3 py-3 text-left text-sm text-red-400 transition hover:bg-zinc-800 cursor-pointer">
                             Sair
                         </button>
@@ -69,13 +91,13 @@ export default function MobileAccount() {
                     </div>
 
                     <button
-                        onClick={() => { setIsLogin(true); setOpenAuth(true); }}
+                        onClick={() => { setIsLogin(true); setOpenAuth(true); setIsOpen(false) }}
                         className="w-full rounded-xl border border-zinc-700 px-4 py-3 text-sm text-white transition hover:bg-zinc-900 cursor-pointer">
                         Entrar
                     </button>
 
                     <button
-                        onClick={() => { setIsLogin(false); setOpenAuth(true); }}
+                        onClick={() => { setIsLogin(false); setOpenAuth(true); setIsOpen(false) }}
                         className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-blue-500 px-4 py-3 text-sm text-white transition hover:opacity-90 cursor-pointer">
                         Criar conta
                     </button>

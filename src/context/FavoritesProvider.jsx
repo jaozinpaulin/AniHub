@@ -38,6 +38,7 @@ export default function FavoritesProvider({ children }) {
                 "Faça login para salvar seus favoritos",
                 "warning"
             )
+            return;
         }
         if (isFavorite(anime.id_video)) {
             await removeFavorite(user.uid, anime);

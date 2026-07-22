@@ -4,9 +4,11 @@ import { auth } from "../firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
 import { login, logout, register } from "../services/auth";
 
+
 export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
+
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
