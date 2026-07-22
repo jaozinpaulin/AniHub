@@ -3,12 +3,12 @@ import { FaStar, FaHeart, FaChevronDown, FaChevronLeft, FaRegHeart } from "react
 import { LuCalendarDays } from "react-icons/lu";
 
 import dados from '../services/detalhes_animes.json'
-import { useState, useContext } from "react";
-import { FavoritesContext } from "../context/FavoritesProvider";
+import { useState } from "react";
+import { useFavorites } from "../hooks/useFavorites";
 
 export default function Anime() {
-    // 1. Desestruturado o toggleFavorite do Context
-    const { isFavorite, toggleFavorite } = useContext(FavoritesContext)
+
+    const { isFavorite, toggleFavorite } = useFavorites();
 
     const navigate = useNavigate();
     const location = useLocation();

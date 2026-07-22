@@ -2,13 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineHeart, HiHeart } from "react-icons/hi2";
 import { FaChevronLeft } from "react-icons/fa";
 
-import { useContext } from "react";
-import { FavoritesContext } from "../context/FavoritesProvider";
+import { useFavorites } from "../hooks/useFavorites";
 
 export default function Favorites() {
-    const { favoritos } = useContext(FavoritesContext);
-    const navigate = useNavigate();
 
+    const { favoritos } = useFavorites();
+    const navigate = useNavigate();
 
     const hasFavorites = favoritos && favoritos.length > 0;
 
