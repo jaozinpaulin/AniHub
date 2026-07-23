@@ -3,12 +3,14 @@ import { FaStar, FaHeart, FaChevronDown, FaChevronLeft, FaRegHeart } from "react
 import { LuCalendarDays } from "react-icons/lu";
 
 import dados from '../services/detalhes_animes.json'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFavorites } from "../hooks/useFavorites";
+import { useProgress } from "../hooks/useProgress";
+
 
 export default function Anime() {
-
     const { isFavorite, toggleFavorite } = useFavorites();
+    const { progressVideo } = useProgress()
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -24,6 +26,10 @@ export default function Anime() {
 
     const [temporadaAtual, setTemporadaAtual] = useState(1)
     const temporada = animeShow.temporadas.find((t) => t.id === temporadaAtual);
+
+    const episodeProgress = () => {
+
+    }
 
     const [open, setOpen] = useState(false);
 
@@ -209,51 +215,65 @@ export default function Anime() {
 
                     <div className="flex flex-col gap-2.5 mb-3">
 
-                        {temporada.episodios.map((ani) => (
-                            <div
-                                key={ani.numero_episodio}
-                                className="flex flex-row items-center gap-2 sm:gap-4 bg-zinc-900/30 border border-zinc-800/80 p-2 sm:p-3 rounded-lg sm:rounded-xl hover:border-zinc-700 hover:bg-zinc-900/50 transition-all duration-300 group/episode">
+                        {temporada.episodios.map((ani) => {
 
-                                <div className="w-24 min-w-[96px] sm:w-36 md:w-44 aspect-video rounded-md sm:rounded-lg overflow-hidden flex-shrink-0 bg-zinc-950 border border-zinc-800/50 relative">
-                                    <img
-                                        src={ani.capa_episodio}
-                                        alt={`Episódio ${ani.numero_episodio}`}
-                                        className="w-full h-full  transition-all duration-300 group-hover/episode:scale-105 group-hover/episode:brightness-[0.8]"
-                                        loading="lazy"
-                                    />
-                                </div>
+                            const progress = progressVideo.find(item =>
+                                Number(item.animeId) === Number(animeShow.id_video) &&
+                                Number(item.temporada) === Number(temporadaAtual) &&
+                                Number(item.episodio) === Number(ani.numero_episodio)
+                            );
 
-                                <div className="relative max-[400px]:py-2 pb-1.5 sm:py-2 md:py-4 flex-1 flex flex-row items-center justify-between gap-1.5 sm:gap-4 min-w-0">
-                                    <div className="flex flex-col text-left min-w-0 pr-1">
-                                        <span className="text-blue-500 font-bold text-[11px] sm:text-sm md:text-base truncate transition-colors group-hover/episode:text-blue-400">
-                                            Episódio {ani.numero_episodio}
-                                        </span>
-                                        <span className="font-semibold text-[9px] sm:text-xs text-zinc-500 mt-0.5">
-                                            Temp. {temporadaAtual}
-                                        </span>
-                                        {animeShow.data_lancamento && (
-                                            <p className="text-zinc-400 text-[9px] sm:text-xs mt-0.5 truncate max-[400px]:hidden">
-                                                {animeShow.data_lancamento}
-                                            </p>
-                                        )}
+                            const porcentagem = progress?.progress ?? 0;
+
+
+
+                            return (
+                                <div
+                                    key={ani.numero_episodio}
+                                    className="flex flex-row items-center gap-2 sm:gap-4 bg-zinc-900/30 border border-zinc-800/80 p-2 sm:p-3 rounded-lg sm:rounded-xl hover:border-zinc-700 hover:bg-zinc-900/50 transition-all duration-300 group/episode">
+
+                                    <div className="w-24 min-w-[96px] sm:w-36 md:w-44 aspect-video rounded-md sm:rounded-lg overflow-hidden flex-shrink-0 bg-zinc-950 border border-zinc-800/50 relative">
+                                        <img
+                                            src={ani.capa_episodio}
+                                            alt={`Episódio ${ani.numero_episodio}`}
+                                            className="w-full h-full  transition-all duration-300 group-hover/episode:scale-105 group-hover/episode:brightness-[0.8]"
+                                            loading="lazy"
+                                        />
                                     </div>
 
-                                    <Link to={`/video/${animeShow.id_video}/${temporadaAtual}/${ani.numero_episodio}`} className="flex-shrink-0">
-                                        <button className="bg-blue-600 hover:bg-blue-600/70 text-white px-3 py-1.5 sm:px-5 sm:py-2 md:px-6 md:py-2.5 rounded-lg sm:rounded-xl font-bold text-[10px] sm:text-sm transition-all duration-300 cursor-pointer shadow-md shadow-blue-600/10 active:scale-[0.96]">
-                                            Assistir
-                                        </button>
-                                    </Link>
+                                    <div className="relative max-[400px]:py-2 pb-1.5 sm:py-2 md:py-4 flex-1 flex flex-row items-center justify-between gap-1.5 sm:gap-4 min-w-0">
+                                        <div className="flex flex-col text-left min-w-0 pr-1">
+                                            <span className="text-blue-500 font-bold text-[11px] sm:text-sm md:text-base truncate transition-colors group-hover/episode:text-blue-400">
+                                                Episódio {ani.numero_episodio}
+                                            </span>
+                                            <span className="font-semibold text-[9px] sm:text-xs text-zinc-500 mt-0.5">
+                                                Temp. {temporadaAtual}
+                                            </span>
+                                            {animeShow.data_lancamento && (
+                                                <p className="text-zinc-400 text-[9px] sm:text-xs mt-0.5 truncate max-[400px]:hidden">
+                                                    {animeShow.data_lancamento}
+                                                </p>
+                                            )}
+                                        </div>
 
-                                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-zinc-800 z-20">
-                                        <div
-                                            className="h-full bg-violet-600 transition-all duration-300"
-                                            style={{ width: `18%` }} />
+                                        <Link to={`/video/${animeShow.id_video}/${temporadaAtual}/${ani.numero_episodio}`} className="flex-shrink-0">
+                                            <button className="bg-blue-600 hover:bg-blue-600/70 text-white px-3 py-1.5 sm:px-5 sm:py-2 md:px-6 md:py-2.5 rounded-lg sm:rounded-xl font-bold text-[10px] sm:text-sm transition-all duration-300 cursor-pointer shadow-md shadow-blue-600/10 active:scale-[0.96]">
+                                                Assistir
+                                            </button>
+                                        </Link>
+
+                                        <div className="absolute bottom-0 left-0 right-0 h-0.5 sm:h-1  bg-zinc-800 z-20">
+                                            <div
+                                                className="h-full bg-violet-600 transition-all duration-300"
+                                                style={{ width: `${porcentagem}%` }}
+                                            />
+                                        </div>
                                     </div>
+
+
                                 </div>
-
-
-                            </div>
-                        ))}
+                            )
+                        })}
                         <Link />
                     </div>
 

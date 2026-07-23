@@ -6,12 +6,14 @@ import { FaChevronLeft, FaStar } from "react-icons/fa";
 import { PiArrowsOutLineHorizontalBold } from "react-icons/pi";
 import { HiOutlineChevronLeft, HiOutlineChevronRight, HiOutlineSquares2X2, } from "react-icons/hi2";
 
-import { timerContext } from '../context/TimerProvider'
+import { useProgress } from '../hooks/useProgress';
 
 import dados from '../services/detalhes_animes.json'
 
 export default function Video() {
-    const { progressVideo, atualizarProgresso } = useContext(timerContext)
+
+    const { progressVideo, atualizarProgresso } = useProgress()
+
     const [tempo, setTempo] = useState(0)
     const [isPlaying, setIsplaying] = useState(false)
 
@@ -34,6 +36,15 @@ export default function Video() {
 
     const totalEp = anime.temporadas.find(tem => tem.id === temporada).total_episodios_temporada || 0;
 
+    function getProgressPercentage(tempo) {
+        const duracaoEp = 24 * 60;
+
+        return Math.round(
+            Math.min((tempo / duracaoEp) * 100, 100)
+        );
+    }
+
+
     useEffect(() => {
         if (!isPlaying) return;
 
@@ -42,11 +53,12 @@ export default function Video() {
                 const novoTempo = prev + 1;
 
                 if (novoTempo % 5 === 0) {
+                    const progress = getProgressPercentage(novoTempo);
                     atualizarProgresso({
                         animeId,
                         temporada,
                         episodio,
-                        tempo: novoTempo
+                        progress
                     });
                 }
 
@@ -56,6 +68,9 @@ export default function Video() {
 
         return () => clearInterval(time);
     }, [isPlaying]);
+
+
+
 
 
     //fallback
