@@ -2,13 +2,21 @@ import { useRef, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { FaStar, FaFire } from "react-icons/fa";
-import dadosAnimes from '../../../services/detalhes_animes.json';
 
 import ButtonsArrow from "../components/ButtonsArrow";
+import { useAnimes } from "../../../hooks/useAnimes";
+import { useWindowSize } from "../../../hooks/useWindowSize";
 
-const animes = dadosAnimes;
+import SkeletonLoading from "../../../components/Skeleton/SkeletonLoading";
 
 export default function Trending() {
+    const { animes, loading, error } = useAnimes();
+    const width = useWindowSize();
+    console.log(width)
+
+
+    // console.log(animes)
+
     const location = useLocation();
 
     const scrollAnimeRef = useRef(null);
@@ -27,6 +35,18 @@ export default function Trending() {
             .slice(0, 30);
     }, [animes]);
 
+    if (loading) {
+        return <div className="grid grid-cols-2 md:grid-colos-4 lg:grid-cols-6 gap-4 "><SkeletonLoading /></div>
+    }
+
+    if (error) {
+        return <p>Erro ao carregar animes.</p>
+    }
+
+
+    if (animes.length === 0) {
+        return <p>Nenhum anime encontrado.</p>
+    }
     return (
         <section className="w-full text-white space-y-4 md:space-y-6 pb-20">
 

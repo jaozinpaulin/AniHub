@@ -27,3 +27,8 @@ dist-ssr
 .venv/
 venv/
 ENV/
+
+# services
+
+src/services/detalhes_animes.json
+src/services/lista_animes.json

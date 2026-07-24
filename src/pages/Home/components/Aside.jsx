@@ -4,19 +4,18 @@ import { Link, useLocation } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight, FaStar, FaPlay, FaChartLine, FaDiceFour } from "react-icons/fa";
 import { FaShuffle, FaFilm, FaMasksTheater, FaClapperboard } from "react-icons/fa6";
 
-import dadosAnimes from '../../../services/detalhes_animes.json'
 import trailers from '../../../services/trailers.json'
 import frases from '../../../services/frases.json'
-
-
-const animes = dadosAnimes;
-const trailersAnime = trailers;
-
-
-const generosUnicos = [...new Set(animes.flatMap(anime => anime.generos).filter(ge => !ge.startsWith('Letra')))]
+import { useAnimes } from "../../../hooks/useAnimes";
+import SkeletonAside from "../../../components/Skeleton/SkeletonAside";
 
 
 export default function Aside() {
+    const { animes, loading, error } = useAnimes();
+
+    const trailersAnime = trailers;
+
+
     const location = useLocation();
 
     const [animesAleatorio, setAnimesAleatorio] = useState(null);
@@ -31,6 +30,7 @@ export default function Aside() {
         sortearNumAleatorio()
     }, [animes])
 
+    const generosUnicos = [...new Set(animes.flatMap(anime => anime.generos).filter(ge => !ge.startsWith('Letra')))]
 
     const [trailerAleatorio, setTrailerAleatorio] = useState()
     const sortearTrailerAleatorio = () => {
@@ -61,6 +61,13 @@ export default function Aside() {
     useEffect(() => {
         sortearFraseAleatoria();
     }, []);
+
+
+
+    if (loading) {
+        return <div className="flex flex-col gap-4"><SkeletonAside /></div>
+    }
+
 
 
     return (
