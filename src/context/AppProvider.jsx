@@ -1,17 +1,23 @@
 import FavoritesProvider from "./FavoritesProvider";
 import TimerProvider from "./TimerProvider";
+
 import AuthProvider from "./AuthProvider"
 import { ToastProvider } from "./ToastProvider";
+
+import { AnimeProvider } from "./AnimeProvider";
+
 
 export default function AppProvider({ children }) {
     return (
         <AuthProvider>
             <ToastProvider>
-                <FavoritesProvider>
-                    <TimerProvider>
-                        {children}
-                    </TimerProvider>
-                </FavoritesProvider>
+                <AnimeProvider>
+                    <FavoritesProvider>
+                        <TimerProvider>
+                            {children}
+                        </TimerProvider>
+                    </FavoritesProvider>
+                </AnimeProvider>
             </ToastProvider>
         </AuthProvider>
 

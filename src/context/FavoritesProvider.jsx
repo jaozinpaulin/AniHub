@@ -8,62 +8,85 @@ export const FavoritesContext = createContext();
 
 export default function FavoritesProvider({ children }) {
 
-    const { user } = useAuth()
+    const { user } = useAuth();
     const { showToast } = useToast();
 
     const [favoritos, setFavoritos] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    async function loadFavorites() {
+        try {
+            // throw new Error("Errp de teste")
+            setLoading(true);
+            setError(null);
+
+            const favorites = await getFavorites(user.uid);
+            setFavoritos(favorites);
+
+        } catch (error) {
+            setError(error.message);
+            showToast(
+                "Não foi possível carregar seus favoritos.",
+                "error"
+            );
+        } finally {
+            setLoading(false);
+        }
+    }
 
     useEffect(() => {
         if (!user) {
-            setFavoritos([])
+            setFavoritos([]);
             return;
         }
+        loadFavorites();
+    }, [user]);
 
-        async function loadFavorites() {
-            const favorites = await getFavorites(user.uid)
-            setFavoritos(favorites)
-        }
-        loadFavorites()
-
-    }, [user])
-
-    const isFavorite = (id) => {
-        return favoritos.some(ani => ani.id_video === id)
+    function isFavorite(id) {
+        return favoritos.some(
+            anime => anime.id_video === id
+        );
     }
 
     async function toggleFavorite(anime) {
-
         if (!user) {
             showToast(
                 "Faça login para salvar seus favoritos",
                 "warning"
-            )
+            );
             return;
         }
-        if (isFavorite(anime.id_video)) {
-            await removeFavorite(user.uid, anime.id_video);
-            showToast(
-                "Favorito removido!",
-                "info"
-            )
-        } else {
-            await addFavorite(user.uid, anime);
-            showToast(
-                "Favorito salvo!",
-                "success"
-            )
-        }
-        const favorites = await getFavorites(user.uid)
-        setFavoritos(favorites);
+        try {
+            if (isFavorite(anime.id_video)) {
+                await removeFavorite(user.uid, anime.id_video);
 
+                showToast(
+                    "Favorito removido!",
+                    "info"
+                );
+            } else {
+                await addFavorite(user.uid, anime);
+                showToast(
+                    "Favorito salvo!",
+                    "success"
+                );
+            }
+            await loadFavorites();
+        } catch (error) {
+            setError(error.message);
+            showToast(
+                "Não foi possível atualizar seus favoritos.",
+                "error"
+            );
+        }
     }
 
     return (
-        <FavoritesContext.Provider value={{ favoritos, isFavorite, toggleFavorite }}>
+        <FavoritesContext.Provider
+            value={{ favoritos, loading, error, loadFavorites, isFavorite, toggleFavorite }}>
             {children}
         </FavoritesContext.Provider>
-    )
+    );
+
 }
-
-
-

@@ -3,24 +3,28 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaSearch, FaTimes } from "react-icons/fa";
 
-/* api */
-import animes from '../services/detalhes_animes.json'
+import { useAnimes } from "../hooks/useAnimes";
 
+import SkeletonLoading from "../components/Skeleton/SkeletonLoading";
+import ErrorMessage from "../components/Feedback/ErrorMessage";
+import EmptyState from "../components/Feedback/EmptyState";
 
 export default function Explore() {
+    const { animes, loading, error, loadAnimes } = useAnimes();
+
     const location = useLocation();
     const [isExpanded, setIsExpanded] = useState(false);
 
 
-    const [loading, setLoading] = useState(true)
+    const [load, setLoad] = useState(true)
     const [carregados, setCarregados] = useState([])
 
     useEffect(() => {
-        setLoading(true)
+        setLoad(true)
 
         setTimeout(() => {
             setCarregados(animes);
-            setLoading(false)
+            setLoad(false)
         }, 1000)
     }, [])
 
@@ -45,6 +49,59 @@ export default function Explore() {
         return inputFilter && generoFilter
     })
 
+    if (loading) {
+        return (
+            <div className=" flex flex-col pt-32 px-5 gap-5">
+
+                <div className=" space-y-3 animate-pulse">
+                    <div className=" h-8 w-52 rounded-lg bg-zinc-800" />
+
+                    <div className=" h-4 w-80 max-w-full rounded-lg bg-zinc-800" />
+                </div>
+
+                <div className=" w-full h-12 rounded-xl bg-zinc-800 animate-pulse" />
+                <div className=" w-full h-20 rounded-xl bg-zinc-800 animate-pulse" />
+
+                <div className=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <SkeletonLoading quantity={12} />
+                </div>
+
+            </div>
+        )
+    }
+    if (error) {
+        return (
+            <div className="pt-32 p-10">
+                <ErrorMessage message={error} retry={loadAnimes} />
+            </div>
+        )
+    }
+
+
+    if (animes.length === 0) {
+        return (
+            <div className="space-y-3 p-10 pt-32">
+                <div className="space-y-2 animate-pulse">
+                    <div className=" h-8 w-52 rounded-lg bg-zinc-800" />
+
+
+                    <div className=" h-4 w-80 max-w-full rounded-lg bg-zinc-800" />
+                </div>
+
+                <div className=" w-full h-12 rounded-xl bg-zinc-800 animate-pulse" />
+                <div className=" w-full h-20 rounded-xl flex items-center justify-center bg-zinc-800 animate-pulse">
+                    <span className=" text-zinc-500 text-sm text-center">
+                        Não foi possível carregar
+                    </span>
+                </div>
+
+                <EmptyState message={error} retry={loadAnimes} />
+            </div>
+        )
+    }
+
+
+
     return (
         <section className="w-full min-h-dvh pt-16 sm:pt-20 bg-zinc-950/90  xl:px-5">
 
@@ -52,10 +109,10 @@ export default function Explore() {
                 <h2 className="hidden sm:block text-3xl md:text-4xl font-bold text-white mb-3">
                     Explorar
                 </h2>
-                {/* 
+
                 <p className="bg-blue-900/50 p-2 text-center sm:text-left sm:bg-transparent sm:p-0  text-white sm:text-zinc-400  sm:text-lg max-w-2xl">
                     Descubra novos animes para assistir
-                </p> */}
+                </p>
             </div>
 
             <div className="relative mx-3 mt-3 sm:my-8">
@@ -77,60 +134,46 @@ export default function Explore() {
             </p>
 
             <div className="w-full  flex-wrap gap-4 hidden 2xl:flex  mx-3 pb-10">
-                {loading ? (
-
-                    Array.from({ length: 16 }).map((_, i) => (
-                        <div key={i} className="animate-pulse px-4 py-2 rounded-xl bg-zinc-800 border border-zinc-700 w-24 h-10" />))
-                ) :
-                    (
-
-                        generosUnicos.map((g) => (
-                            <button
-                                key={g}
-                                type="button"
-                                onClick={() => geneSet(g)}
-                                className={`border rounded-xl px-4 py-2 transition-all duration-300 cursor-pointer font-medium ${gene === g
-                                    ? 'bg-blue-500/5 border-blue-500 text-blue-400'
-                                    : 'bg-zinc-900 border-zinc-800 text-white hover:bg-zinc-800 hover:border-blue-500'}`}>
-                                {g}
-                            </button>
-                        ))
-                    )}
+                {
+                    generosUnicos.map((g) => (
+                        <button
+                            key={g}
+                            type="button"
+                            onClick={() => geneSet(g)}
+                            className={`border rounded-xl px-4 py-2 transition-all duration-300 cursor-pointer font-medium ${gene === g
+                                ? 'bg-blue-500/5 border-blue-500 text-blue-400'
+                                : 'bg-zinc-900 border-zinc-800 text-white hover:bg-zinc-800 hover:border-blue-500'}`}>
+                            {g}
+                        </button>
+                    ))}
             </div>
 
             <div className="w-full grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-8 gap-4 pb-10 px-2 xl:px-6">
-                {loading ? (
-                    Array.from({ length: 16 }).map((_, i) => (
-                        <div key={i} className="animate-pulse bg-zinc-800 h-72 rounded-xl" />
-                    ))
-                )
-                    :
-                    [...animesFiltrado].toReversed().map(a => (
-                        <Link key={a.id_video} state={{ from: location.pathname }} to={`/anime/${a.id_video}`}>
-                            <div className=" bg-zinc-800 rounded-xl overflow-hidden cursor-pointer text-white transition-all duration-300 hover:-translate-y-2 hover:bg-zinc-800/60 hover:shadow-xl hover:shadow-black/40">
+                {[...animesFiltrado].toReversed().map(a => (
+                    <Link key={a.id_video} state={{ from: location.pathname }} to={`/anime/${a.id_video}`}>
+                        <div className=" bg-zinc-800 rounded-xl overflow-hidden cursor-pointer text-white transition-all duration-300 hover:-translate-y-2 hover:bg-zinc-800/60 hover:shadow-xl hover:shadow-black/40">
 
-                                <div className="relative aspect-[2/3] overflow-hidden">
-                                    <img src={a.capa} alt={`banner do ${a.nome}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                            <div className="relative aspect-[2/3] overflow-hidden">
+                                <img src={a.capa} alt={`banner do ${a.nome}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
 
-                                    <span
-                                        className={`absolute top-2 left-2 px-2 py-1 rounded-md text-[10px] sm:text-xs font-medium text-white ${a.generos.includes("Dublado")
-                                            ? "bg-blue-800"
-                                            : "bg-purple-800"
-                                            }`}
-                                    >
-                                        {a.generos.includes("Dublado") ? "Dublado" : "Legendado"}
-                                    </span>
-                                </div>
-
-                                <div className="p-2">
-                                    <h4 className="font-bold text-sm truncate">
-                                        {a.nome}
-                                    </h4>
-                                </div>
+                                <span
+                                    className={`absolute top-2 left-2 px-2 py-1 rounded-md text-[10px] sm:text-xs font-medium text-white ${a.generos.includes("Dublado")
+                                        ? "bg-blue-800"
+                                        : "bg-purple-800"
+                                        }`}
+                                >
+                                    {a.generos.includes("Dublado") ? "Dublado" : "Legendado"}
+                                </span>
                             </div>
-                        </Link>
-                    ))}
 
+                            <div className="p-2">
+                                <h4 className="font-bold text-sm truncate">
+                                    {a.nome}
+                                </h4>
+                            </div>
+                        </div>
+                    </Link>
+                ))}
             </div>
 
 

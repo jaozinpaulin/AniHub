@@ -1,33 +1,15 @@
-import { useEffect, useState } from "react";
-
-import { getAnimes } from "../services/animes";
+import { useContext } from "react";
+import { AnimeContext } from "../context/AnimeProvider";
 
 export function useAnimes() {
 
-    const [animes, setAnimes] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const context = useContext(AnimeContext);
 
-    useEffect(() => {
-
-        async function loadAnimes() {
-            try {
-                const data = await getAnimes()
-                setAnimes(data)
-
-            } catch (error) {
-                setError(error.message);
-
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        loadAnimes();
-    }, [])
-
-    return {
-        animes, loading, error
+    if (!context) {
+        throw new Error(
+            "useAnimes deve ser usado dentro do AnimeProvider"
+        );
     }
 
+    return context;
 }

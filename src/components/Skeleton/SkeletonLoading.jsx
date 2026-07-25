@@ -21,9 +21,6 @@ export default function SkeletonLoading() {
 
 
     return (
-
-        // <div className="grid grid-cols-2 md:grid-colos-4 lg:grid-cols-6 gap-4">
-
         <>
             {
                 Array.from({ length: quantity })
@@ -32,7 +29,6 @@ export default function SkeletonLoading() {
                     ))
             }
         </>
-        // </div>
     )
 
 }

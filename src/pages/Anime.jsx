@@ -2,13 +2,22 @@ import { useNavigate, Link, useParams, useLocation } from "react-router-dom";
 import { FaStar, FaHeart, FaChevronDown, FaChevronLeft, FaRegHeart } from "react-icons/fa";
 import { LuCalendarDays } from "react-icons/lu";
 
-import dados from '../services/detalhes_animes.json'
+// import dados from '../services/detalhes_animes.json'
 import { useEffect, useState } from "react";
 import { useFavorites } from "../hooks/useFavorites";
 import { useProgress } from "../hooks/useProgress";
 
+import { useAnimes } from "../hooks/useAnimes";
+import SkeletonLoading from "../components/Skeleton/SkeletonCard";
+import ErrorMessage from "../components/Feedback/ErrorMessage";
+import EmptyState from "../components/Feedback/EmptyState";
+
 
 export default function Anime() {
+    const { animes, loading, error, loadAnimes } = useAnimes();
+
+    const [open, setOpen] = useState(false);
+
     const { isFavorite, toggleFavorite } = useFavorites();
     const { progressVideo } = useProgress()
 
@@ -18,7 +27,7 @@ export default function Anime() {
 
     const { id } = useParams();
 
-    const animeShow = dados.find((anime) => {
+    const animeShow = animes.find((anime) => {
         return anime.id_video === id
     })
 
@@ -27,22 +36,21 @@ export default function Anime() {
     const [temporadaAtual, setTemporadaAtual] = useState(1)
     const temporada = animeShow.temporadas.find((t) => t.id === temporadaAtual);
 
-    const episodeProgress = () => {
 
-    }
+    console.log(toggleFavorite)
 
-    const [open, setOpen] = useState(false);
+
 
     return (
-        <section className="py-10 md:py-20 bg-zinc-950 text-white selection:bg-blue-500/30">
+        <section className="py-8 md:py-20 bg-zinc-950 text-white selection:bg-blue-500/30">
 
-            <div className="hidden md:block relative w-full md:h-[400px] lg:h-[500px] overflow-hidden bg-zinc-900">
+            <div className="hidden md:block relative w-full md:h-[280px] lg:h-[340px] overflow-hidden bg-zinc-900">
                 <div className="absolute md:top-20 md:left-20 h-72 w-72 rounded-full bg-blue-600/40 blur-[120px]" />
                 <div className="absolute md:bottom-20 md:right-100 h-72 w-72 rounded-full bg-purple-600/40 blur-[120px]" />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-zinc-950" />
             </div>
 
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 md:gap-8 relative mt-12 max-[480px]:mt-8 sm:mt-24 md:-mt-44 lg:-mt-56 z-10 border-b-2 border-zinc-800 p-4 md:p-3 px-4 sm:px-6 md:px-10 xl:px-6 bg-zinc-950/80 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none rounded-xl md:rounded-none md:border-r-2 sm:mx-6 md:mx-auto">
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 md:gap-8 relative mt-12 max-[480px]:mt-8 sm:mt-18 md:-mt-44 lg:-mt-56 z-10 border-b-2 border-zinc-800 p-4 md:p-3 px-4 sm:px-6 md:px-10 xl:px-6 bg-zinc-950/80 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none rounded-xl md:rounded-none md:border-r-2 sm:mx-6 md:mx-auto">
 
                 <div className="w-full flex flex-row items-center justify-between gap-2 relative md:absolute md:-top-20 md:left-0 md:w-full z-20 pb-4 md:pb-0 sm:px-5">
 

@@ -2,20 +2,16 @@ import { useRef, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { FaStar, FaFire } from "react-icons/fa";
-
 import ButtonsArrow from "../components/ButtonsArrow";
-import { useAnimes } from "../../../hooks/useAnimes";
-import { useWindowSize } from "../../../hooks/useWindowSize";
 
+import { useAnimes } from "../../../hooks/useAnimes";
 import SkeletonLoading from "../../../components/Skeleton/SkeletonLoading";
+import ErrorMessage from "../../../components/Feedback/ErrorMessage";
+import EmptyState from "../../../components/Feedback/EmptyState";
+
 
 export default function Trending() {
-    const { animes, loading, error } = useAnimes();
-    const width = useWindowSize();
-    console.log(width)
-
-
-    // console.log(animes)
+    const { animes, loading, error, loadAnimes } = useAnimes();
 
     const location = useLocation();
 
@@ -36,17 +32,25 @@ export default function Trending() {
     }, [animes]);
 
     if (loading) {
-        return <div className="grid grid-cols-2 md:grid-colos-4 lg:grid-cols-6 gap-4 "><SkeletonLoading /></div>
+        return (
+            <div className="grid grid-cols-2 md:grid-colos-4 lg:grid-cols-6 gap-4 "><SkeletonLoading /></div>
+        )
     }
 
     if (error) {
-        return <p>Erro ao carregar animes.</p>
+        return (
+            <ErrorMessage message={error} retry={loadAnimes} />
+        )
     }
 
 
     if (animes.length === 0) {
-        return <p>Nenhum anime encontrado.</p>
+        return (
+            <EmptyState message={error} retry={loadAnimes} />
+        )
     }
+
+
     return (
         <section className="w-full text-white space-y-4 md:space-y-6 pb-20">
 

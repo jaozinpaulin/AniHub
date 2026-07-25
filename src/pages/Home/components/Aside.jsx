@@ -9,12 +9,12 @@ import frases from '../../../services/frases.json'
 import { useAnimes } from "../../../hooks/useAnimes";
 import SkeletonAside from "../../../components/Skeleton/SkeletonAside";
 
+import ErrorMessage from "../../../components/Feedback/ErrorMessage";
 
 export default function Aside() {
-    const { animes, loading, error } = useAnimes();
+    const { animes, loading, error, loadAnimes } = useAnimes();
 
     const trailersAnime = trailers;
-
 
     const location = useLocation();
 
@@ -63,11 +63,25 @@ export default function Aside() {
     }, []);
 
 
+    const hasAnimeData = animes.length > 0;
+
 
     if (loading) {
         return <div className="flex flex-col gap-4"><SkeletonAside /></div>
     }
 
+    if (error) {
+        return (
+            <div
+                className=" h-full rounded-xl bg-zinc-900 p-4 flex flex-col items-center justify-center animate-pulse">
+
+                <span className=" text-zinc-500 text-sm text-center">
+                    Não foi possível carregar
+                </span>
+
+            </div>
+        )
+    }
 
 
     return (
@@ -173,25 +187,25 @@ export default function Aside() {
 
                     <div className="rounded-lg border border-zinc-800/80 bg-zinc-800/10 p-3.5 transition-all duration-300 hover:border-blue-500/40 hover:bg-blue-600/5 group cursor-default">
                         <FaFilm className="mb-2 text-lg text-blue-400" />
-                        <h4 className="text-xl font-black text-zinc-100 leading-none">{animes.length}</h4>
+                        <h4 className="text-xl font-black text-zinc-100 leading-none">{hasAnimeData ? animes.length : '?'}</h4>
                         <span className="text-[10px] uppercase tracking-wider font-bold text-zinc-500 mt-1 block">Animes</span>
                     </div>
 
                     <div className="rounded-lg border border-zinc-800/80 bg-zinc-800/10 p-3.5 transition-all duration-300 hover:border-purple-500/40 hover:bg-purple-600/5 group cursor-default">
                         <FaMasksTheater className="mb-2 text-lg text-purple-400" />
-                        <h4 className="text-xl font-black text-zinc-100  leading-none">{generosUnicos.length}</h4>
+                        <h4 className="text-xl font-black text-zinc-100  leading-none">{hasAnimeData ? generosUnicos.length : '?'}</h4>
                         <span className="text-[10px] uppercase tracking-wider font-bold text-zinc-500 mt-1 block">Gêneros</span>
                     </div>
 
                     <div className="rounded-lg border border-zinc-800/80 bg-zinc-800/10 p-3.5 transition-all duration-300 hover:border-yellow-500/40 hover:bg-yellow-600/5 group cursor-default">
                         <FaStar className="mb-2 text-lg text-yellow-400" />
-                        <h4 className="text-xl font-black text-zinc-100 leading-none">{mediaTotal}</h4>
+                        <h4 className="text-xl font-black text-zinc-100 leading-none">{hasAnimeData ? mediaTotal : '?'}</h4>
                         <span className="text-[10px] uppercase tracking-wider font-bold text-zinc-500 mt-1 block">Nota Média</span>
                     </div>
 
                     <div className="rounded-lg border border-zinc-800/80 bg-zinc-800/10 p-3.5 transition-all duration-300 hover:border-emerald-500/40 hover:bg-emerald-600/5 group cursor-default">
                         <FaClapperboard className="mb-2 text-lg text-emerald-400" />
-                        <h4 className="text-xl font-black text-zinc-100 leading-none">{totalEpisodios.toLocaleString()}</h4>
+                        <h4 className="text-xl font-black text-zinc-100 leading-none">{hasAnimeData ? totalEpisodios.toLocaleString() : '?'}</h4>
                         <span className="text-[10px] uppercase tracking-wider font-bold text-zinc-500 mt-1 block">Episódios</span>
                     </div>
 
@@ -204,7 +218,7 @@ export default function Aside() {
                     Trailer em Destaque
                 </h3>
 
-                {trailerAleatorio && (
+                {trailerAleatorio && hasAnimeData && (
                     <div className="flex flex-col gap-4">
 
                         <div className="overflow-hidden rounded-xl border border-zinc-700">

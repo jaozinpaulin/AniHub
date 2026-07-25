@@ -17,7 +17,7 @@ export default function MobileMenu() {
         }`;
 
     return (
-        <div className="relative md:hidden">
+        <div className="relative md:hidden z-50">
 
             <button
                 onClick={() => setIsOpen(prev => !prev)}

@@ -3,15 +3,71 @@ import { FaGrip } from "react-icons/fa6";
 
 import { Link } from "react-router-dom";
 
-import animes from "../../services/detalhes_animes.json";
 import corGenero from '../../services/generos.json'
 
-
-
-const generosUnicos = [...new Set(animes.flatMap(ani => ani.generos).filter(a => !a.startsWith('Letra')))]
-
+import { useAnimes } from "../../hooks/useAnimes";
+import SkeletonCategories from "../../components/Skeleton/SkeletonCategories";
+import ErrorMessage from "../../components/Feedback/ErrorMessage";
+import EmptyState from "../../components/Feedback/EmptyState";
 
 export default function Categories() {
+    const { animes, loading, error, loadAnimes } = useAnimes();
+
+    const generosUnicos = [...new Set(animes.flatMap(ani => ani.generos).filter(a => !a.startsWith('Letra')))]
+
+
+    if (loading) {
+        return (
+            <div className=" flex flex-col pt-32 p-6 gap-5">
+
+                <div className=" space-y-3 animate-pulse">
+                    <div className=" h-8 w-52 rounded-lg bg-zinc-800" />
+
+                    <div className=" h-5 w-80 max-w-full rounded-lg bg-zinc-800" />
+                </div>
+
+                <div className=" grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <SkeletonCategories />
+                </div>
+
+            </div>
+
+        )
+    }
+    if (error) {
+        return (
+            <div className="pt-32 p-10">
+                <ErrorMessage message={error} retry={loadAnimes} />
+            </div>
+        )
+    }
+
+
+    if (animes.length === 0) {
+        return (
+            <div className="space-y-3 p-10 pt-32">
+                <div className="space-y-2 animate-pulse">
+                    <div className=" h-8 w-52 rounded-lg bg-zinc-800" />
+
+
+                    <div className=" h-4 w-80 max-w-full rounded-lg bg-zinc-800" />
+                </div>
+
+                <div className=" w-full h-12 rounded-xl bg-zinc-800 animate-pulse" />
+                <div className=" w-full h-20 rounded-xl flex items-center justify-center bg-zinc-800 animate-pulse">
+                    <span className=" text-zinc-500 text-sm text-center">
+                        Não foi possível carregar
+                    </span>
+                </div>
+
+                <EmptyState message={error} retry={loadAnimes} />
+            </div>
+        )
+    }
+
+
+
+
     return (
 
         <section className="w-full min-h-dvh pt-12 sm:pt-20 px-1 lg:px-6 bg-zinc-950">

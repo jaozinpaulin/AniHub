@@ -4,32 +4,100 @@ import { FaChevronLeft } from "react-icons/fa";
 
 import { useFavorites } from "../hooks/useFavorites";
 
+
+import SkeletonLoading from "../components/Skeleton/SkeletonLoading";
+import ErrorMessage from "../components/Feedback/ErrorMessage";
+import EmptyState from "../components/Feedback/EmptyState";
+
 export default function Favorites() {
-    const { favoritos } = useFavorites();
+    const { favoritos, loading, error, loadFavorites, isFavorite, toggleFavorite } = useFavorites();
     const navigate = useNavigate();
 
     const hasFavorites = favoritos && favoritos.length > 0;
+
+
+
+    if (loading) {
+        return (
+            <div className=" flex flex-col pt-32 px-5 gap-5">
+
+                <div className=" space-y-3 animate-pulse">
+                    <div className=" h-8 w-52 rounded-lg bg-zinc-800" />
+
+                    <div className=" h-4 w-80 max-w-full rounded-lg bg-zinc-800" />
+                </div>
+
+                <div className=" w-full h-12 rounded-xl bg-zinc-800 animate-pulse" />
+                <div className=" w-full h-20 rounded-xl bg-zinc-800 animate-pulse" />
+
+                <div className=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <SkeletonLoading quantity={12} />
+                </div>
+
+            </div>
+        )
+    }
+    if (error) {
+        return (
+            <div className="pt-32 p-10">
+                <ErrorMessage message={error} retry={loadFavorites} />
+            </div>
+        )
+    }
+
+
+    if (favoritos.length === 0) {
+        return (
+            <div className=" flex flex-col py-10 sm:pt-24 px-5 gap-5">
+
+                <div className=" space-y-3 animate-pulse">
+                    <div className=" h-8 w-52 rounded-lg bg-zinc-800" />
+
+                    <div className=" h-4 w-80 max-w-full rounded-lg bg-zinc-800" />
+                </div>
+
+                <div className=" w-full h-12 rounded-xl bg-zinc-800 animate-pulse" />
+                <div className=" w-full h-20 rounded-xl bg-zinc-800 animate-pulse" />
+
+                <div className=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <SkeletonLoading quantity={12} />
+                </div>
+
+            </div>
+        )
+    }
+
+
+
 
     return (
         <section className="w-full min-h-dvh bg-zinc-950 pt-16 sm:pt-20 px-4 lg:px-8 text-zinc-100 selection:bg-purple-500/30">
             <div className="py-4 sm:py-10">
 
-                <div className="flex items-end gap-2 mb-4 sm:mb-6">
+                <div className="mb-6 p-4 sm:p-7 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 backdrop-blur-md shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:mb-10">
+                    <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                            <h1 className="flex items-center gap-2 text-xl font-extrabold tracking-tight text-white sm:text-3xl md:text-4xl">
+                                Meus Favoritos
+                                <HiHeart className="h-5 w-5 shrink-0 animate-pulse text-rose-500 sm:h-8 sm:w-8" />
+                            </h1>
 
+                            <span className="inline-flex h-6 items-center gap-1 rounded-lg border border-zinc-800 bg-zinc-950/80 px-2 text-xs font-medium text-zinc-400 tabular-nums sm:hidden">
+                                <strong className="font-semibold text-rose-400">{favoritos.length}</strong>
+                            </span>
+                        </div>
 
-                    <span className="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 text-xs sm:text-sm font-medium">
-                        {favoritos.length} {favoritos.length === 1 ? "favorito" : "favoritos"}
-                    </span>
-                </div>
+                        <p className="text-xs leading-relaxed text-zinc-400 sm:text-sm md:text-base">
+                            Aqui estão os animes que você salvou para assistir depois.
+                        </p>
+                    </div>
 
-                <div className="mb-6 sm:mb-10 bg-zinc-900/50 rounded-xl p-5 md:p-6 border  border-zinc-900 backdrop-blur-sm">
-                    <h1 className="flex items-center gap-2 sm:gap-3 text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight">
-                        Meus Favoritos
-                        <HiHeart className="w-6 h-6 sm:w-8 sm:h-8 text-red-500 animate-pulse shrink-0" />
-                    </h1>
-                    <p className="text-zinc-400 mt-1 text-xs sm:text-sm md:text-base leading-relaxed">
-                        Aqui estão os animes que você salvou para assistir depois.
-                    </p>
+                    <div className="hidden shrink-0 sm:block">
+                        <span className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-950/80 px-3.5 text-sm font-medium text-zinc-400 tabular-nums shadow-inner">
+                            <strong className="font-semibold text-rose-400">{favoritos.length}</strong>
+                            <span>{favoritos.length === 1 ? "favorito" : "favoritos"}</span>
+                        </span>
+                    </div>
                 </div>
 
                 {!hasFavorites ? (
@@ -49,9 +117,9 @@ export default function Favorites() {
                     </div>
                 ) : (
                     <div className="w-full grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-9 gap-2.5 sm:gap-4 pb-10">
-                        {favoritos.map((anime) => (
+                        {favoritos.map((anime, index) => (
                             <Link
-                                key={anime.id}
+                                key={index}
                                 to={`/anime/${anime.id_video}`}
                                 state={{ from: location.pathname }}
 
