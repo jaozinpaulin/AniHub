@@ -64,7 +64,7 @@ export async function getAnimeById(id) {
 
 export async function getHomeAnimes() {
     try {
-        const { animes } = await getAnimes(20);
+        const { animes } = await getAnimes(25);
         return animes;
     } catch (error) {
         console.error("Erro ao buscar animes da Home", error);

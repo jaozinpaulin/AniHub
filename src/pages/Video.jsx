@@ -1,8 +1,14 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 
 import { FaStar } from "react-icons/fa";
-import { HiOutlineChevronLeft, HiOutlineChevronRight, HiOutlineSquares2X2 } from "react-icons/hi2";
+import {
+    HiOutlineChevronLeft,
+    HiOutlineChevronRight,
+    HiOutlineSquares2X2,
+    HiOutlineArrowPath,
+    HiOutlineExclamationTriangle
+} from "react-icons/hi2";
 import { PiArrowsOutLineHorizontalBold } from "react-icons/pi";
 
 import { useProgress } from '../hooks/useProgress';
@@ -11,7 +17,6 @@ import { getAnimeById } from '../services/animes';
 
 import ErrorMessage from '../components/Feedback/ErrorMessage';
 import EmptyState from '../components/Feedback/EmptyState';
-import { VideoPlayer } from './VideoPlayer';
 
 export default function Video() {
     const { id, tem, ep } = useParams();
@@ -31,6 +36,11 @@ export default function Video() {
     const [tempo, setTempo] = useState(0);
     const [isPlaying, setIsplaying] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+
+    // Estados para tratamento de erro/timeout do player
+    const [playerError, setPlayerError] = useState(false);
+    const [reloadKey, setReloadKey] = useState(0);
+    const playerTimeoutRef = useRef(null);
 
     const [isTheaterMode, setIsTheaterMode] = useState(false);
 
@@ -67,11 +77,32 @@ export default function Video() {
         return () => { isMounted = false; };
     }, [id, animeFromList]);
 
+    // Reseta o player e gerencia o timeout de segurança
     useEffect(() => {
         setIsLoaded(false);
         setIsplaying(false);
+        setPlayerError(false);
         setTempo(0);
-    }, [id, tem, ep]);
+
+        if (playerTimeoutRef.current) {
+            clearTimeout(playerTimeoutRef.current);
+        }
+
+        playerTimeoutRef.current = setTimeout(() => {
+            setIsLoaded((currentLoaded) => {
+                if (!currentLoaded) {
+                    setPlayerError(true);
+                }
+                return currentLoaded;
+            });
+        }, 15000);
+
+        return () => {
+            if (playerTimeoutRef.current) {
+                clearTimeout(playerTimeoutRef.current);
+            }
+        };
+    }, [id, tem, ep, reloadKey]);
 
     const temporadaAtiva = useMemo(() => {
         if (!animeShow?.temporadas) return null;
@@ -81,7 +112,6 @@ export default function Video() {
     const totalEp = temporadaAtiva?.total_episodios_temporada || temporadaAtiva?.episodios?.length || 0;
 
     const realAnimeId = animeShow?.id_video || id;
-
 
     function getProgressPercentage(segundos) {
         const duracaoEp = 24 * 60;
@@ -114,6 +144,18 @@ export default function Video() {
         navigate(`/video/${id}/${temporadaAtual}/${novoEp}`);
     };
 
+    const handleRetryPlayer = () => {
+        setIsLoaded(false);
+        setPlayerError(false);
+        setReloadKey((prev) => prev + 1);
+    };
+
+    const urlDoIframe = `https://serv01.meusdoramas.club/#/video/${realAnimeId}/${temporadaAtual}/${episodioAtual}/`;
+    const htmlConteudo = `<script>window.location.replace("${urlDoIframe}");<\/script>`;
+    const base64Html = btoa(unescape(encodeURIComponent(htmlConteudo)));
+
+
+
     if (loadingLocal || (loadingGlobal && !animeShow)) {
         return (
             <section className="w-full mx-auto min-h-screen pt-20 sm:pt-24 bg-zinc-950 flex justify-center px-3 sm:px-0">
@@ -123,9 +165,7 @@ export default function Video() {
                         <div className="h-7 bg-zinc-900 rounded-lg w-1/3" />
                         <div className="h-10 bg-zinc-900 rounded-lg w-1/2" />
                         <div className="h-10 bg-zinc-900 rounded-lg w-1/2" />
-
                     </div>
-
                 </div>
             </section>
         );
@@ -158,37 +198,77 @@ export default function Video() {
                 </>
             )}
 
-            <div className={`w-full mx-auto space-y-2  z-10 transition-all duration-300 ${isTheaterMode
+            <div className={`w-full mx-auto space-y-2 z-10 transition-all duration-300 ${isTheaterMode
                 ? "max-w-full"
                 : "max-w-6xl mt-2 sm:mt-4 lg:border-2 lg:rounded lg:border-zinc-900 sm:p-6 lg:p-8"
                 }`}>
 
-                <VideoPlayer realAnimeId={realAnimeId} temporadaAtual={temporadaAtual} episodioAtual={episodioAtual} isTheaterMode={isTheaterMode} />
-
-                {/* 
+                {/* Player Container */}
                 <div className={`w-full bg-black flex items-center justify-center transition-all duration-300 ${isTheaterMode
                     ? "h-[75vh] md:h-[80vh] max-h-[calc(100vh-100px)] border-y border-zinc-800/80 shadow-2xl"
                     : "aspect-video rounded-xl border border-zinc-800 overflow-hidden shadow-2xl"
                     }`}>
                     <div className="relative w-full h-full flex items-center justify-center aspect-video max-w-full">
-                        <iframe src={urlDoIframe} className="w-full h-full border-0" title="Player de Video" scrolling="no" allowFullScreen referrerPolicy="no-referrer"
-                            onLoad={() => {
-                                setIsLoaded(true);
-                                setIsplaying(true);
-                            }}
-                        />
+                        {!playerError && (
+                            <iframe
+                                key={`${urlDoIframe}-${reloadKey}`}
+                                src={`data:text/html;base64,${base64Html}`}
+                                className="w-full h-full border-0"
+                                title="Player de Video"
+                                scrolling="no"
+                                allowFullScreen
+                                referrerPolicy="no-referrer"
+                                onLoad={() => {
+                                    if (playerTimeoutRef.current) {
+                                        clearTimeout(playerTimeoutRef.current);
+                                    }
+                                    setIsLoaded(true);
+                                    setIsplaying(true);
+                                    setPlayerError(false);
+                                }}
+                                onError={() => {
+                                    if (playerTimeoutRef.current) {
+                                        clearTimeout(playerTimeoutRef.current);
+                                    }
+                                    setPlayerError(true);
+                                }}
+                            />
+                        )}
 
-                        {!isLoaded && (
+                        {/* Spinner de Carregamento */}
+                        {!isLoaded && !playerError && (
                             <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950 gap-3 z-10">
                                 <div className="w-10 h-10 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
                                 <span className="text-zinc-400 text-sm font-medium">Carregando player...</span>
                             </div>
                         )}
-                    </div>
-                </div> */}
 
-                {/* Infos + Botoes de Acao*/}
-                <div className={`px-3 sm:px-4  pt-2 ${isTheaterMode ? "max-w-full mx-auto w-full" : ""}`}>
+                        {playerError && (
+                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/95 gap-3 z-20 text-center p-4 border border-zinc-800 rounded-xl">
+                                <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-full text-red-400 mb-1">
+                                    <HiOutlineExclamationTriangle className="text-2xl" />
+                                </div>
+                                <span className="text-zinc-200 text-sm font-semibold">
+                                    Não foi possível carregar o vídeo
+                                </span>
+                                <span className="text-xs text-zinc-500 max-w-xs">
+                                    O servidor demorou para responder ou o vídeo está indisponível no momento.
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={handleRetryPlayer}
+                                    className="mt-2 flex items-center gap-2 px-4 py-2 bg-zinc-900 border border-zinc-700 text-zinc-200 text-xs font-medium rounded-lg hover:border-blue-500 hover:text-white transition-all duration-200 cursor-pointer">
+
+                                    <HiOutlineArrowPath className="text-sm" />
+                                    Tentar novamente
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Infos + Botoes de Acao */}
+                <div className={`px-3 sm:px-4 pt-2 ${isTheaterMode ? "max-w-full mx-auto w-full" : ""}`}>
 
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-zinc-950/80 border border-zinc-800/60 p-3 sm:p-4 rounded-xl">
 
@@ -225,7 +305,6 @@ export default function Video() {
                                 <span className="text-xs sm:text-sm font-medium truncate">Anterior</span>
                             </button>
 
-
                             <Link to={`/anime/${id}`} className="flex-1 md:flex-initial">
                                 <button
                                     type="button"
@@ -234,7 +313,6 @@ export default function Video() {
                                     <span className="text-xs sm:text-sm font-medium truncate">Episódios</span>
                                 </button>
                             </Link>
-
 
                             <button
                                 type="button"
@@ -247,7 +325,6 @@ export default function Video() {
                                 <span className="text-xs sm:text-sm font-medium truncate">Próximo</span>
                                 <HiOutlineChevronRight className={`text-sm sm:text-base transition-transform duration-300 ${episodioAtual >= totalEp ? "" : "group-hover:translate-x-1"}`} />
                             </button>
-
 
                             <button
                                 type="button"

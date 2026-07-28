@@ -53,3 +53,7 @@ firebase.js
 src/services/*.json
 .vercel
 .env*
+
+scripts/
+.env
+.env.local
