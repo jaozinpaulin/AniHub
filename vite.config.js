@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import react, { reactCompilerPreset } from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
@@ -8,4 +8,13 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://ani-hub-six.vercel.app', // Substitua pela URL exata da sua Vercel se for diferente
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 })

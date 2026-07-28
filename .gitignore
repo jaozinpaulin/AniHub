@@ -51,3 +51,5 @@ firebase.js
 
 # Services / JSONs locais gerados por scripts
 src/services/*.json
+.vercel
+.env*

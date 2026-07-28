@@ -6,7 +6,6 @@ export function VideoPlayer({ realAnimeId, temporadaAtual, episodioAtual, isThea
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        // Reset do estado a cada mudança de ep/temporada
         setIsLoaded(false);
         setError(false);
         setPlayerHtml("");
@@ -15,16 +14,19 @@ export function VideoPlayer({ realAnimeId, temporadaAtual, episodioAtual, isThea
             if (!realAnimeId || !temporadaAtual || !episodioAtual) return;
 
             try {
-                // Requisição para a Serverless Function na Vercel
                 const response = await fetch(
-                    `/api/playerProxy?animeId=${realAnimeId}&temp=${temporadaAtual}&ep=${episodioAtual}`
+                    `/api/playerProxy?animeId=${realAnimeId}&temp=${temporadaAtual}&ep=${episodioAtual}`,
+                    {
+                        headers: {
+                            'Accept': 'text/html',
+                        }
+                    }
                 );
 
                 if (!response.ok) {
-                    throw new Error("Erro na resposta do proxy");
+                    throw new Error(`Status ${response.status}: Erro na resposta do proxy`);
                 }
 
-                // Recebe o HTML puro retornado pelo servidor
                 const htmlContent = await response.text();
                 setPlayerHtml(htmlContent);
             } catch (err) {
@@ -46,16 +48,16 @@ export function VideoPlayer({ realAnimeId, temporadaAtual, episodioAtual, isThea
             <div className="relative w-full h-full flex items-center justify-center aspect-video max-w-full">
                 {playerHtml && (
                     <iframe
-                        srcDoc={playerHtml} // Injecta o HTML diretamente no iframe
+                        srcDoc={playerHtml}
                         className="w-full h-full border-0"
                         title="Player de Video"
                         scrolling="no"
                         allowFullScreen
+                        referrerPolicy="no-referrer"
                         onLoad={() => setIsLoaded(true)}
                     />
                 )}
 
-                {/* Feedback de Carregamento */}
                 {!isLoaded && !error && (
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950 gap-3 z-10">
                         <div className="w-10 h-10 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
@@ -63,7 +65,6 @@ export function VideoPlayer({ realAnimeId, temporadaAtual, episodioAtual, isThea
                     </div>
                 )}
 
-                {/* Trata eventuais erros de requisição */}
                 {error && (
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950 gap-2 z-10 text-red-400">
                         <span className="text-sm font-medium">Não foi possível carregar o vídeo.</span>
