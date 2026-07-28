@@ -1,5 +1,15 @@
 import { db } from "../firebase/config";
-import { collection, getDocs, limit, query, startAfter, orderBy, doc, getDoc } from "firebase/firestore";
+import {
+    collection,
+    getDocs,
+    limit,
+    query,
+    startAfter,
+    orderBy,
+    doc,
+    getDoc,
+    where
+} from "firebase/firestore";
 
 export async function getAnimes(limitValue = 16, lastVisibleDoc = null) {
     try {
@@ -59,5 +69,35 @@ export async function getHomeAnimes() {
     } catch (error) {
         console.error("Erro ao buscar animes da Home", error);
         throw error;
+    }
+}
+
+
+/*  Realiza uma busca leve por prefixo do nome direto no Firestore */
+export async function searchAnimesByName(searchTerm, limitValue = 5) {
+    if (!searchTerm || searchTerm.trim().length < 2) return [];
+
+    try {
+        const term = searchTerm.trim();
+        const endTerm = term + "\uf8ff";
+
+        const collectionRef = collection(db, "animes");
+        const q = query(
+            collectionRef,
+            orderBy("nome"),
+            where("nome", ">=", term),
+            where("nome", "<=", endTerm),
+            limit(limitValue)
+        );
+
+        const snapshot = await getDocs(q);
+
+        return snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+    } catch (error) {
+        console.error("Erro ao pesquisar animes:", error);
+        return [];
     }
 }
