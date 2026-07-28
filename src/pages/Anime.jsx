@@ -1,48 +1,166 @@
+import { useEffect, useState, useMemo, useRef } from "react";
 import { useNavigate, Link, useParams, useLocation } from "react-router-dom";
-import { FaStar, FaHeart, FaChevronDown, FaChevronLeft, FaRegHeart } from "react-icons/fa";
-import { LuCalendarDays } from "react-icons/lu";
+import { FaHeart, FaChevronDown, FaChevronLeft, FaRegHeart } from "react-icons/fa";
 
-// import dados from '../services/detalhes_animes.json'
-import { useEffect, useState } from "react";
 import { useFavorites } from "../hooks/useFavorites";
 import { useProgress } from "../hooks/useProgress";
-
 import { useAnimes } from "../hooks/useAnimes";
-import SkeletonLoading from "../components/Skeleton/SkeletonCard";
+
+import SkeletonCard from "../components/Skeleton/SkeletonCard";
 import ErrorMessage from "../components/Feedback/ErrorMessage";
 import EmptyState from "../components/Feedback/EmptyState";
 
+import { getAnimeById } from "../services/animes";
 
 export default function Anime() {
-    const { animes, loading, error, loadAnimes } = useAnimes();
-
-    const [open, setOpen] = useState(false);
-
-    const { isFavorite, toggleFavorite } = useFavorites();
-    const { progressVideo } = useProgress()
-
+    const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
+
+    const { animes, loading: loadingGlobal, error: errorGlobal, loadAnimes } = useAnimes();
+    const { isFavorite, toggleFavorite } = useFavorites();
+    const { progressVideo } = useProgress();
+
+    const dropdownRef = useRef(null);
+
+    const animeFromState = location.state?.anime;
+    const animeFromList = useMemo(() => {
+        return animes?.find((a) => String(a.id_video) === String(id) || String(a.id) === String(id));
+    }, [animes, id]);
+
+    const [animeShow, setAnimeShow] = useState(animeFromState || animeFromList || null);
+    const [loadingLocal, setLoadingLocal] = useState(!animeFromState && !animeFromList);
+    const [errorLocal, setErrorLocal] = useState(null);
+
+    const [open, setOpen] = useState(false);
     const [loreExpandida, setLoreExpandida] = useState(false);
+    const [temporadaAtual, setTemporadaAtual] = useState(1);
 
-    const { id } = useParams();
+    useEffect(() => {
+        let isMounted = true;
 
-    const animeShow = animes.find((anime) => {
-        return anime.id_video === id
-    })
+        if (animeFromState) {
+            setAnimeShow(animeFromState);
+            setLoadingLocal(false);
+            return;
+        }
 
-    const favorito = isFavorite(animeShow.id_video);
+        if (animeFromList) {
+            setAnimeShow(animeFromList);
+            setLoadingLocal(false);
+            return;
+        }
 
-    const [temporadaAtual, setTemporadaAtual] = useState(1)
-    const temporada = animeShow.temporadas.find((t) => t.id === temporadaAtual);
+        async function fetchSingleAnime() {
+            setLoadingLocal(true);
+            setErrorLocal(null);
+            try {
+                const data = await getAnimeById(id);
+                if (isMounted) {
+                    setAnimeShow(data);
+                }
+            } catch (err) {
+                if (isMounted) {
+                    console.error("Erro ao carregar o anime individual:", err);
+                    setErrorLocal("Não foi possível carregar as informações do anime.");
+                }
+            } finally {
+                if (isMounted) setLoadingLocal(false);
+            }
+        }
 
+        if (id) {
+            fetchSingleAnime();
+        }
 
-    console.log(toggleFavorite)
+        return () => {
+            isMounted = false;
+        };
+    }, [id, animeFromState, animeFromList]);
 
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
+    const favorito = animeShow ? isFavorite(animeShow.id_video || animeShow.id) : false;
+
+    const temporada = useMemo(() => {
+        if (!animeShow?.temporadas) return null;
+        return animeShow.temporadas.find((t) => Number(t.id) === Number(temporadaAtual)) || animeShow.temporadas[0];
+    }, [animeShow, temporadaAtual]);
+
+    if (loadingLocal || (loadingGlobal && !animeShow)) {
+        return (
+            <div className="py-36 max-w-7xl mx-auto px-4 space-y-6 animate-pulse min-h-screen">
+
+                <div className="flex flex-col md:flex-row gap-6 border-b border-zinc-800 pb-6">
+                    <div className="w-44 h-64 bg-zinc-800 rounded-xl mx-auto md:mx-0 shrink-0" />
+
+                    <div className="flex-1 space-y-3">
+                        <div className="h-5 w-20 bg-zinc-800 rounded" />
+                        <div className="h-8 w-2/3 bg-zinc-800 rounded-lg" />
+                        <div className="h-4 w-16 bg-zinc-800 rounded" />
+
+                        <div className="grid grid-cols-2 gap-3 pt-2">
+                            <div className="h-14 bg-zinc-800/50 rounded-xl" />
+                            <div className="h-14 bg-zinc-800/50 rounded-xl" />
+                            <div className="h-14 bg-zinc-800/50 rounded-xl" />
+                            <div className="h-14 bg-zinc-800/50 rounded-xl" />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="space-y-2 border-b border-zinc-800 pb-4">
+                    <div className="h-4 w-full bg-zinc-800 rounded" />
+                    <div className="h-4 w-3/4 bg-zinc-800 rounded" />
+                </div>
+
+                <div className="space-y-4">
+                    <div className="h-6 w-48 bg-zinc-800 rounded" />
+                    <div className="h-10 w-full md:w-64 bg-zinc-800 rounded-xl" />
+
+                    <div className="space-y-3 pt-2">
+                        {[1, 2, 3].map((i) => (
+                            <div key={i} className="flex items-center justify-between p-3 bg-zinc-800/30 rounded-xl gap-4">
+                                <div className="w-32 aspect-video bg-zinc-800 rounded-lg shrink-0" />
+                                <div className="flex-1 space-y-2">
+                                    <div className="h-4 w-24 bg-zinc-800 rounded" />
+                                    <div className="h-3 w-12 bg-zinc-800 rounded" />
+                                </div>
+                                <div className="h-8 w-20 bg-zinc-800 rounded-lg shrink-0" />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+            </div>
+        );
+    }
+
+    if (errorLocal || errorGlobal) {
+        return (
+            <div className="py-32 px-10 text-center">
+                <ErrorMessage message={errorLocal || errorGlobal} retry={loadAnimes} />
+            </div>
+        );
+    }
+
+    if (!animeShow) {
+        return (
+            <div className="py-32 px-10">
+                <EmptyState message="Anime não encontrado." retry={() => navigate('/')} />
+            </div>
+        );
+    }
 
     return (
-        <section className="py-8 md:py-20 bg-zinc-950 text-white selection:bg-blue-500/30">
+        <section className="py-8 md:py-20 bg-zinc-950 text-white selection:bg-blue-500/30 min-h-screen">
 
             <div className="hidden md:block relative w-full md:h-[280px] lg:h-[340px] overflow-hidden bg-zinc-900">
                 <div className="absolute md:top-20 md:left-20 h-72 w-72 rounded-full bg-blue-600/40 blur-[120px]" />
@@ -55,8 +173,9 @@ export default function Anime() {
                 <div className="w-full flex flex-row items-center justify-between gap-2 relative md:absolute md:-top-20 md:left-0 md:w-full z-20 pb-4 md:pb-0 sm:px-5">
 
                     <button
-                        onClick={() => navigate(location.state?.from || '/')}
+                        type="button" onClick={() => navigate(location.state?.from || '/')}
                         className="flex items-center justify-center gap-1.5 px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all duration-300 cursor-pointer group text-[11px] sm:text-xs md:text-base shrink-0 shadow-md">
+
                         <FaChevronLeft className="text-[10px] md:text-sm group-hover:-translate-x-1 group-hover:text-blue-500 transition-all duration-300" />
                         <span className="font-medium">Voltar</span>
                     </button>
@@ -97,7 +216,7 @@ export default function Anime() {
                 <div className="flex-1 flex flex-col gap-4 min-w-0 text-center md:text-left">
 
                     <div className="w-full flex flex-row flex-wrap items-center gap-1.5 max-[480px]:gap-1 justify-center md:justify-start border-t border-b border-zinc-900/60 md:border-none py-2.5 md:py-0 text-left">
-                        {animeShow.generos.filter(g =>
+                        {animeShow.generos?.filter(g =>
                             g !== 'Dublado' &&
                             g !== 'Legendado' &&
                             g !== 'Letra' &&
@@ -105,8 +224,7 @@ export default function Anime() {
                         ).map((gen, i) => (
                             <span
                                 key={i}
-                                className="bg-zinc-900 border border-zinc-800/60 text-zinc-300 px-2 py-0.5 max-[480px]:px-1.5 max-[480px]:text-[10px] rounded-md text-[11px] sm:text-xs md:text-sm font-medium whitespace-nowrap shadow-sm"
-                            >
+                                className="bg-zinc-900 border border-zinc-800/60 text-zinc-300 px-2 py-0.5 max-[480px]:px-1.5 max-[480px]:text-[10px] rounded-md text-[11px] sm:text-xs md:text-sm font-medium whitespace-nowrap shadow-sm">
                                 {gen}
                             </span>
                         ))}
@@ -124,24 +242,23 @@ export default function Anime() {
                     <div className="grid grid-cols-2 gap-2.5 mt-2 text-left">
                         <div className="bg-zinc-900/40 border border-zinc-800/40 p-2.5 rounded-xl">
                             <p className="text-zinc-500 text-[10px] md:text-xs font-medium uppercase tracking-wider">Episódios</p>
-                            <p className="text-white font-semibold text-xs sm:text-base mt-0.5">{animeShow.total_episodios_geral}</p>
+                            <p className="text-white font-semibold text-xs sm:text-base mt-0.5">{animeShow.total_episodios_geral || 0}</p>
                         </div>
 
                         <div className="bg-zinc-900/40 border border-zinc-800/40 p-2.5 rounded-xl">
                             <p className="text-zinc-500 text-[10px] md:text-xs font-medium uppercase tracking-wider truncate">Lançamento</p>
-                            <p className="text-white font-semibold text-xs sm:text-base mt-0.5">{animeShow.data_lancamento?.split(',')[1] || animeShow.data_lancamento}</p>
+                            <p className="text-white font-semibold text-xs sm:text-base mt-0.5">{animeShow.data_lancamento?.split(',')[1] || animeShow.data_lancamento || 'N/A'}</p>
                         </div>
 
                         <div className="bg-zinc-900/40 border border-zinc-800/40 p-2.5 rounded-xl">
                             <p className="text-zinc-500 text-[10px] md:text-xs font-medium uppercase tracking-wider">Temporadas</p>
-                            <p className="text-white font-semibold text-xs sm:text-base mt-0.5">{animeShow.total_temporadas}</p>
+                            <p className="text-white font-semibold text-xs sm:text-base mt-0.5">{animeShow.total_temporadas || animeShow.temporadas?.length || 1}</p>
                         </div>
 
-                        <div className={`bg-zinc-900/40 border  p-2.5 rounded-xl ${animeShow.generos.includes("Dublado") ? "border-blue-800/60" : "border-purple-800/60"}`}>
+                        <div className={`bg-zinc-900/40 border p-2.5 rounded-xl ${animeShow.generos?.includes("Dublado") ? "border-blue-800/60" : "border-purple-800/60"}`}>
                             <p className="text-zinc-500 text-[10px] md:text-xs font-medium uppercase tracking-wider">Áudio</p>
                             <p className="text-white font-semibold text-xs sm:text-base mt-0.5 truncate">
-                                {animeShow.generos.includes("Dublado") ? "Dublado" : "Legendado"}
-
+                                {animeShow.generos?.includes("Dublado") ? "Dublado" : "Legendado"}
                             </p>
                         </div>
                     </div>
@@ -149,30 +266,35 @@ export default function Anime() {
                 </div>
             </div>
 
+            {/* Sinopse / Lore */}
             <div className="max-w-7xl mx-auto border-r-0 md:border-r-2 md:border-y-2 border-zinc-800 px-4 sm:px-6 md:px-10 xl:px-6 mt-6">
 
-                <div className="py-4 border-b-2 border-zinc-800 flex flex-col md:flex-row items-start gap-4 justify-between">
-                    <div className="flex-1">
-                        <p className="text-zinc-400 leading-relaxed text-xs md:text-sm whitespace-pre-line text-justify md:text-left">
-                            {loreExpandida
-                                ? animeShow.lore
-                                : `${animeShow.lore.substring(0, 200)}${animeShow.lore.length > 200 ? '...' : ''}`
-                            }
-                        </p>
+                {animeShow.lore && (
+                    <div className="py-4 border-b-2 border-zinc-800 flex flex-col md:flex-row items-start gap-4 justify-between">
+                        <div className="flex-1">
+                            <p className="text-zinc-400 leading-relaxed text-xs md:text-sm whitespace-pre-line text-justify md:text-left">
+                                {loreExpandida
+                                    ? animeShow.lore
+                                    : `${animeShow.lore.substring(0, 200)}${animeShow.lore.length > 200 ? '...' : ''}`
+                                }
+                            </p>
+                        </div>
+
+                        {animeShow.lore.length > 200 && (
+                            <button
+                                type="button"
+                                onClick={() => setLoreExpandida(!loreExpandida)}
+                                className="flex items-center gap-1.5 text-blue-500 hover:text-blue-400 font-semibold text-xs md:text-sm transition-colors cursor-pointer self-end md:self-start mt-1 flex-shrink-0">
+                                <span>{loreExpandida ? 'Ler menos' : 'Ler mais'}</span>
+                                <FaChevronDown
+                                    className={`text-[10px] md:text-xs transition-transform duration-300 ${loreExpandida ? "rotate-180" : ""}`}
+                                />
+                            </button>
+                        )}
                     </div>
+                )}
 
-                    {animeShow.lore.length > 200 && (
-                        <button
-                            onClick={() => setLoreExpandida(!loreExpandida)}
-                            className="flex items-center gap-1.5 text-blue-500 hover:text-blue-400 font-semibold text-xs md:text-sm transition-colors cursor-pointer self-end md:self-start mt-1 flex-shrink-0">
-                            <span>{loreExpandida ? 'Ler menos' : 'Ler mais'}</span>
-                            <FaChevronDown
-                                className={`text-[10px] md:text-xs transition-transform duration-300 ${loreExpandida ? "rotate-180" : ""}`}
-                            />
-                        </button>
-                    )}
-                </div>
-
+                {/*Temporadas e Lista de episodios */}
                 <div className="border-t-0 bg-zinc-900/10 pt-4">
                     <h3 className="text-lg md:text-xl font-bold text-white">
                         Temporadas e Episódios
@@ -182,7 +304,7 @@ export default function Anime() {
                     </p>
 
                     <div className="py-4">
-                        <div className="w-full md:w-72 relative">
+                        <div className="w-full md:w-72 relative" ref={dropdownRef}>
                             <button
                                 type="button"
                                 onClick={() => setOpen(!open)}
@@ -191,14 +313,13 @@ export default function Anime() {
                                         ? "border-blue-500/50 bg-zinc-850 shadow-blue-950/20 shadow-lg"
                                         : "border-zinc-800 hover:border-zinc-700 hover:bg-zinc-850"
                                     }`}>
-
                                 <span className="text-white font-semibold text-sm">
                                     Temporada {temporadaAtual}
                                 </span>
                                 <FaChevronDown className={`text-xs text-zinc-400 transition-transform duration-300 ease-out ${open ? "rotate-180 text-blue-400" : ""}`} />
                             </button>
 
-                            {open && (
+                            {open && animeShow.temporadas && (
                                 <div className="absolute left-0 top-full mt-2 w-full bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden z-30 shadow-2xl max-h-60 overflow-y-auto backdrop-blur-md animate-in fade-in slide-in-from-top-2 duration-200">
                                     {animeShow.temporadas.map((tem) => (
                                         <button
@@ -213,7 +334,7 @@ export default function Anime() {
                                                     ? "bg-blue-500/20 text-blue-400 font-bold "
                                                     : "text-zinc-300 hover:bg-zinc-800/70 hover:text-white"
                                                 }`}>
-                                            {tem.nome}
+                                            {tem.nome || `Temporada ${tem.id}`}
                                         </button>
                                     ))}
                                 </div>
@@ -221,30 +342,26 @@ export default function Anime() {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-2.5 mb-3">
-
-                        {temporada.episodios.map((ani) => {
-
-                            const progress = progressVideo.find(item =>
-                                Number(item.animeId) === Number(animeShow.id_video) &&
+                    {/* Episodios da Temporada Selecionada */}
+                    <div className="flex flex-col gap-2.5 mb-8">
+                        {temporada?.episodios?.map((ani) => {
+                            const progress = progressVideo?.find(item =>
+                                Number(item.animeId) === Number(animeShow.id_video || animeShow.id) &&
                                 Number(item.temporada) === Number(temporadaAtual) &&
                                 Number(item.episodio) === Number(ani.numero_episodio)
                             );
 
                             const porcentagem = progress?.progress ?? 0;
 
-
-
                             return (
                                 <div
                                     key={ani.numero_episodio}
                                     className="flex flex-row items-center gap-2 sm:gap-4 bg-zinc-900/30 border border-zinc-800/80 p-2 sm:p-3 rounded-lg sm:rounded-xl hover:border-zinc-700 hover:bg-zinc-900/50 transition-all duration-300 group/episode">
-
                                     <div className="w-24 min-w-[96px] sm:w-36 md:w-44 aspect-video rounded-md sm:rounded-lg overflow-hidden flex-shrink-0 bg-zinc-950 border border-zinc-800/50 relative">
                                         <img
                                             src={ani.capa_episodio}
                                             alt={`Episódio ${ani.numero_episodio}`}
-                                            className="w-full h-full  transition-all duration-300 group-hover/episode:scale-105 group-hover/episode:brightness-[0.8]"
+                                            className="w-full h-full transition-all duration-300 group-hover/episode:scale-105 group-hover/episode:brightness-[0.8]"
                                             loading="lazy"
                                         />
                                     </div>
@@ -257,32 +374,28 @@ export default function Anime() {
                                             <span className="font-semibold text-[9px] sm:text-xs text-zinc-500 mt-0.5">
                                                 Temp. {temporadaAtual}
                                             </span>
-                                            {animeShow.data_lancamento && (
-                                                <p className="text-zinc-400 text-[9px] sm:text-xs mt-0.5 truncate max-[400px]:hidden">
-                                                    {animeShow.data_lancamento}
-                                                </p>
-                                            )}
                                         </div>
 
-                                        <Link to={`/video/${animeShow.id_video}/${temporadaAtual}/${ani.numero_episodio}`} className="flex-shrink-0">
+                                        <Link
+                                            to={`/video/${animeShow.id_video || animeShow.id}/${temporadaAtual}/${ani.numero_episodio}`}
+                                            className="flex-shrink-0">
                                             <button className="bg-blue-600 hover:bg-blue-600/70 text-white px-3 py-1.5 sm:px-5 sm:py-2 md:px-6 md:py-2.5 rounded-lg sm:rounded-xl font-bold text-[10px] sm:text-sm transition-all duration-300 cursor-pointer shadow-md shadow-blue-600/10 active:scale-[0.96]">
                                                 Assistir
                                             </button>
                                         </Link>
 
-                                        <div className="absolute bottom-0 left-0 right-0 h-0.5 sm:h-1  bg-zinc-800 z-20">
+                                        {/* Barra de Progresso do Video */}
+                                        <div className="absolute bottom-0 left-0 right-0 h-0.5 sm:h-1 bg-zinc-800 z-20">
                                             <div
                                                 className="h-full bg-violet-600 transition-all duration-300"
                                                 style={{ width: `${porcentagem}%` }}
                                             />
                                         </div>
+
                                     </div>
-
-
                                 </div>
-                            )
+                            );
                         })}
-                        <Link />
                     </div>
 
                 </div>
