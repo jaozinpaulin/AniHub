@@ -25,7 +25,7 @@ module.exports = async function handler(req, res) {
         return res.status(500).json({ error: 'Erro de configuração interna do servidor.' });
     }
 
-    const targetUrl = `${baseUrl}/${animeId}/${temp}/${ep}/`;
+    const targetUrl = `${baseUrl}/#/video/${animeId}/${temp}/${ep}/`;
 
     try {
         const response = await fetch(targetUrl, {
@@ -48,3 +48,4 @@ module.exports = async function handler(req, res) {
         return res.status(500).json({ error: 'Erro ao buscar o conteúdo do player.' });
     }
 };
+
