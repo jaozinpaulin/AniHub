@@ -1,8 +1,10 @@
 # AniHub
 
-AniHub é um projeto de front-end desenvolvido com **React** e **Tailwind CSS**, inspirado nas principais plataformas de streaming de animes. O projeto foi criado com o objetivo de aprofundar conhecimentos em desenvolvimento web moderno, componentização, consumo de dados, gerenciamento de estado e construção de interfaces profissionais.
+AniHub é uma aplicação web desenvolvida com **React**, **Firebase** e **Tailwind CSS**, inspirada nas principais plataformas de streaming de animes.
 
-> Projeto em desenvolvimento contínuo.
+O projeto foi criado com foco em aprendizado e evolução como desenvolvedor Front-end, aplicando conceitos modernos de desenvolvimento, consumo de dados, autenticação, gerenciamento de estado, componentização e otimização de performance.
+
+> Projeto desenvolvido para fins de estudo e portfólio.
 
 ---
 
@@ -16,70 +18,94 @@ AniHub é um projeto de front-end desenvolvido com **React** e **Tailwind CSS**,
 | :---------------------: | :-------------------: |
 | ![](public/generos.png) | ![](public/anime.png) |
 
-|        Player         |
+|         Player        |
 | :-------------------: |
 | ![](public/video.png) |
 
 ---
 
-# ✨ Funcionalidades
+# Funcionalidades
 
-- Página dedicada para assistir animes principalmente antigos.
-- Sistema de busca de animes.
-- Sistema visual de favoritos.q
-- Catálogo organizado por gêneros.
-- Página individual para cada anime.
-- Informações de temporadas e episódios.
-- Layout totalmente responsivo.
-- Interface moderna em tema escuro.
-- Componentes reutilizáveis.
-- Design inspirado em plataformas como Netflix e Crunchyroll.
+* Busca de animes em tempo real.
+* Sistema de favoritos sincronizado com Firebase.
+* Autenticação de usuários.
+* Página individual para cada anime.
+* Player integrado.
+* Catálogo organizado por gêneros.
+* Lista de animes populares.
+* Sistema de progresso dos episódios.
+* Continuação automática do progresso salvo do usuário.
+* Carregamento otimizado utilizando paginação e lazy loading.
+* Interface totalmente responsiva.
+* Tema escuro moderno.
+* Componentes reutilizáveis.
+* Design inspirado em plataformas como Netflix e Crunchyroll.
 
 ---
 
 # Tecnologias
 
-- React
-- JavaScript (ES6+)
-- Tailwind CSS
-- React Router DOM
-- React Icons
-- Vite
+* React
+* JavaScript (ES6+)
+* Vite
+* Tailwind CSS
+* Firebase Authentication
+* Cloud Firestore
+* React Router DOM
+* React Icons
 
 ---
 
-# Objetivos do Projeto
+# Conceitos Aplicados
 
-Este projeto foi desenvolvido para praticar:
+Durante o desenvolvimento foram utilizados diversos conceitos importantes do ecossistema React:
 
-- Componentização no React.
-- Organização de projetos escaláveis.
-- Boas práticas de Front-end.
-- Criação de interfaces modernas.
-- Gerenciamento de estados.
-- Navegação entre páginas.
-- Responsividade.
-- Organização de código.
+* Componentização
+* Hooks (useState, useEffect, useMemo, useRef e Context API)
+* Gerenciamento de estado global
+* Rotas protegidas
+* Consumo de dados
+* Persistência de informações no Firebase
+* Organização de projetos escaláveis
+* Lazy Loading
+* Paginação de dados
+* Responsividade
+* Boas práticas de código
+
+---
+
+# Objetivo
+
+O AniHub foi desenvolvido para consolidar conhecimentos em desenvolvimento Front-end moderno, simulando funcionalidades presentes em plataformas reais de streaming de animes.
+
+Além de servir como projeto de portfólio, o sistema permitiu praticar integração com Firebase, autenticação, banco de dados em tempo real, otimização de consultas e construção de interfaces modernas.
 
 ---
 
 # ⚠️ Aviso
 
-Este projeto possui fins exclusivamente educacionais e de portfólio.
+Este projeto possui finalidade exclusivamente educacional e de portfólio.
 
-O AniHub **não hospeda nenhum vídeo** em seus servidores. Todo o conteúdo exibido é fornecido por serviços de terceiros, utilizados apenas para demonstração da interface.
+O AniHub **não hospeda nenhum vídeo** em seus servidores.
+
+Todo o conteúdo exibido é incorporado por serviços de terceiros e utilizado apenas para demonstração da aplicação.
 
 ---
 
-# 👨‍💻 Desenvolvedor
+# Desenvolvedor
 
-**João Paulo**
+**João Paulo da Silva Soares**
 
 GitHub:
 https://github.com/jaozinpaulin
 
+LinkedIn:
+https://www.linkedin.com/in/joaopaulodasilvasoares/
+
 ---
 
-## ⭐ Status do Projeto
+# Status do Projeto
 
-🚀 Em desenvolvimento constante, com novas funcionalidades sendo adicionadas continuamente.
+**Versão 1.0 concluída.**
+
+O projeto continuará recebendo melhorias, correções e novas funcionalidades conforme sua evolução como projeto de portfólio e estudos.
