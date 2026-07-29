@@ -10,49 +10,45 @@ O projeto foi criado com foco em aprendizado e evolução como desenvolvedor Fro
 
 # Preview
 
-|         Home         |         Explorar         |
-| :------------------: | :----------------------: |
-| ![](public/hero.png) | ![](public/explorar.png) |
+|          Home          |          Explorar          |
+| :--------------------: | :------------------------: |
+| ![](public/heroV1.png) | ![](public/explorarV1.png) |
 
-|         Gêneros         |    Página do Anime    |
-| :---------------------: | :-------------------: |
-| ![](public/generos.png) | ![](public/anime.png) |
-
-|         Player        |
-| :-------------------: |
-| ![](public/video.png) |
+|     Página do Anime     |         Player          |
+| :---------------------: | :---------------------: |
+| ![](public/animeV1.png) | ![](public/videoV1.png) |
 
 ---
 
 # Funcionalidades
 
-* Busca de animes em tempo real.
-* Sistema de favoritos sincronizado com Firebase.
-* Autenticação de usuários.
-* Página individual para cada anime.
-* Player integrado.
-* Catálogo organizado por gêneros.
-* Lista de animes populares.
-* Sistema de progresso dos episódios.
-* Continuação automática do progresso salvo do usuário.
-* Carregamento otimizado utilizando paginação e lazy loading.
-* Interface totalmente responsiva.
-* Tema escuro moderno.
-* Componentes reutilizáveis.
-* Design inspirado em plataformas como Netflix e Crunchyroll.
+- Busca de animes em tempo real.
+- Sistema de favoritos sincronizado com Firebase.
+- Autenticação de usuários.
+- Página individual para cada anime.
+- Player integrado.
+- Catálogo organizado por gêneros.
+- Lista de animes populares.
+- Sistema de progresso dos episódios.
+- Continuação automática do progresso salvo do usuário.
+- Carregamento otimizado utilizando paginação e lazy loading.
+- Interface totalmente responsiva.
+- Tema escuro moderno.
+- Componentes reutilizáveis.
+- Design inspirado em plataformas como Netflix e Crunchyroll.
 
 ---
 
 # Tecnologias
 
-* React
-* JavaScript (ES6+)
-* Vite
-* Tailwind CSS
-* Firebase Authentication
-* Cloud Firestore
-* React Router DOM
-* React Icons
+- React
+- JavaScript (ES6+)
+- Vite
+- Tailwind CSS
+- Firebase Authentication
+- Cloud Firestore
+- React Router DOM
+- React Icons
 
 ---
 
@@ -60,17 +56,17 @@ O projeto foi criado com foco em aprendizado e evolução como desenvolvedor Fro
 
 Durante o desenvolvimento foram utilizados diversos conceitos importantes do ecossistema React:
 
-* Componentização
-* Hooks (useState, useEffect, useMemo, useRef e Context API)
-* Gerenciamento de estado global
-* Rotas protegidas
-* Consumo de dados
-* Persistência de informações no Firebase
-* Organização de projetos escaláveis
-* Lazy Loading
-* Paginação de dados
-* Responsividade
-* Boas práticas de código
+- Componentização
+- Hooks (useState, useEffect, useMemo, useRef e Context API)
+- Gerenciamento de estado global
+- Rotas protegidas
+- Consumo de dados
+- Persistência de informações no Firebase
+- Organização de projetos escaláveis
+- Lazy Loading
+- Paginação de dados
+- Responsividade
+- Boas práticas de código
 
 ---
 
