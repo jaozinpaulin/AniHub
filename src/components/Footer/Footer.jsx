@@ -14,7 +14,7 @@ export default function Footer() {
                         </p>
 
                         <p className="text-sm text-zinc-400">
-                            Versão <span className="text-blue-400">v0.9</span>
+                            Versão <span className="text-blue-400">v1.0</span>
                         </p>
 
                         <p className="text-xs text-zinc-400">

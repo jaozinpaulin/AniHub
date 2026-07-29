@@ -8,17 +8,16 @@ export const FavoritesContext = createContext();
 
 export default function FavoritesProvider({ children }) {
 
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
     const { showToast } = useToast();
 
     const [favoritos, setFavoritos] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [favoritesLoading, setFavoritesLoading] = useState(false);
     const [error, setError] = useState(null);
 
     async function loadFavorites() {
         try {
-            // throw new Error("Errp de teste")
-            setLoading(true);
+            setFavoritesLoading(true);
             setError(null);
 
             const favorites = await getFavorites(user.uid);
@@ -31,17 +30,22 @@ export default function FavoritesProvider({ children }) {
                 "error"
             );
         } finally {
-            setLoading(false);
+            setFavoritesLoading(false);
         }
     }
 
     useEffect(() => {
+        if (loading) return;
+
         if (!user) {
             setFavoritos([]);
+            setFavoritesLoading(false);
+            setError(null);
             return;
         }
+
         loadFavorites();
-    }, [user]);
+    }, [user, loading]);
 
     function isFavorite(id) {
         return favoritos.some(
@@ -57,6 +61,7 @@ export default function FavoritesProvider({ children }) {
             );
             return;
         }
+
         try {
             if (isFavorite(anime.id_video)) {
                 await removeFavorite(user.uid, anime.id_video);
@@ -67,11 +72,13 @@ export default function FavoritesProvider({ children }) {
                 );
             } else {
                 await addFavorite(user.uid, anime);
+
                 showToast(
                     "Favorito salvo!",
                     "success"
                 );
             }
+
             await loadFavorites();
         } catch (error) {
             setError(error.message);
@@ -84,9 +91,17 @@ export default function FavoritesProvider({ children }) {
 
     return (
         <FavoritesContext.Provider
-            value={{ favoritos, loading, error, loadFavorites, isFavorite, toggleFavorite }}>
+            value={{
+                favoritos,
+                favoritesLoading,
+                error,
+                user,
+                loadFavorites,
+                isFavorite,
+                toggleFavorite
+            }}
+        >
             {children}
         </FavoritesContext.Provider>
     );
-
 }

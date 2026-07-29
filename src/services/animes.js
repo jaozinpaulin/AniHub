@@ -5,12 +5,12 @@ import {
     limit,
     query,
     startAfter,
+    startAt,
+    endAt,
     orderBy,
     doc,
-    getDoc,
-    where
+    getDoc
 } from "firebase/firestore";
-
 export async function getAnimes(limitValue = 16, lastVisibleDoc = null) {
     try {
         const collectionRef = collection(db, "animes");
@@ -73,29 +73,39 @@ export async function getHomeAnimes() {
 }
 
 
-/*  Realiza uma busca leve por prefixo do nome direto no Firestore */
-export async function searchAnimesByName(searchTerm, limitValue = 5) {
-    if (!searchTerm || searchTerm.trim().length < 2) return [];
+export async function searchAnimesByName(searchTerm, limitValue = 4) {
+    const texto = searchTerm?.trim();
+
+    if (!texto || texto.length < 2) return [];
+
+    const variacoes = [
+        texto,
+        texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase(),
+        texto.toUpperCase(),
+        texto.toLowerCase()
+    ];
 
     try {
-        const term = searchTerm.trim();
-        const endTerm = term + "\uf8ff";
+        for (const term of variacoes) {
+            const q = query(
+                collection(db, "animes"),
+                orderBy("nome"),
+                startAt(term),
+                endAt(term + "\uf8ff"),
+                limit(limitValue)
+            );
 
-        const collectionRef = collection(db, "animes");
-        const q = query(
-            collectionRef,
-            orderBy("nome"),
-            where("nome", ">=", term),
-            where("nome", "<=", endTerm),
-            limit(limitValue)
-        );
+            const snapshot = await getDocs(q);
 
-        const snapshot = await getDocs(q);
+            if (!snapshot.empty) {
+                return snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+            }
+        }
 
-        return snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data()
-        }));
+        return [];
     } catch (error) {
         console.error("Erro ao pesquisar animes:", error);
         return [];

@@ -2,73 +2,73 @@ import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineHeart, HiHeart } from "react-icons/hi2";
 import { FaChevronLeft } from "react-icons/fa";
 
+import { useAuth } from "../hooks/useAuth";
 import { useFavorites } from "../hooks/useFavorites";
-
 
 import SkeletonLoading from "../components/Skeleton/SkeletonLoading";
 import ErrorMessage from "../components/Feedback/ErrorMessage";
 import EmptyState from "../components/Feedback/EmptyState";
 
+import User from "../components/Header/User";
+
 export default function Favorites() {
-    const { favoritos, loading, error, loadFavorites, isFavorite, toggleFavorite } = useFavorites();
+    const { favoritos, favoritesLoading, error, user, loadFavorites, isFavorite, toggleFavorite } = useFavorites();
+    const { loading } = useAuth();
     const navigate = useNavigate();
 
-    const hasFavorites = favoritos && favoritos.length > 0;
-
-
+    const hasFavorites = favoritos.length > 0;
 
     if (loading) {
         return (
-            <div className=" flex flex-col pt-32 px-5 gap-5">
+            <div className="flex flex-col pt-32 px-5 gap-5">
 
-                <div className=" space-y-3 animate-pulse">
-                    <div className=" h-8 w-52 rounded-lg bg-zinc-800" />
-
-                    <div className=" h-4 w-80 max-w-full rounded-lg bg-zinc-800" />
+                <div className="space-y-3 animate-pulse">
+                    <div className="h-8 w-52 rounded-lg bg-zinc-800" />
+                    <div className="h-4 w-80 max-w-full rounded-lg bg-zinc-800" />
                 </div>
 
-                <div className=" w-full h-12 rounded-xl bg-zinc-800 animate-pulse" />
-                <div className=" w-full h-20 rounded-xl bg-zinc-800 animate-pulse" />
+                <div className="w-full h-12 rounded-xl bg-zinc-800 animate-pulse" />
+                <div className="w-full h-20 rounded-xl bg-zinc-800 animate-pulse" />
 
-                <div className=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                     <SkeletonLoading quantity={12} />
                 </div>
 
             </div>
-        )
+        );
     }
+
+    if (favoritesLoading) {
+        return (
+            <div className="flex flex-col pt-32 px-5 gap-5">
+
+                <div className="space-y-3 animate-pulse">
+                    <div className="h-8 w-52 rounded-lg bg-zinc-800" />
+                    <div className="h-4 w-80 max-w-full rounded-lg bg-zinc-800" />
+                </div>
+
+                <div className="w-full h-12 rounded-xl bg-zinc-800 animate-pulse" />
+                <div className="w-full h-20 rounded-xl bg-zinc-800 animate-pulse" />
+
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <SkeletonLoading quantity={12} />
+                </div>
+
+            </div>
+        );
+    }
+
+    // Erro ao carregar favoritos
     if (error) {
         return (
             <div className="pt-32 p-10">
-                <ErrorMessage message={error} retry={loadFavorites} />
+                <ErrorMessage
+                    message={error}
+                    retry={loadFavorites}
+                />
             </div>
-        )
+        );
     }
-
-
-    if (favoritos.length === 0) {
-        return (
-            <div className=" flex flex-col py-10 sm:pt-24 px-5 gap-5">
-
-                <div className=" space-y-3 animate-pulse">
-                    <div className=" h-8 w-52 rounded-lg bg-zinc-800" />
-
-                    <div className=" h-4 w-80 max-w-full rounded-lg bg-zinc-800" />
-                </div>
-
-                <div className=" w-full h-12 rounded-xl bg-zinc-800 animate-pulse" />
-                <div className=" w-full h-20 rounded-xl bg-zinc-800 animate-pulse" />
-
-                <div className=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    <SkeletonLoading quantity={12} />
-                </div>
-
-            </div>
-        )
-    }
-
-
-
 
     return (
         <section className="w-full min-h-dvh bg-zinc-950 pt-16 sm:pt-20 px-4 lg:px-8 text-zinc-100 selection:bg-purple-500/30">
@@ -105,15 +105,37 @@ export default function Favorites() {
                         <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center border border-zinc-800 mb-4">
                             <HiOutlineHeart className="text-zinc-500 size-8" />
                         </div>
-                        <h2 className="text-white font-medium text-base sm:text-lg mb-1">Nenhum anime por aqui</h2>
-                        <p className="text-zinc-500 text-xs sm:text-sm max-w-xs mb-6">
-                            Sua lista está vazia. Explore o catálogo e adicione seus animes preferidos aqui!
-                        </p>
-                        <Link
-                            to="/explore"
-                            className="px-4 py-2 bg-red-600 hover:bg-red-600/80 text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-purple-600/10">
-                            Explorar Catálogo
-                        </Link>
+
+                        {user ? (
+                            <>
+                                <h2 className="text-white font-medium text-base sm:text-lg mb-1">
+                                    Nenhum anime por aqui
+                                </h2>
+
+                                <p className="text-zinc-500 text-xs sm:text-sm max-w-xs mb-6">
+                                    Sua lista está vazia. Explore o catálogo e adicione seus animes preferidos aqui!
+                                </p>
+
+                                <Link
+                                    to="/explore"
+                                    className="px-4 py-2 bg-red-600 hover:bg-red-600/80 text-white rounded-lg text-sm font-medium transition-colors"
+                                >
+                                    Explorar Catálogo
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <h2 className="text-white font-medium text-base sm:text-lg mb-1">
+                                    Faça login para continuar
+                                </h2>
+
+                                <p className="text-zinc-500 text-xs sm:text-sm max-w-xs mb-6">
+                                    Entre na sua conta para salvar seus animes favoritos e acessá-los de qualquer dispositivo.
+                                </p>
+
+                                <User />
+                            </>
+                        )}
                     </div>
                 ) : (
                     <div className="w-full grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-9 gap-2.5 sm:gap-4 pb-10">

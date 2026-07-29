@@ -28,9 +28,13 @@ export default function Header() {
     }, []);
 
     useEffect(() => {
-        const termo = pesquisa.trim();
+        const texto = pesquisa.trim();
 
-        if (termo.length < 2) {
+        const termo = texto
+            ? texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase()
+            : "";
+
+        if (termo.length < 1) {
             setResultados([]);
             setMostrarResultado(false);
             return;
@@ -39,7 +43,8 @@ export default function Header() {
         setLoading(true);
 
         const timer = setTimeout(async () => {
-            const data = await searchAnimesByName(termo, 5);
+            const data = await searchAnimesByName(termo, 4);
+
             setResultados(data);
             setMostrarResultado(true);
             setLoading(false);
@@ -54,6 +59,7 @@ export default function Header() {
         setMostrarResultado(false);
     };
 
+
     const navLinkStyle = ({ isActive }) =>
         `px-4 py-2 rounded-lg text-sm font-medium transition-all border border-transparent duration-300 ${isActive
             ? "bg-blue-700/60 text-white border border-blue-700"
@@ -62,7 +68,7 @@ export default function Header() {
 
     return (
         <header className="fixed top-0 left-0 w-full z-50 border-b border-zinc-900 bg-zinc-950/70 backdrop-blur-md">
-            <div className="w-full lg:max-w-7xl lg:mx-auto h-16 sm:h-20 flex items-center justify-between px-4 lg:px-8">
+            <div className="w-full  h-16 sm:h-20 flex items-center justify-between lg:justify-around px-4 lg:px-8">
                 <NavLink to="/" className="flex items-center hover:opacity-90 transition">
                     <img src="/logoAH.png" alt="AniHub" className="w-10 h-8 sm:w-14 sm:h-10" />
 
@@ -100,7 +106,11 @@ export default function Header() {
                     {/* Dropdown de resultados */}
                     {mostrarResultado && (
                         <div className="absolute top-full left-0 mt-2 w-full rounded-xl border border-zinc-800 bg-zinc-900 shadow-2xl overflow-hidden z-50">
-                            {loading ? (
+                            {pesquisa.trim().length < 2 ? (
+                                <div className="p-4 text-center text-sm text-zinc-400">
+                                    Digite pelo menos <span className="font-semibold text-white">2 caracteres</span>.
+                                </div>
+                            ) : loading ? (
                                 <div className="p-4 text-center text-sm text-zinc-500">
                                     Buscando...
                                 </div>
@@ -123,11 +133,11 @@ export default function Header() {
                                             />
 
                                             <div className="flex flex-col text-left overflow-hidden">
-                                                <span className="w-full px-0.5 truncate text-sm font-medium shrink-0 text-white transition-colors">
+                                                <span className="w-full px-0.5 truncate text-sm font-medium text-white">
                                                     {ani.nome}
                                                 </span>
 
-                                                <div className="flex items-center gap-2 text-xs text-zinc-400 shrink-0 mt-1">
+                                                <div className="flex items-center gap-2 mt-1 text-xs text-zinc-400">
                                                     <span
                                                         className={`px-1 py-0.5 rounded text-[10px] font-bold text-zinc-100 ${isDublado
                                                             ? "bg-blue-600/80 group-hover:bg-blue-600"
@@ -136,7 +146,9 @@ export default function Header() {
                                                     >
                                                         {isDublado ? "Dublado" : "Legendado"}
                                                     </span>
+
                                                     <span>•</span>
+
                                                     <span>
                                                         {ani.total_episodios_geral || 0} episódios
                                                     </span>
@@ -147,7 +159,7 @@ export default function Header() {
                                 })
                             ) : (
                                 <div className="p-4 text-center text-sm text-zinc-400">
-                                    Nenhum anime encontrado
+                                    Nenhum anime encontrado.
                                 </div>
                             )}
                         </div>
