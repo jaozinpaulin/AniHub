@@ -141,12 +141,9 @@ export default function Explore() {
         <section className="w-full min-h-dvh pt-16 sm:pt-20 bg-zinc-950/90 xl:px-5 pb-16">
 
             <div className="sm:pt-10 sm:mx-3">
-                <h2 className="hidden sm:block text-3xl md:text-4xl font-bold text-white mb-3">
+                <h2 className="hidden sm:block text-3xl md:text-4xl font-bold text-white">
                     Explorar
                 </h2>
-                <p className="bg-blue-900/50 p-2 text-center sm:text-left sm:bg-transparent sm:p-0 text-white sm:text-zinc-400 sm:text-lg max-w-2xl">
-                    Descubra novos animes para assistir
-                </p>
             </div>
 
             <div className="relative mx-3 mt-3 sm:my-8">
@@ -156,7 +153,7 @@ export default function Explore() {
                     value={busca}
                     onChange={(e) => buscaSet(e.target.value)}
                     placeholder="Busque por animes"
-                    className="w-full h-10 sm:h-14 bg-zinc-900 border border-zinc-800 rounded-xl pl-12 pr-4 text-white placeholder:text-zinc-500 outline-none focus:border-blue-500 transition" />
+                    className="w-full h-10 sm:h-14 bg-zinc-900 border border-zinc-800 rounded-xl pl-12 pr-4 text-white placeholder:text-zinc-500 outline-none focus:border-blue-600/70 transition" />
             </div>
 
             <p className={`sm:hidden p-3 font-bold text-white ${animesFiltrado.length > 0 ? "block" : "hidden"}`}>
@@ -171,7 +168,7 @@ export default function Explore() {
                             type="button"
                             onClick={() => geneSet(g)}
                             className={`shrink-0 border rounded-xl px-4 py-2 transition-all duration-300 cursor-pointer font-medium text-sm whitespace-nowrap ${gene === g
-                                ? 'bg-blue-500/10 border-blue-500 text-blue-400'
+                                ? 'bg-blue-500/10 border-blue-500/70 text-blue-400'
                                 : 'bg-zinc-900 border-zinc-800 text-white hover:bg-zinc-800 hover:border-blue-500'
                                 }`}>
                             {g}
