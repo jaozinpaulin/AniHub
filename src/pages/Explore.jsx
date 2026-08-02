@@ -146,7 +146,7 @@ export default function Explore() {
                 </h2>
             </div>
 
-            <div className="relative mx-3 mt-3 sm:my-8">
+            <div className="relative mx-3 mt-3 sm:my-8 mb-3">
                 <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <input
                     type="text"
