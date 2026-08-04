@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
+import type { NavLinkRenderProps } from "react-router-dom";
+
+
 import { FiMenu } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
 
@@ -10,7 +13,7 @@ export default function MobileMenu() {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const navLinkMobile = ({ isActive }) =>
+    const navLinkMobile = ({ isActive }: NavLinkRenderProps) =>
         `flex rounded-xl px-4 py-3 text-sm font-medium transition ${isActive
             ? "bg-zinc-600 text-white"
             : "text-zinc-300 hover:bg-zinc-900"

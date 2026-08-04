@@ -7,6 +7,7 @@ import { searchAnimesByName } from '../../services/animes';
 
 // Types
 import type { AnimeType } from '../../types/anime';
+import type { NavLinkRenderProps } from 'react-router-dom';
 
 
 
@@ -66,7 +67,7 @@ export default function Header() {
         setMostrarResultado(false);
     };
 
-    const navLinkStyle = ({ isActive }: { isActive: boolean }) =>
+    const navLinkStyle = ({ isActive }: NavLinkRenderProps) =>
         `px-4 py-2 rounded-lg text-sm font-medium transition-all border border-transparent duration-300 ${isActive
             ? 'bg-blue-700/60 text-white border border-blue-700'
             : 'text-zinc-400 hover:text-white hover:bg-zinc-900 hover:border-zinc-700'

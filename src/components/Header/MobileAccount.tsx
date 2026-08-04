@@ -6,7 +6,12 @@ import ProfileModal from "../ProfileModal/ProfileModal";
 import Auth from "../../pages/Auth/Auth.jsx";
 import { useToast } from "../../hooks/useToast.js";
 
-export default function MobileAccount({ setIsOpen }) {
+interface MobileAccountProps {
+    setIsOpen: (value: boolean) => void
+}
+
+
+export default function MobileAccount({ setIsOpen }: MobileAccountProps) {
     const { showToast } = useToast();
 
     const { user, handleLogout } = useAuth();

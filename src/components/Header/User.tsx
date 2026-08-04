@@ -18,12 +18,12 @@ export default function User() {
     const [openAuth, setOpenAuth] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
 
-    const cardOpen = useRef(null);
+    const cardOpen = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        function handleClick(evt) {
+        function handleClick(evt: MouseEvent) {
             if (!cardOpen.current) return;
-            if (!cardOpen.current.contains(evt.target)) {
+            if (!cardOpen.current.contains(evt.target as Node)) {
                 setOpenUser(false);
             }
         }
