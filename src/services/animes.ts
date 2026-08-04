@@ -1,21 +1,14 @@
 import { db } from "../firebase/config";
-import {
-    collection,
-    getDocs,
-    limit,
-    query,
-    startAfter,
-    startAt,
-    endAt,
-    orderBy,
-    doc,
-    getDoc
-} from "firebase/firestore";
+import { collection, getDocs, limit, query, startAfter, startAt, endAt, orderBy, doc, getDoc, QueryConstraint } from "firebase/firestore";
+
+
+import type { AnimeType } from "../types/anime";
+
 export async function getAnimes(limitValue = 16, lastVisibleDoc = null) {
     try {
         const collectionRef = collection(db, "animes");
 
-        const queryConstraints = [
+        const queryConstraints: QueryConstraint[] = [
             orderBy("nome"),
             limit(limitValue)
         ];
@@ -46,7 +39,7 @@ export async function getAnimes(limitValue = 16, lastVisibleDoc = null) {
     }
 }
 
-export async function getAnimeById(id) {
+export async function getAnimeById(id: string) {
     try {
         const docRef = doc(db, "animes", id);
         const docSnap = await getDoc(docRef);
@@ -73,7 +66,7 @@ export async function getHomeAnimes() {
 }
 
 
-export async function searchAnimesByName(searchTerm, limitValue = 4) {
+export async function searchAnimesByName(searchTerm: string, limitValue: number = 4): Promise<AnimeType[]> {
     const texto = searchTerm?.trim();
 
     if (!texto || texto.length < 2) return [];
@@ -100,8 +93,8 @@ export async function searchAnimesByName(searchTerm, limitValue = 4) {
             if (!snapshot.empty) {
                 return snapshot.docs.map((doc) => ({
                     id: doc.id,
-                    ...doc.data()
-                }));
+                    ...(doc.data() as Omit<AnimeType, "id">)
+                }));//Omit por causa do id vindo do fire
             }
         }
 

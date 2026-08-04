@@ -1,29 +1,36 @@
-import { NavLink, Link } from "react-router-dom";
-import { FiSearch } from "react-icons/fi";
-import User from "./User";
-import MobileMenu from "./MobileMenu";
-import { useRef, useState, useEffect } from "react";
-import { searchAnimesByName } from "../../services/animes";
+import { NavLink, Link } from 'react-router-dom';
+import { FiSearch } from 'react-icons/fi';
+import User from './User';
+import MobileMenu from './MobileMenu';
+import { useRef, useState, useEffect } from 'react';
+import { searchAnimesByName } from '../../services/animes';
+
+// Types
+import type { AnimeType } from '../../types/anime';
+
+
+
 
 export default function Header() {
     const [pesquisa, setPesquisa] = useState('');
-    const [resultados, setResultados] = useState([]);
+    const [resultados, setResultados] = useState<AnimeType[]>([]);
+
     const [loading, setLoading] = useState(false);
     const [mostrarResultado, setMostrarResultado] = useState(false);
 
-    const cardAnime = useRef(null);
+    const cardAnime = useRef<HTMLDivElement>(null);
 
     // Click Outside para fechar o dropdown
     useEffect(() => {
-        function handleClick(evt) {
-            if (cardAnime.current && !cardAnime.current.contains(evt.target)) {
+        function handleClick(evt: MouseEvent) {
+            if (cardAnime.current && evt.target instanceof Node && !cardAnime.current.contains(evt.target)) {
                 selecionarAnime();
             }
         }
-        document.addEventListener("mousedown", handleClick);
+        document.addEventListener('mousedown', handleClick);
 
         return () => {
-            document.removeEventListener("mousedown", handleClick);
+            document.removeEventListener('mousedown', handleClick);
         };
     }, []);
 
@@ -32,7 +39,7 @@ export default function Header() {
 
         const termo = texto
             ? texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase()
-            : "";
+            : '';
 
         if (termo.length < 1) {
             setResultados([]);
@@ -59,18 +66,24 @@ export default function Header() {
         setMostrarResultado(false);
     };
 
-
-    const navLinkStyle = ({ isActive }) =>
+    const navLinkStyle = ({ isActive }: { isActive: boolean }) =>
         `px-4 py-2 rounded-lg text-sm font-medium transition-all border border-transparent duration-300 ${isActive
-            ? "bg-blue-700/60 text-white border border-blue-700"
-            : "text-zinc-400 hover:text-white hover:bg-zinc-900 hover:border-zinc-700"
+            ? 'bg-blue-700/60 text-white border border-blue-700'
+            : 'text-zinc-400 hover:text-white hover:bg-zinc-900 hover:border-zinc-700'
         }`;
 
     return (
         <header className="fixed top-0 left-0 w-full z-50 border-b border-zinc-900 bg-zinc-950/70 backdrop-blur-md">
             <div className="w-full  h-16 sm:h-20 flex items-center justify-between lg:justify-around px-4 lg:px-8">
-                <NavLink to="/" className="flex items-center hover:opacity-90 transition">
-                    <img src="/logoAH.png" alt="AniHub" className="w-10 h-8 sm:w-14 sm:h-10" />
+                <NavLink
+                    to="/"
+                    className="flex items-center hover:opacity-90 transition"
+                >
+                    <img
+                        src="/logoAH.png"
+                        alt="AniHub"
+                        className="w-10 h-8 sm:w-14 sm:h-10"
+                    />
 
                     <h1 className="text-2xl lg:text-3xl font-medium">
                         <span className="text-zinc-300">ni</span>
@@ -82,10 +95,26 @@ export default function Header() {
 
                 <nav className="hidden md:block">
                     <ul className="flex items-center gap-2 text-sm">
-                        <li><NavLink to="/" className={navLinkStyle}>Home</NavLink></li>
-                        <li><NavLink to="/explore" className={navLinkStyle}>Explorar</NavLink></li>
-                        <li><NavLink to="/categories" className={navLinkStyle}>Categorias</NavLink></li>
-                        <li><NavLink to="/favorites" className={navLinkStyle}>Favoritos</NavLink></li>
+                        <li>
+                            <NavLink to="/" className={navLinkStyle}>
+                                Home
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/explore" className={navLinkStyle}>
+                                Explorar
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/categories" className={navLinkStyle}>
+                                Categorias
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/favorites" className={navLinkStyle}>
+                                Favoritos
+                            </NavLink>
+                        </li>
                     </ul>
                 </nav>
 
@@ -108,7 +137,11 @@ export default function Header() {
                         <div className="absolute top-full left-0 mt-2 w-full rounded-xl border border-zinc-800 bg-zinc-900 shadow-2xl overflow-hidden z-50">
                             {pesquisa.trim().length < 2 ? (
                                 <div className="p-4 text-center text-sm text-zinc-400">
-                                    Digite pelo menos <span className="font-semibold text-white">2 caracteres</span>.
+                                    Digite pelo menos{' '}
+                                    <span className="font-semibold text-white">
+                                        2 caracteres
+                                    </span>
+                                    .
                                 </div>
                             ) : loading ? (
                                 <div className="p-4 text-center text-sm text-zinc-500">
@@ -116,7 +149,8 @@ export default function Header() {
                                 </div>
                             ) : resultados.length > 0 ? (
                                 resultados.map((ani) => {
-                                    const isDublado = ani.generos?.includes("Dublado");
+                                    const isDublado =
+                                        ani.generos?.includes('Dublado');
                                     const animeId = ani.id_video || ani.id;
 
                                     return (
@@ -140,17 +174,21 @@ export default function Header() {
                                                 <div className="flex items-center gap-2 mt-1 text-xs text-zinc-400">
                                                     <span
                                                         className={`px-1 py-0.5 rounded text-[10px] font-bold text-zinc-100 ${isDublado
-                                                            ? "bg-blue-600/80 group-hover:bg-blue-600"
-                                                            : "bg-purple-600/80 group-hover:bg-purple-600"
+                                                            ? 'bg-blue-600/80 group-hover:bg-blue-600'
+                                                            : 'bg-purple-600/80 group-hover:bg-purple-600'
                                                             }`}
                                                     >
-                                                        {isDublado ? "Dublado" : "Legendado"}
+                                                        {isDublado
+                                                            ? 'Dublado'
+                                                            : 'Legendado'}
                                                     </span>
 
                                                     <span>•</span>
 
                                                     <span>
-                                                        {ani.total_episodios_geral || 0} episódios
+                                                        {ani.total_episodios_geral ||
+                                                            0}{' '}
+                                                        episódios
                                                     </span>
                                                 </div>
                                             </div>
