@@ -1,6 +1,11 @@
 import imgErro from "../../assets/feedback/error.svg"
 
-export default function ErrorMessage({ message, retry }) {
+interface ErrorMessageProps {
+    message: string;
+    retry: () => void
+}
+
+export default function ErrorMessage({ message, retry }: ErrorMessageProps) {
 
     return (
         <div className="min-h-[300px] flex flex-col md:flex-row items-center justify-center gap-8 p-6 border border-zinc-800/80 rounded-2xl my-5">

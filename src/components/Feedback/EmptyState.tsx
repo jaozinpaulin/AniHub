@@ -1,6 +1,12 @@
 
 import imgEmpty from "../../assets/feedback/empty.svg"
-export default function EmptyState({ message, retry }) {
+
+interface EmptyStateProps {
+    message: string;
+    retry: () => void
+}
+
+export default function EmptyState({ message, retry }: EmptyStateProps) {
 
     return (
         <div className=" min-h-[300px] flex flex-col md:flex-row items-center justify-center gap-8 p-6 border border-zinc-800/70 rounded-2xl my-5">

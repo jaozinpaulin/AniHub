@@ -14,7 +14,7 @@ export default function User() {
     const [openUser, setOpenUser] = useState(false);
     const [openProfile, setOpenProfile] = useState(false);
 
-    const cardOpen = useRef(null);
+    const cardOpen = useRef<HTMLDivElement | null>(null);
 
     const [openAuth, setOpenAuth] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
@@ -26,11 +26,11 @@ export default function User() {
     }
     useEffect(() => {
 
-        function handleClick(evt) {
+        function handleClick(evt: MouseEvent) {
 
             if (!cardOpen.current) return;
 
-            if (!cardOpen.current.contains(evt.target)) {
+            if (!cardOpen.current.contains(evt.target as Node)) {
                 setOpenUser(false)
             }
         }

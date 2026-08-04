@@ -2,7 +2,15 @@ import { useToast } from "../hooks/useToast";
 import { IoClose } from "react-icons/io5";
 import { IoWarning, IoCheckmarkCircle, IoCloseCircle, IoInformationCircle } from "react-icons/io5";
 
-function ToastIcon({ type }) {
+
+type ToastType = "success" | "warning" | "error" | "info";
+
+interface ToastIconProps {
+    type: ToastType;
+}
+
+
+function ToastIcon({ type }: ToastIconProps) {
 
     if (type === "success") {
         return <IoCheckmarkCircle size={22} />;
@@ -19,7 +27,7 @@ function ToastIcon({ type }) {
     return <IoInformationCircle size={22} />;
 }
 
-function getToastStyle(type) {
+function getToastStyle(type: ToastType) {
     const styles = {
         success: "bg-emerald-600",
         warning: "bg-amber-500",
@@ -27,10 +35,10 @@ function getToastStyle(type) {
         info: "bg-sky-600"
     };
 
-
-
-    return styles[type] || styles.info;
+    return styles[type];
 }
+
+
 export default function Toast() {
 
     const { toast, hideToast } = useToast();

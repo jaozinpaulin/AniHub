@@ -2,8 +2,19 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { FaXmark } from "react-icons/fa6";
 
+import type { User } from "firebase/auth"
 
-export default function ProfileModal({ open, setOpen, user }) {
+
+interface ProfileModalProps {
+    open: boolean;
+    setOpen: (value: boolean) => void;
+    user: User | null;
+}
+
+
+
+
+export default function ProfileModal({ open, setOpen, user }: ProfileModalProps) {
 
     useEffect(() => {
         document.body.style.overflow = open ? "hidden" : "auto";
