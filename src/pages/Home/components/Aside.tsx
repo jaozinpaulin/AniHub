@@ -11,19 +11,40 @@ import SkeletonAside from "../../../components/Skeleton/SkeletonAside";
 
 import ErrorMessage from "../../../components/Feedback/ErrorMessage";
 
+import type { AnimeType } from "../../../types/anime";
+
+interface fraseAleatoriaType {
+    id: number;
+    anime: string;
+    frase: string;
+    autor: string;
+}
+
+interface trailerAleatorioType {
+    id: number;
+    id_video: string;
+    nome: string;
+    id_youtube: string;
+    canal: string;
+    duracao: string;
+}
+
+
+
 export default function Aside() {
     const { animes, loading, error, loadAnimes } = useAnimes();
-
     const trailersAnime = trailers;
-
     const location = useLocation();
 
-    const [animesAleatorio, setAnimesAleatorio] = useState(null);
+    const [animesAleatorio, setAnimesAleatorio] = useState<AnimeType | null>(null);
+    const [trailerAleatorio, setTrailerAleatorio] = useState<trailerAleatorioType | null>(null)
+    const [fraseAleatoria, setFraseAleatoria] = useState<fraseAleatoriaType | null>(null);
+
 
     const sortearNumAleatorio = () => {
         if (animes.length === 0) return
 
-        const ani = animes[Math.floor(Math.random() * animes.length)]
+        const ani = animes[Math.floor(Math.random() * animes.length)]!;
         setAnimesAleatorio(ani)
     }
     useEffect(() => {
@@ -32,11 +53,10 @@ export default function Aside() {
 
     const generosUnicos = [...new Set(animes.flatMap(anime => anime.generos).filter(ge => !ge.startsWith('Letra')))]
 
-    const [trailerAleatorio, setTrailerAleatorio] = useState()
     const sortearTrailerAleatorio = () => {
         if (trailers.length === 0) return
 
-        const trailerUnico = trailers[Math.floor(Math.random() * trailers.length)]
+        const trailerUnico = trailers[Math.floor(Math.random() * trailers.length)]!;
         setTrailerAleatorio(trailerUnico)
     }
 
@@ -49,12 +69,11 @@ export default function Aside() {
     const mediaTotal = (totalEstrelas / animes.length).toFixed(1)
 
     const totalEpisodios = animes.reduce((total, ep) => total + ep.total_episodios_geral, 0)
-    const [fraseAleatoria, setFraseAleatoria] = useState();
 
     const sortearFraseAleatoria = () => {
         if (frases.length === 0) return;
 
-        const fraseUnica = frases[Math.floor(Math.random() * frases.length)];
+        const fraseUnica = frases[Math.floor(Math.random() * frases.length)]!;
         setFraseAleatoria(fraseUnica);
     };
 

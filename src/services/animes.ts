@@ -3,8 +3,14 @@ import { collection, getDocs, limit, query, startAfter, startAt, endAt, orderBy,
 
 
 import type { AnimeType } from "../types/anime";
+import type { QueryDocumentSnapshot } from "firebase/firestore";
 
-export async function getAnimes(limitValue = 16, lastVisibleDoc = null) {
+export async function getAnimes(limitValue = 16, lastVisibleDoc: QueryDocumentSnapshot | null = null): Promise<{
+    animes: AnimeType[];
+    lastVisible: QueryDocumentSnapshot | null;
+    hasMore: boolean;
+}> {
+
     try {
         const collectionRef = collection(db, "animes");
 
@@ -23,9 +29,9 @@ export async function getAnimes(limitValue = 16, lastVisibleDoc = null) {
         const animes = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data()
-        }));
+        } as AnimeType));
 
-        const lastVisible = snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null;
+        const lastVisible = snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1]! : null;
         const hasMore = snapshot.docs.length === limitValue;
 
         return {
@@ -39,13 +45,14 @@ export async function getAnimes(limitValue = 16, lastVisibleDoc = null) {
     }
 }
 
-export async function getAnimeById(id: string) {
+export async function getAnimeById(id: string): Promise<AnimeType> {
     try {
         const docRef = doc(db, "animes", id);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            return { id: docSnap.id, ...docSnap.data() };
+
+            return { id: docSnap.id, ...docSnap.data() } as AnimeType;
         } else {
             throw new Error("Anime não encontrado.");
         }
@@ -55,7 +62,7 @@ export async function getAnimeById(id: string) {
     }
 }
 
-export async function getHomeAnimes() {
+export async function getHomeAnimes(): Promise<AnimeType[]> {
     try {
         const { animes } = await getAnimes(25);
         return animes;

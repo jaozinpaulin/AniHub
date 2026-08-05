@@ -2,7 +2,7 @@ import { useRef, useMemo, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaStar, FaFire } from "react-icons/fa";
 
-import ButtonsArrow from "../components/ButtonsArrow";
+import ButtonsArrow from "./ButtonsArrow";
 import SkeletonLoading from "../../../components/Skeleton/SkeletonLoading";
 import ErrorMessage from "../../../components/Feedback/ErrorMessage";
 import EmptyState from "../../../components/Feedback/EmptyState";
@@ -10,14 +10,16 @@ import EmptyState from "../../../components/Feedback/EmptyState";
 import { useAnimes } from "../../../hooks/useAnimes";
 import { getHomeAnimes } from "../../../services/animes";
 
+import type { AnimeType } from "../../../types/anime";
+
 export default function Trending() {
     const { loading, error, loadAnimes } = useAnimes();
-    const [animesHome, setAnimesHome] = useState([]);
+    const [animesHome, setAnimesHome] = useState<AnimeType[]>([]);
     const [loadingHome, setLoadingHome] = useState(true);
 
     const location = useLocation();
-    const scrollAnimeRef = useRef(null);
-    const scrollTopRef = useRef(null);
+    const scrollAnimeRef = useRef<HTMLDivElement>(null);
+    const scrollTopRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         async function loadData() {

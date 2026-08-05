@@ -1,7 +1,7 @@
 import imgErro from "../../assets/feedback/error.svg"
 
 interface ErrorMessageProps {
-    message: string;
+    message: string | null;
     retry: () => void
 }
 

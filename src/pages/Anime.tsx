@@ -12,6 +12,9 @@ import EmptyState from "../components/Feedback/EmptyState";
 
 import { getAnimeById } from "../services/animes";
 
+import type { AnimeType } from "../types/anime";
+import type { TemporadaType } from "../types/anime";
+
 export default function Anime() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -21,22 +24,25 @@ export default function Anime() {
     const { isFavorite, toggleFavorite } = useFavorites();
     const { progressVideo } = useProgress();
 
-    const dropdownRef = useRef(null);
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     const animeFromState = location.state?.anime;
+
     const animeFromList = useMemo(() => {
         return animes?.find((a) => String(a.id_video) === String(id) || String(a.id) === String(id));
     }, [animes, id]);
 
-    const [animeShow, setAnimeShow] = useState(animeFromState || animeFromList || null);
+    const [animeShow, setAnimeShow] = useState<AnimeType | null>(animeFromState || animeFromList || null);
+
     const [loadingLocal, setLoadingLocal] = useState(!animeFromState && !animeFromList);
-    const [errorLocal, setErrorLocal] = useState(null);
+    const [errorLocal, setErrorLocal] = useState<string | null>(null);
 
     const [open, setOpen] = useState(false);
     const [loreExpandida, setLoreExpandida] = useState(false);
     const [temporadaAtual, setTemporadaAtual] = useState(1);
 
     useEffect(() => {
+
         let isMounted = true;
 
         if (animeFromState) {
@@ -51,11 +57,13 @@ export default function Anime() {
             return;
         }
 
-        async function fetchSingleAnime() {
+        async function fetchSingleAnime(id: string) {
             setLoadingLocal(true);
             setErrorLocal(null);
+
             try {
                 const data = await getAnimeById(id);
+
                 if (isMounted) {
                     setAnimeShow(data);
                 }
@@ -70,7 +78,7 @@ export default function Anime() {
         }
 
         if (id) {
-            fetchSingleAnime();
+            fetchSingleAnime(id);
         }
 
         return () => {
@@ -79,8 +87,8 @@ export default function Anime() {
     }, [id, animeFromState, animeFromList]);
 
     useEffect(() => {
-        function handleClickOutside(event) {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setOpen(false);
             }
         }
@@ -90,9 +98,15 @@ export default function Anime() {
 
     const favorito = animeShow ? isFavorite(animeShow.id_video || animeShow.id) : false;
 
-    const temporada = useMemo(() => {
+    const temporada = useMemo<TemporadaType | null>(() => {
         if (!animeShow?.temporadas) return null;
-        return animeShow.temporadas.find((t) => Number(t.id) === Number(temporadaAtual)) || animeShow.temporadas[0];
+
+        return (
+            animeShow.temporadas.find(
+                (t) => Number(t.id) === Number(temporadaAtual)
+            ) ?? null
+        )
+
     }, [animeShow, temporadaAtual]);
 
     if (loadingLocal || (loadingGlobal && !animeShow)) {
@@ -342,7 +356,8 @@ export default function Anime() {
                         </div>
                     </div>
 
-                    {/* Episodios da Temporada Selecionada */}
+                    {/* Eps Temporada Selecionada */}
+
                     <div className="flex flex-col gap-2.5 mb-8">
                         {temporada?.episodios?.map((ani) => {
                             const progress = progressVideo?.find(item =>

@@ -1,14 +1,32 @@
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext, useEffect, type ReactNode } from "react";
 
 import { useAuth } from "../hooks/useAuth";
 import { saveProgress, getProgress } from "../services/progress";
 
-export const timerContext = createContext();
 
-export default function TimerProvider({ children }) {
+interface TimerContextType {
+    progressVideo: ProgressVideoType[];
+    atualizarProgresso: (dadosEp: ProgressVideoType) => Promise<void>
+}
+
+interface TimerProviderProps {
+    children: ReactNode;
+}
+
+export interface ProgressVideoType {
+    animeId: string;
+    temporada: number;
+    episodio: number;
+    progress: number;
+}
+
+export const timerContext = createContext<TimerContextType | null>(null);
+
+
+export default function TimerProvider({ children }: TimerProviderProps) {
     const { user } = useAuth();
 
-    const [progressVideo, setProgressVideo] = useState([]);
+    const [progressVideo, setProgressVideo] = useState<ProgressVideoType[]>([]);
 
     useEffect(() => {
         if (!user) {
@@ -28,7 +46,7 @@ export default function TimerProvider({ children }) {
         loadProgress();
     }, [user]);
 
-    async function atualizarProgresso(dadosEp) {
+    async function atualizarProgresso(dadosEp: ProgressVideoType) {
         if (!user) return;
 
         try {

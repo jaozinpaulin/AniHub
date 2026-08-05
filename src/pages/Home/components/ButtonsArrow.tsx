@@ -1,6 +1,14 @@
+import type { RefObject } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-export default function ButtonsArrow({ scrollRef, onNext }) {
+
+interface ButtonsArrowProps {
+    scrollRef: RefObject<HTMLDivElement | null>;
+    onNext?: () => void;
+}
+
+
+export default function ButtonsArrow({ scrollRef, onNext }: ButtonsArrowProps) {
 
     const scrollRight = () => {
         if (onNext) {
