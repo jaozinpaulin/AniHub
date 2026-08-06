@@ -8,20 +8,25 @@ import SkeletonLoading from "../components/Skeleton/SkeletonLoading";
 import ErrorMessage from "../components/Feedback/ErrorMessage";
 import EmptyState from "../components/Feedback/EmptyState";
 
+
+import type { AnimeType } from "../types/anime";
+import type { QueryDocumentSnapshot } from "firebase/firestore";
+
+
 export default function Explore() {
     const location = useLocation();
 
-    const [animesList, setAnimesList] = useState([]);
-    const [lastDoc, setLastDoc] = useState(null);
+    const [animesList, setAnimesList] = useState<AnimeType[]>([]);
+    const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot | null>(null);
     const [hasMore, setHasMore] = useState(true);
     const [loadingInitial, setLoadingInitial] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
 
     const [busca, buscaSet] = useState('');
     const [gene, geneSet] = useState('Todos');
 
-    const observerTarget = useRef(null);
+    const observerTarget = useRef<HTMLDivElement | null>(null);
 
     const fetchInitialAnimes = useCallback(async () => {
         setLoadingInitial(true);
@@ -64,11 +69,11 @@ export default function Explore() {
 
         const observer = new IntersectionObserver(
             (entries) => {
-                if (entries[0].isIntersecting && hasMore && !loadingMore && !loadingInitial) {
+                if (entries[0]?.isIntersecting && hasMore && !loadingMore && !loadingInitial) {
                     fetchMoreAnimes();
                 }
             },
-            { threshold: 0.1 }
+            { threshold: 0.3 }
         );
 
         observer.observe(target);
@@ -84,6 +89,7 @@ export default function Explore() {
 
     const generosUnicos = useMemo(() => {
         if (!animesList.length) return ['Todos'];
+
         const generos = animesList
             .flatMap(anime => anime.generos || [])
             .filter(ge => ge && !ge.startsWith('Letra'));
@@ -115,7 +121,7 @@ export default function Explore() {
                 <div className="w-full h-20 rounded-xl bg-zinc-800 animate-pulse" />
 
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    <SkeletonLoading quantity={12} />
+                    <SkeletonLoading />
                 </div>
             </div>
         );

@@ -60,7 +60,7 @@ export default function Categories() {
                     </span>
                 </div>
 
-                <EmptyState message={error} retry={loadAnimes} />
+                <EmptyState message={error ?? "Ocorreu um erro ao carregar os animes"} retry={loadAnimes} />
             </div>
         )
     }

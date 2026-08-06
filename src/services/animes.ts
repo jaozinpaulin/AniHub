@@ -5,11 +5,12 @@ import { collection, getDocs, limit, query, startAfter, startAt, endAt, orderBy,
 import type { AnimeType } from "../types/anime";
 import type { QueryDocumentSnapshot } from "firebase/firestore";
 
-export async function getAnimes(limitValue = 16, lastVisibleDoc: QueryDocumentSnapshot | null = null): Promise<{
-    animes: AnimeType[];
-    lastVisible: QueryDocumentSnapshot | null;
-    hasMore: boolean;
-}> {
+export async function getAnimes(limitValue = 16, lastVisibleDoc: QueryDocumentSnapshot | null = null):
+    Promise<{
+        animes: AnimeType[];
+        lastVisible: QueryDocumentSnapshot | null;
+        hasMore: boolean;
+    }> {
 
     try {
         const collectionRef = collection(db, "animes");
@@ -26,10 +27,7 @@ export async function getAnimes(limitValue = 16, lastVisibleDoc: QueryDocumentSn
         const q = query(collectionRef, ...queryConstraints);
         const snapshot = await getDocs(q);
 
-        const animes = snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data()
-        } as AnimeType));
+        const animes = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as AnimeType));
 
         const lastVisible = snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1]! : null;
         const hasMore = snapshot.docs.length === limitValue;

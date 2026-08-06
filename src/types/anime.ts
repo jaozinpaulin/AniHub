@@ -19,7 +19,7 @@ export interface AnimeType {
     data_lancamento: string;
 
     capa: string;
-    classificacao: string;
+    classificacao: number;
 
     generos: string[];
 

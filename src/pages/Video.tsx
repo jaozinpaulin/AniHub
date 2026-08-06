@@ -18,8 +18,10 @@ import { getAnimeById } from '../services/animes';
 import ErrorMessage from '../components/Feedback/ErrorMessage';
 import EmptyState from '../components/Feedback/EmptyState';
 
+import type { AnimeType } from '../types/anime';
+
 export default function Video() {
-    const { id, tem, ep } = useParams();
+    const { id, tem, ep } = useParams<{ id: string; tem: string; ep: string }>();
     const navigate = useNavigate();
 
     const { animes, loading: loadingGlobal, error: errorGlobal, loadAnimes } = useAnimes();
@@ -29,9 +31,10 @@ export default function Video() {
         return animes?.find((a) => String(a.id_video) === String(id) || String(a.id) === String(id));
     }, [animes, id]);
 
-    const [animeShow, setAnimeShow] = useState(animeFromList || null);
+    const [animeShow, setAnimeShow] = useState<AnimeType | null>(animeFromList || null);
+
     const [loadingLocal, setLoadingLocal] = useState(!animeFromList);
-    const [errorLocal, setErrorLocal] = useState(null);
+    const [errorLocal, setErrorLocal] = useState<string | null>(null);
 
     const [tempo, setTempo] = useState(0);
     const [isPlaying, setIsplaying] = useState(false);
@@ -40,14 +43,17 @@ export default function Video() {
     // Estados para tratamento de erro/timeout do player
     const [playerError, setPlayerError] = useState(false);
     const [reloadKey, setReloadKey] = useState(0);
-    const playerTimeoutRef = useRef(null);
+    const playerTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
 
     const [isTheaterMode, setIsTheaterMode] = useState(false);
 
     const temporadaAtual = Number(tem);
     const episodioAtual = Number(ep);
 
+
+
     useEffect(() => {
+
         let isMounted = true;
 
         if (animeFromList) {
@@ -57,6 +63,9 @@ export default function Video() {
         }
 
         async function fetchAnime() {
+            if (!id || !tem || !ep) return;
+
+
             setLoadingLocal(true);
             setErrorLocal(null);
             try {
@@ -104,6 +113,7 @@ export default function Video() {
         };
     }, [id, tem, ep, reloadKey]);
 
+
     const temporadaAtiva = useMemo(() => {
         if (!animeShow?.temporadas) return null;
         return animeShow.temporadas.find(t => Number(t.id) === temporadaAtual) || animeShow.temporadas[0];
@@ -111,15 +121,16 @@ export default function Video() {
 
     const totalEp = temporadaAtiva?.total_episodios_temporada || temporadaAtiva?.episodios?.length || 0;
 
-    const realAnimeId = animeShow?.id_video || id;
+    const realAnimeId = animeShow?.id_video ?? id;
 
-    function getProgressPercentage(segundos) {
+    function getProgressPercentage(segundos: number) {
         const duracaoEp = 24 * 60;
         return Math.round(Math.min((segundos / duracaoEp) * 100, 100));
     }
 
     useEffect(() => {
         if (!isPlaying) return;
+        if (!realAnimeId) return;
 
         const time = setInterval(() => {
             setTempo((prev) => {
@@ -140,7 +151,7 @@ export default function Video() {
         return () => clearInterval(time);
     }, [isPlaying, realAnimeId, temporadaAtual, episodioAtual]);
 
-    const handleTrocarEpisodio = (novoEp) => {
+    const handleTrocarEpisodio = (novoEp: number) => {
         navigate(`/video/${id}/${temporadaAtual}/${novoEp}`);
     };
 

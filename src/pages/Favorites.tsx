@@ -31,7 +31,7 @@ export default function Favorites() {
                 <div className="w-full h-20 rounded-xl bg-zinc-800 animate-pulse" />
 
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    <SkeletonLoading quantity={12} />
+                    <SkeletonLoading />
                 </div>
 
             </div>
@@ -51,7 +51,7 @@ export default function Favorites() {
                 <div className="w-full h-20 rounded-xl bg-zinc-800 animate-pulse" />
 
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    <SkeletonLoading quantity={12} />
+                    <SkeletonLoading />
                 </div>
 
             </div>

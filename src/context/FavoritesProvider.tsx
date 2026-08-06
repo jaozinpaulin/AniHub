@@ -2,18 +2,38 @@ import { useState, createContext, useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast";
 
+
 import { addFavorite, getFavorites, removeFavorite } from "../services/favorites";
 
-export const FavoritesContext = createContext();
+import type { AnimeType } from "../types/anime";
+import type { User } from "firebase/auth";
+import type { ReactNode } from "react";
 
-export default function FavoritesProvider({ children }) {
+interface FavoritesContextType {
+    favoritos: AnimeType[];
+    favoritesLoading: boolean;
+    error: string | null;
+    user: User | null;
+    loadFavorites: () => Promise<void>;
+    isFavorite: (animeId: string) => boolean;
+    toggleFavorite: (anime: AnimeType) => Promise<void>;
+}
+
+interface FavoritesProviderProps {
+    children: ReactNode;
+}
+
+
+export const FavoritesContext = createContext<FavoritesContextType | null>(null);
+
+export default function FavoritesProvider({ children }: FavoritesProviderProps) {
 
     const { user, loading } = useAuth();
     const { showToast } = useToast();
 
-    const [favoritos, setFavoritos] = useState([]);
+    const [favoritos, setFavoritos] = useState<AnimeType[]>([]);
     const [favoritesLoading, setFavoritesLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
 
     async function loadFavorites() {
         try {
@@ -24,7 +44,12 @@ export default function FavoritesProvider({ children }) {
             setFavoritos(favorites);
 
         } catch (error) {
-            setError(error.message);
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Erro desconhecido");
+            }
+
             showToast(
                 "Não foi possível carregar seus favoritos.",
                 "error"
@@ -47,13 +72,13 @@ export default function FavoritesProvider({ children }) {
         loadFavorites();
     }, [user, loading]);
 
-    function isFavorite(id) {
+    function isFavorite(id: string) {
         return favoritos.some(
             anime => anime.id_video === id
         );
     }
 
-    async function toggleFavorite(anime) {
+    async function toggleFavorite(anime: AnimeType) {
         if (!user) {
             showToast(
                 "Faça login para salvar seus favoritos",
@@ -81,13 +106,24 @@ export default function FavoritesProvider({ children }) {
 
             await loadFavorites();
         } catch (error) {
-            setError(error.message);
+
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Erro desconhecido");
+            }
+
             showToast(
                 "Não foi possível atualizar seus favoritos.",
                 "error"
             );
         }
     }
+
+    interface FavoritesContextType {
+
+    }
+
 
     return (
         <FavoritesContext.Provider

@@ -10,17 +10,26 @@ import ErrorMessage from "../../components/Feedback/ErrorMessage";
 import EmptyState from "../../components/Feedback/EmptyState";
 
 
+import type { AnimeType } from "../../types/anime";
+
+type FilterOptionType =
+    | "Todos"
+    | "A-Z"
+    | "Z-A"
+    | "Melhor avaliados";
+
 export default function Genre() {
     const { animes, loading, error, loadAnimes } = useAnimes();
 
-    const [filter, setFilter] = useState("Todos");
+    const [filter, setFilter] = useState<FilterOptionType>("Todos");
+
     const [isFilterOpen, setIsFilterOpen] = useState(false);
 
     const location = useLocation();
     const { genero } = useParams();
     const [busca, setBusca] = useState('');
 
-    const removerAcentos = (texto) => {
+    const removerAcentos = (texto: string) => {
         return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
     }
 
@@ -34,7 +43,8 @@ export default function Genre() {
         return inputFilter
     })
 
-    const filterOptions = [
+
+    const filterOptions: FilterOptionType[] = [
         "Todos",
         "A-Z",
         "Z-A",
@@ -85,7 +95,7 @@ export default function Genre() {
                 <div className=" w-full h-20 rounded-xl bg-zinc-800 animate-pulse" />
 
                 <div className=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    <SkeletonLoading quantity={12} />
+                    <SkeletonLoading />
                 </div>
 
             </div>
@@ -115,7 +125,7 @@ export default function Genre() {
                     </span>
                 </div>
 
-                <EmptyState message={error} retry={loadAnimes} />
+                <EmptyState message={error ?? "Erro ao carregar os animes"} retry={loadAnimes} />
             </div>
         )
     }
@@ -201,7 +211,7 @@ export default function Genre() {
 
                 <div className="w-full grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-2.5 sm:gap-5 px-1 sm:px-2 lg:px-6 pb-10">
                     {filteredAnimes.map((a, index) => (
-                        <Link key={a.index} to={`/anime/${a.id_video}`} state={{ from: location.pathname }} >
+                        <Link key={index} to={`/anime/${a.id_video}`} state={{ from: location.pathname }} >
                             <div
                                 className="relative overflow-hidden rounded-xl bg-zinc-800/80 backdrop-blur-sm cursor-pointer text-white transition-all duration-300 hover:-translate-y-1.5 sm:hover:-translate-y-2 hover:shadow-xl hover:shadow-black/40 hover:bg-zinc-800/60 h-full flex flex-col border-transparent border hover:border-zinc-500 justify-between">
 
