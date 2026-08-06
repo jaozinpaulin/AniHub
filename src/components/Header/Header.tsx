@@ -10,8 +10,6 @@ import type { AnimeType } from '../../types/anime';
 import type { NavLinkRenderProps } from 'react-router-dom';
 
 
-
-
 export default function Header() {
     const [pesquisa, setPesquisa] = useState('');
     const [resultados, setResultados] = useState<AnimeType[]>([]);

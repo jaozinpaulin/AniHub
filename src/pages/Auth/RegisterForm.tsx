@@ -3,8 +3,15 @@ import { useAuth } from "../../hooks/useAuth";
 import { FaXmark } from "react-icons/fa6";
 import { useToast } from "../../hooks/useToast";
 
+import type { Dispatch, SetStateAction } from "react";
+import { FirebaseError } from "firebase/app";
 
-export default function RegisterForm({ setIsLogin, setOpen }) {
+interface RegisterFormProps {
+    setOpen: Dispatch<SetStateAction<boolean>>;
+    setIsLogin: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function RegisterForm({ setIsLogin, setOpen }: RegisterFormProps) {
     const { handleRegister } = useAuth();
     const { showToast } = useToast();
 
@@ -39,20 +46,21 @@ export default function RegisterForm({ setIsLogin, setOpen }) {
                 "success"
             );
         } catch (error) {
-
-            switch (error.code) {
-                case "auth/email-already-in-use":
-                    setError("Este e-mail já está cadastrado.");
-                    break;
-                case "auth/invalid-email":
-                    setError("Digite um e-mail válido.");
-                    break;
-                case "auth/weak-password":
-                    setError("A senha deve ter pelo menos 6 caracteres.");
-                    break;
-                default:
-                    setError("Ocorreu um erro ao criar a conta.");
-                    break;
+            if (error instanceof FirebaseError) {
+                switch (error.code) {
+                    case "auth/email-already-in-use":
+                        setError("Este e-mail já está cadastrado.");
+                        break;
+                    case "auth/invalid-email":
+                        setError("Digite um e-mail válido.");
+                        break;
+                    case "auth/weak-password":
+                        setError("A senha deve ter pelo menos 6 caracteres.");
+                        break;
+                    default:
+                        setError("Ocorreu um erro ao criar a conta.");
+                        break;
+                }
             }
         }
     };

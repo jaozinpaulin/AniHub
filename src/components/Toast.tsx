@@ -3,12 +3,11 @@ import { IoClose } from "react-icons/io5";
 import { IoWarning, IoCheckmarkCircle, IoCloseCircle, IoInformationCircle } from "react-icons/io5";
 
 
-type ToastType = "success" | "warning" | "error" | "info";
+export type ToastType = "success" | "warning" | "error" | "info";
 
 interface ToastIconProps {
     type: ToastType;
 }
-
 
 function ToastIcon({ type }: ToastIconProps) {
 

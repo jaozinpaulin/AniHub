@@ -3,7 +3,16 @@ import { useAuth } from "../../hooks/useAuth";
 import { FaXmark } from "react-icons/fa6";
 import { useToast } from "../../hooks/useToast";
 
-export default function LoginForm({ setIsLogin, setOpen }) {
+import type { Dispatch, SetStateAction } from "react";
+import { FirebaseError } from "firebase/app";
+
+interface LoginFormProps {
+    setOpen: Dispatch<SetStateAction<boolean>>;
+    setIsLogin: Dispatch<SetStateAction<boolean>>;
+}
+
+
+export default function LoginForm({ setIsLogin, setOpen }: LoginFormProps) {
     const { handleLogin } = useAuth();
     const { showToast } = useToast()
 
@@ -40,23 +49,24 @@ export default function LoginForm({ setIsLogin, setOpen }) {
             )
 
         } catch (error) {
+            if (error instanceof FirebaseError) {
+                switch (error.code) {
+                    case "auth/invalid-email":
+                        setError("Digite um e-mail válido.");
+                        break;
 
-            switch (error.code) {
-                case "auth/invalid-email":
-                    setError("Digite um e-mail válido.");
-                    break;
+                    case "auth/invalid-credential":
+                        setError("E-mail ou senha incorretos.");
+                        break;
 
-                case "auth/invalid-credential":
-                    setError("E-mail ou senha incorretos.");
-                    break;
+                    case "auth/network-request-failed":
+                        setError("Verifique sua conexão com a internet.");
+                        break;
 
-                case "auth/network-request-failed":
-                    setError("Verifique sua conexão com a internet.");
-                    break;
-
-                default:
-                    setError("Ocorreu um erro ao tentar entrar em sua conta.");
-                    break;
+                    default:
+                        setError("Ocorreu um erro ao tentar entrar em sua conta.");
+                        break;
+                }
             }
         }
     };
