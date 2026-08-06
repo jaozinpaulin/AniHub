@@ -1,18 +1,19 @@
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    signOut
+    signOut,
+    type UserCredential
 } from "firebase/auth";
 
 import { auth } from "../firebase/config";
 
-export function register(email, password) {
+export function register(email: string, password: string): Promise<UserCredential> {
     return createUserWithEmailAndPassword(auth, email, password);
 }
-export function login(email, password) {
+export function login(email: string, password: string): Promise<UserCredential> {
     return signInWithEmailAndPassword(auth, email, password);
 }
 
-export function logout() {
+export function logout(): Promise<void> {
     return signOut(auth);
 }

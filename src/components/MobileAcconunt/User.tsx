@@ -54,7 +54,7 @@ export default function User() {
                     <div className=" flex cursor-pointer items-center gap-2 rounded-ful l p-1 transition hover:bg-zinc-800">
 
                         <div className=" flex size-10 items-center justify-center rounded-full bg-purple-500/70 font-bold text-white">
-                            {user.email.charAt(0).toUpperCase()}
+                            {user.email?.charAt(0).toUpperCase() ?? "U"}
                         </div>
 
                         <span className=" hidden max-w-32 truncate text-sm font-medium text-white xl:block">

@@ -35,6 +35,7 @@ export default function TimerProvider({ children }: TimerProviderProps) {
         }
 
         async function loadProgress() {
+            if (!user) return;
             try {
                 const progress = await getProgress(user.uid);
                 setProgressVideo(progress);

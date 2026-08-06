@@ -1,7 +1,7 @@
 import FavoritesProvider from "./FavoritesProvider";
 import TimerProvider from "./TimerProvider";
 
-import AuthProvider from "./AuthProvider"
+import AuthProvider from "./AuthProvider.jsx"
 import { ToastProvider } from "./ToastProvider";
 
 import { AnimeProvider } from "./AnimeProvider";

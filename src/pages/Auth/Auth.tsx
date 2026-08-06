@@ -4,8 +4,9 @@ import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import { useEffect } from "react";
 
+import type { AuthProps } from "../../components/Header/User";
 
-export default function Auth({ open, setOpen, isLogin, setIsLogin }) {
+export default function Auth({ open, setOpen, isLogin, setIsLogin }: AuthProps) {
 
     useEffect(() => {
         document.body.style.overflow = open ? "hidden" : "auto";

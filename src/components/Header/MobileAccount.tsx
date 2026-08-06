@@ -47,7 +47,7 @@ export default function MobileAccount({ setIsOpen }: MobileAccountProps) {
 
                     <div className="flex items-center gap-3 rounded-xl border border-zinc-800 bg-zinc-900/60 p-3">
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-500/70 font-bold text-white">
-                            {user.email.charAt(0).toUpperCase()}
+                            {user.email?.charAt(0).toUpperCase() ?? "U"}
                         </div>
 
                         <div className="min-w-0">

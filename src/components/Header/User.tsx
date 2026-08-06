@@ -8,12 +8,20 @@ import ProfileModal from "../ProfileModal/ProfileModal";
 import Auth from "../../pages/Auth/Auth.jsx";
 import { useToast } from "../../hooks/useToast.js";
 
+import type { Dispatch, SetStateAction } from "react";
+
+export interface AuthProps {
+    open: boolean;
+    setOpen: Dispatch<SetStateAction<boolean>>;
+    isLogin: boolean;
+    setIsLogin: Dispatch<SetStateAction<boolean>>;
+}
 export default function User() {
     const { showToast } = useToast();
 
     const { user, handleLogout } = useAuth();
-    const [openUser, setOpenUser] = useState(false);
 
+    const [openUser, setOpenUser] = useState(false);
     const [openProfile, setOpenProfile] = useState(false);
     const [openAuth, setOpenAuth] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
@@ -64,7 +72,7 @@ export default function User() {
                         className="flex items-center gap-2 rounded-xl p-1 transition hover:bg-zinc-800 cursor-pointer">
 
                         <div className="flex size-10 items-center justify-center rounded-full bg-purple-500/70 font-bold text-white">
-                            {user.email.charAt(0).toUpperCase()}
+                            {user.email?.charAt(0).toUpperCase() ?? "U"}
                         </div>
 
                         <span className="hidden max-w-32 truncate text-sm font-medium text-white xl:block">

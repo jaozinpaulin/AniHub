@@ -36,6 +36,7 @@ export default function FavoritesProvider({ children }: FavoritesProviderProps) 
     const [error, setError] = useState<string | null>(null);
 
     async function loadFavorites() {
+        if (!user) return;
         try {
             setFavoritesLoading(true);
             setError(null);
