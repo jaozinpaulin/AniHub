@@ -66,8 +66,6 @@ export default function Categories() {
     }
 
 
-
-
     return (
 
         <section className="w-full min-h-dvh pt-12 sm:pt-20 px-1 lg:px-6 bg-zinc-950">
@@ -101,9 +99,9 @@ export default function Categories() {
                         return (
                             <Link key={gen} to={`/categories/${gen}`} className="group">
 
-                                <div className={`relative overflow-hidden h-full min-h-[120px] sm:min-h-[150px] flex flex-col justify-between p-3 sm:p-5 rounded-xl sm:rounded-2xl border transition-all duration-300 ease-out cursor-pointer backdrop-blur-md bg-zinc-900/80 shadow-sm hover:-translate-y-1.5 sm:hover:-translate-y-2 hover:shadow-xl hover:shadow-black/40 ${generoAtual.bg} ${generoAtual.border} ${generoAtual.hover}`}>
+                                <div className={`relative overflow-hidden h-full min-h-[120px] sm:min-h-[150px] flex flex-col justify-between p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-zinc-800 transition-all duration-300 ease-out cursor-pointer backdrop-blur-md bg-zinc-900/80 shadow-sm hover:-translate-y-1.5 sm:hover:-translate-y-2 hover:shadow-xl hover:shadow-black/40 ${generoAtual.bg} ${generoAtual.border} ${generoAtual.hover}`}>
 
-                                    <div className="absolute inset-0 opacity-0 group-hover:opacity-15 transition-opacity duration-300 bg-gradient-to-br from-white to-transparent" />
+                                    <div className="absolute inset-0 opacity-0 group-hover:opacity-15 transition-opacity duration-300 bg-gradient-to-br from-zinc-200 to-transparent" />
 
                                     <div className="flex items-center justify-between z-10 gap-2">
                                         <div className="p-1.5 sm:p-2 rounded-lg bg-white/5 group-hover:bg-white/10 transition-colors shrink-0">

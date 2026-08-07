@@ -36,16 +36,16 @@ export default function Hero() {
                     Descubra novos animes, explore títulos incríveis e acompanhe tudo em um só lugar.
                 </p>
 
-                <div className="mt-5 sm:mt-6 flex flex-row flex-wrap justify-center md:justify-start gap-3 sm:gap-4 w-full md:max-w-min mx-auto md:mx-0">
+                <div className="mt-5 sm:mt-6 flex flex-row items-center justify-center md:justify-start gap-2.5 sm:gap-4 w-full max-w-full mx-auto md:mx-0">
 
-                    <Link to={'/explore'}>
-                        <button className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 px-5 py-3 sm:px-5 sm:py-3.5 lg:py-3 lg:px-5 text-xs sm:text-sm lg:text-base font-bold text-zinc-200 hover:text-white hover:bg-blue-700 hover:from-purple-500 hover:to-blue-500 transition-colors duration-300 active:scale-95 transition-all cursor-pointer whitespace-nowrap shadow-lg shadow-blue-600/10">
+                    <Link to={'/explore'} className="shrink-0">
+                        <button className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-3 sm:px-5 sm:py-3.5 lg:py-3 lg:px-5 text-xs sm:text-sm lg:text-base font-bold text-zinc-200 hover:text-white hover:bg-blue-700 hover:from-purple-500 hover:to-blue-500 transition-colors duration-300 active:scale-95 transition-all cursor-pointer whitespace-nowrap shadow-lg shadow-blue-600/10">
                             Explorar Animes
                         </button>
                     </Link>
 
-                    <Link to={'/categories'}>
-                        <button className="flex items-center justify-center rounded-xl border border-zinc-700 text-white px-5 py-3 sm:px-5 sm:py-3.5 lg:py-3 lg:px-5 text-xs sm:text-sm lg:text-base font-bold hover:bg-zinc-900 active:scale-95 transition-all cursor-pointer whitespace-nowrap">
+                    <Link to={'/categories'} className="shrink-0">
+                        <button className="flex items-center justify-center rounded-xl border border-zinc-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 lg:py-3 lg:px-5 text-xs sm:text-sm lg:text-base font-bold hover:bg-zinc-900 active:scale-95 transition-all cursor-pointer whitespace-nowrap">
                             Ver Categorias
                         </button>
                     </Link>
