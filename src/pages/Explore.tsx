@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaStar } from "react-icons/fa";
 
 import { getAnimes } from "../services/animes"; // Ajuste o caminho conforme seu projeto
 
@@ -146,13 +146,13 @@ export default function Explore() {
     return (
         <section className="w-full min-h-dvh pt-16 sm:pt-20 bg-zinc-950/90 xl:px-5 pb-16">
 
-            <div className="sm:pt-10 sm:mx-3">
+            <div className="sm:pt-6 sm:mx-3">
                 <h2 className="hidden sm:block text-3xl md:text-4xl font-bold text-white">
                     Explorar
                 </h2>
             </div>
 
-            <div className="relative mx-3 mt-3 sm:my-8 mb-3">
+            <div className="relative mx-3 mt-3 sm:my-8 sm:mb-3">
                 <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <input
                     type="text"
@@ -162,11 +162,11 @@ export default function Explore() {
                     className="w-full h-10 sm:h-14 bg-zinc-900 border border-zinc-800 rounded-xl pl-12 pr-4 text-white placeholder:text-zinc-500 outline-none focus:border-blue-600/70 transition" />
             </div>
 
-            <p className={`sm:hidden p-3 font-bold text-white ${animesFiltrado.length > 0 ? "block" : "hidden"}`}>
+            <p className={`sm:hidden px-3 py-2 sm:py-3 font-bold text-white ${animesFiltrado.length > 0 ? "block" : "hidden"}`}>
                 Explore
             </p>
 
-            <div className="w-full px-3 mb-6">
+            <div className="w-full px-3 mb-2 sm:mb-4 md-mb-6">
                 <div className="flex gap-3 overflow-x-auto scrollbar-none pb-2 2xl:flex-wrap">
                     {generosUnicos.map((g) => (
                         <button
@@ -199,11 +199,29 @@ export default function Explore() {
                                             loading="lazy"
                                             decoding="async"
                                             className="w-full h-full object-cover" />
-                                        <span
-                                            className={`absolute top-2 left-2 px-2 py-1 rounded-md text-[10px] sm:text-xs font-medium text-white ${isDublado ? "bg-blue-800" : "bg-purple-800"
-                                                }`}>
-                                            {isDublado ? "Dublado" : "Legendado"}
-                                        </span>
+
+                                        <div className="absolute top-1.5 sm:top-2 left-0 w-full px-1.5 sm:px-2 flex items-center justify-between z-10">
+                                            <span
+                                                className={`px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-sm sm:rounded-md text-[9px] sm:text-xs font-medium text-white transition-all ${isDublado ? "bg-blue-800" : "bg-purple-800"
+                                                    }`}>
+
+                                                <span className="sm:hidden">
+                                                    {isDublado ? "DUB" : "LEG"}
+                                                </span>
+
+                                                <span className="hidden sm:inline">
+                                                    {isDublado ? "Dublado" : "Legendado"}
+                                                </span>
+                                            </span>
+
+                                            <div className="flex items-center gap-0.5 sm:gap-1 rounded-md sm:rounded-lg bg-black/70 px-1.5 py-0.5 sm:px-2 sm:py-1 backdrop-blur-sm transition-all duration-300">
+                                                <FaStar className="text-[10px] sm:text-xs text-yellow-400 shrink-0" />
+                                                <span className="text-[10px] sm:text-xs font-semibold text-white leading-none">
+                                                    {Number(a.classificacao || 0).toFixed(1)}
+                                                </span>
+                                            </div>
+                                        </div>
+
                                     </div>
 
                                     <div className="p-2">
@@ -251,6 +269,8 @@ export default function Explore() {
                     </p>
                 </div>
             )}
+
+
 
         </section>
     );

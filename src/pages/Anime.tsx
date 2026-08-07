@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useNavigate, Link, useParams, useLocation } from "react-router-dom";
-import { FaHeart, FaChevronDown, FaChevronLeft, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaChevronDown, FaChevronLeft, FaRegHeart, FaCheck } from "react-icons/fa";
 
 import { useFavorites } from "../hooks/useFavorites";
 import { useProgress } from "../hooks/useProgress";
@@ -369,9 +369,8 @@ export default function Anime() {
                             const porcentagem = progress?.progress ?? 0;
 
                             return (
-                                <div
-                                    key={ani.numero_episodio}
-                                    className="flex flex-row items-center gap-2 sm:gap-4 bg-zinc-900/30 border border-zinc-800/80 p-2 sm:p-3 rounded-lg sm:rounded-xl hover:border-zinc-700 hover:bg-zinc-900/50 transition-all duration-300 group/episode">
+                                <div key={ani.numero_episodio}
+                                    className="relative flex flex-row items-center gap-2 sm:gap-4 bg-zinc-900/30 border border-zinc-800/80 p-2 sm:p-3 rounded-lg sm:rounded-xl hover:border-zinc-700 hover:bg-zinc-900/50 transition-all duration-300 group/episode">
                                     <div className="w-24 min-w-[96px] sm:w-36 md:w-44 aspect-video rounded-md sm:rounded-lg overflow-hidden flex-shrink-0 bg-zinc-950 border border-zinc-800/50 relative">
                                         <img
                                             src={ani.capa_episodio}
@@ -380,6 +379,12 @@ export default function Anime() {
                                             loading="lazy"
                                         />
                                     </div>
+                                    {porcentagem >= 80 && (
+                                        <span className="absolute top-1.5 right-1.5 md:top-2 md:right-2 flex items-center gap-1 text-emerald-400/90  px-1.5 py-0.5 md:px-2 text-[10px] md:text-[11px] font-normal transition-all">
+                                            <FaCheck className="h-2.5 w-2.5 md:h-3 md:w-3 text-emerald-400/80" />
+                                            <span className="hidden md:inline tracking-tight text-zinc-300/90">Assistido</span>
+                                        </span>
+                                    )}
 
                                     <div className="relative max-[400px]:py-2 pb-1.5 sm:py-2 md:py-4 flex-1 flex flex-row items-center justify-between gap-1.5 sm:gap-4 min-w-0">
                                         <div className="flex flex-col text-left min-w-0 pr-1">
@@ -399,12 +404,24 @@ export default function Anime() {
                                             </button>
                                         </Link>
 
-                                        {/* Barra de Progresso do Video */}
-                                        <div className="absolute bottom-0 left-0 right-0 h-0.5 sm:h-1 bg-zinc-800 z-20">
-                                            <div
-                                                className="h-full bg-violet-600 transition-all duration-300"
-                                                style={{ width: `${porcentagem}%` }}
-                                            />
+                                        <div className="absolute -bottom-2 sm:-bottom-3 md:-bottom-4 left-0 right-0 z-20 flex items-center gap-1.5 py-1">
+                                            <div className="relative flex-1  h-1 sm:h-1 bg-zinc-900/60 rounded-full overflow-hidden border border-zinc-800/30">
+
+                                                <div className={`h-full rounded-full transition-all duration-300 ease-out bg-gradient-to-r ${porcentagem >= 80
+                                                    ? 'from-emerald-600/70 via-emerald-500/80 to-teal-400/90'
+                                                    : 'from-zinc-600/30 via-blue-600/50 to-indigo-500'
+                                                    }`}
+                                                    style={{ width: `${Math.min(100, Math.max(0, porcentagem))}%` }} />
+
+                                            </div>
+
+                                            <span
+                                                className={`text-[8px] sm:text-[10px] md:text-[12px] font-medium  min-w-[22px] sm:min-w-[28px] md:min-w-[34px] text-right leading-none transition-colors ${porcentagem >= 80
+                                                    ? 'text-emerald-400/90 font-semibold'
+                                                    : 'text-zinc-500'
+                                                    }`}>
+                                                {Math.round(porcentagem)}%
+                                            </span>
                                         </div>
 
                                     </div>
@@ -418,3 +435,12 @@ export default function Anime() {
         </section>
     );
 }
+
+//  </div>
+//         </section>
+//     );
+// }
+
+//                                                 <div className="h-full bg-blue-600 rounded-full transition-[width] duration-150 ease-linear"
+//                                                     style={{ width: `${Math.min(100, Math.max(0, porcentagem))}%` }}/>
+
